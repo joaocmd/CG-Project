@@ -37,10 +37,6 @@ function createRenderer() {
     document.body.appendChild(renderer.domElement);
 }
 
-function updateObject(obj) {
-   obj.update(); 
-}
-
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -60,7 +56,7 @@ async function world_init() {
     objects.push(robot);
 
     while (1) {
-        objects.forEach(updateObject);
+        objects.forEach(obj => obj.update());
         render();
         await sleep(1/6);
     }
