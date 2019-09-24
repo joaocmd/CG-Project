@@ -1,27 +1,42 @@
-var camera, scene, renderer, inputManager;
+var renderCamera, scene, renderer, inputManager;
+
+var sideCamera, aboveCamera, frontCamera;
 
 function render() {
-    renderer.render(scene, camera);
+    renderer.render(scene, renderCamera);
 }
 
 function onResize() {
     'use strict';
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    if (window.innerHeight > 0 && window.innerWidth > 0) {
-        camera.aspect = renderer.getSize().width/renderer.getSize().height;
-        camera.updateProjectionMatrix();
+    if (window.innerHeight > 0 && window.innerWidth > 0 && renderCamera.isPerspectiveCamera == true) {
+        renderCamera.aspect = renderer.getSize().width/renderer.getSize().height;
+        renderCamera.updateProjectionMatrix();
     }
 }
 
-function createCamera() {
+function createCameras() {
     'use strict';
-    camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight,
+	renderCamera = aboveCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2,
+										 window.innerHeight / 2, window.innerHeight / -2, 1, 1000);
+	aboveCamera.position.x = 0;
+	aboveCamera.position.y = 50;
+	aboveCamera.position.z = 0;
+	aboveCamera.lookAt(scene.position);
+
+    sideCamera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight,
                                          1, 1000);
-    camera.position.x = 150;
-    camera.position.y = 50;
-    camera.position.z = 0;
-    camera.lookAt(scene.position);
+    sideCamera.position.x = 150;
+    sideCamera.position.y = 50;
+    sideCamera.position.z = 0;
+    sideCamera.lookAt(scene.position);
+
+	frontCamera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight,
+										 1, 1000);
+	frontCamera.position.x = 0;
+	frontCamera.position.y = 50;
+	frontCamera.position.z = 150;
 }
 
 function createScene() {
@@ -44,7 +59,7 @@ function sleep(ms) {
 async function world_init() {
     createRenderer();
     createScene();
-    createCamera();
+    createCameras();
     input_init();
 
     window.addEventListener("resize", onResize);
@@ -56,6 +71,14 @@ async function world_init() {
     objects.push(robot);
 
     while (1) {
+		if(input_getKey("1")){
+			renderCamera = aboveCamera;
+		}else if(input_getKey("2")){
+			renderCamera = sideCamera;
+		}else if(input_getKey("3")){
+			renderCamera = frontCamera;
+		}
+
         objects.forEach(obj => obj.update());
         render();
         await sleep(1/6);
