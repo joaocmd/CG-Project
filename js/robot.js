@@ -30,7 +30,7 @@ class Robot {
             obj.add(capMesh);
         });
 
-        var addArm = (function(obj, mat, x, y, z) {
+        var newArm = (function(mat, x, y, z) {
             let armObject = new THREE.Object3D();
 
             let armGeometry = new THREE.CubeGeometry(5, 50, 5);
@@ -44,13 +44,13 @@ class Robot {
             armObject.add(artMesh);
 
             armObject.position.set(x, y, z);
-            obj.add(armObject);
             return armObject;
         });
         addBase(this.object, this.material);
-        addArm(this.object, this.material, 0, 12, 0);
-        let forearm = addArm(this.object, this.material, 0, 62, 0);
-        forearm.rotation.z = -Math.PI/2;
+        this.arm = newArm(this.object, this.material, 0, 12, 0);
+        this.object.add(this.arm);
+        // let forearm = newArm(this.object, this.material, 0, 62, 0);
+        // forearm.rotation.z = -Math.PI/2;
         this.object.position.set(x, y, z);
     }
 
