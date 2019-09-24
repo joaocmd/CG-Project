@@ -2,6 +2,8 @@ class Robot {
 	constructor(x, y, z) {
 		this.object = new THREE.Object3D();
 		this.material = new THREE.MeshBasicMaterial({color: 0x777777, wireframe: true});
+		this.rotSpeed = 0.02;
+		this.walkSpeed = 0.6;
 
 		// Create Wheel
 		var addWheel = (function(obj, mat, x = 0, y = 0, z = 0) {
@@ -47,6 +49,7 @@ class Robot {
 
 		// Create Arm
 		var addArm = (function(obj, mat, x = 0, y = 0, z = 0) {
+			let armGroup = new THREE.Group();
 			let armObject = new THREE.Group();
 
 			// Vertical arm
@@ -62,7 +65,7 @@ class Robot {
 
 			// Horizontal arm
 			let	forearm = new THREE.Object3D();
-			armGeometry = new THREE.BoxGeometry(5, 50, 5);
+			armGeometry = new THREE.BoxGeometry(5, 50, 5);//Isto assusta-me mas faz sentido
 			armMesh = new THREE.Mesh(armGeometry, mat);
 			armMesh.position.set(0, 25, 0);
 			forearm.add(armMesh);
@@ -73,7 +76,7 @@ class Robot {
 			forearm.add(artMesh);
 
 			// Rotate and position
-			forearm.rotation.x = Math.PI/2;
+			forearm.rotation.x = -Math.PI/2;
 			forearm.position.set(0, 50, 0);
 
 			armObject.add(forearm);
@@ -92,20 +95,62 @@ class Robot {
 			hand.position.set(0, 54, 0);
 			forearm.add(hand);
 
-			console.log(armObject);
-
 			armObject.position.set(x, y, z);
-			obj.add(armObject);
-			return armObject;
+			armGroup.add(armObject);
+			obj.add(armGroup);
+			return [armGroup, armObject];
 		});
 
 		addBase(this.object, this.material);
-		this.arm = addArm(this.object, this.material, 0, 12, 0);
+		let armParts = addArm(this.object, this.material, 0, 12, 0);
+		this.armBase = armParts[0];
+		this.arm = armParts[1];//addArm(this.object, this.material, 0, 12, 0);
 
 		this.object.position.set(x, y, z);
 	}
 
 	update() {
+		let newRot = new THREE.Vector3(this.arm.rotation.x, this.armBase.rotation.y, 0);
+		if (input_getKey("Q"))  {
+			newRot.x += this.rotSpeed;
+		}
+		if (input_getKey("W")) {
+			newRot.x -= this.rotSpeed;
+		}
+		//TODO: find pretty way to clamp values
+		if (newRot.x <= -Math.PI/5) newRot.x = -Math.PI/5;
+		else if (newRot.x >= Math.PI/3) newRot.x = Math.PI/3;
+
+		if (input_getKey("A")) {
+			newRot.y += this.rotSpeed;
+		}
+		if (input_getKey("S")) {
+			newRot.y -= this.rotSpeed;
+		}
+		this.arm.rotation.x = newRot.x;
+		this.armBase.rotation.y = newRot.y;
+
+		let velocity = new THREE.Vector3(0, 0, 0);
+		if (input_getKey(38)) { //Up
+			velocity.z -= 1;
+		}
+		if (input_getKey(40)) { //Down
+			velocity.z += 1;
+		}
+		if (input_getKey(39)) { //Right
+			velocity.x += 1;
+		}
+		if (input_getKey(37)) { //Left
+			velocity.x -= 1;
+		}
+		// Normalize vector magnitude for constant velocity and apply speed
+		if (velocity.length() != 0) {
+			velocity.multiplyScalar(1/velocity.length() * this.walkSpeed);
+			velocity.multiplyScalar(1/velocity.length() * this.walkSpeed);
+		}
+
+		this.object.position.z += velocity.z;
+		this.object.position.x += velocity.x;
 	}
 
 	display() {
