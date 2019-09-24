@@ -64,7 +64,7 @@ class Robot {
 			armObject.add(artMesh);
 
 			// Horizontal arm
-			let	forearm = new THREE.Object3D();
+			let forearm = new THREE.Object3D();
 			armGeometry = new THREE.BoxGeometry(5, 50, 5);//Isto assusta-me mas faz sentido
 			armMesh = new THREE.Mesh(armGeometry, mat);
 			armMesh.position.set(0, 25, 0);
@@ -95,7 +95,7 @@ class Robot {
 			hand.position.set(0, 54, 0);
 			forearm.add(hand);
 
-			armObject.position.set(x, y, z);
+			armGroup.position.set(x, y, z);
 			armGroup.add(armObject);
 			obj.add(armGroup);
 			return [armGroup, armObject];
