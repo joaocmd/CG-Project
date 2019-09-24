@@ -1,4 +1,4 @@
-var camera, scene, renderer;
+var camera, scene, renderer, inputManager;
 
 function render() {
     renderer.render(scene, camera);
@@ -19,8 +19,8 @@ function createCamera() {
     camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight,
                                          1, 1000);
     camera.position.x = 150;
-    camera.position.y = 150;
-    camera.position.z = 150;
+    camera.position.y = 50;
+    camera.position.z = 0;
     camera.lookAt(scene.position);
 }
 
@@ -30,18 +30,34 @@ function createScene() {
     scene.add(new THREE.AxesHelper(10));
 }
 
-function world_init() {
+function createRenderer() {
     'use strict';
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+}
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function world_init() {
+    createRenderer();
     createScene();
     createCamera();
+    input_init();
 
     window.addEventListener("resize", onResize);
 
+    let objects = [];
+
     let robot = new Robot(0, 0, 0);
     scene.add(robot.getObject3D());
-    render();
+    objects.push(robot);
+
+    while (1) {
+        objects.forEach(obj => obj.update());
+        render();
+        await sleep(1/6);
+    }
 }
