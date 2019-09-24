@@ -36,6 +36,15 @@ class Robot {
 			addWheel(obj, mat, 21, 4, 21);
 		});
 
+		var addFinger = (function(parent, mat, x, y, z) {
+			let fingerLength = 10;
+			let geometry = new THREE.BoxGeometry(4, fingerLength, 2.5);
+			let mesh = new THREE.Mesh(geometry, mat);
+
+			mesh.position.set(x, y + fingerLength/2, z);
+			parent.add(mesh);
+		});
+
 		// Create Arm
 		var addArm = (function(obj, mat, x = 0, y = 0, z = 0) {
 			let armObject = new THREE.Group();
@@ -52,48 +61,42 @@ class Robot {
 			armObject.add(artMesh);
 
 			// Horizontal arm
-			let	armHand = new THREE.Object3D();
+			let	forearm = new THREE.Object3D();
 			armGeometry = new THREE.BoxGeometry(5, 50, 5);
 			armMesh = new THREE.Mesh(armGeometry, mat);
 			armMesh.position.set(0, 25, 0);
-			armHand.add(armMesh);
+			forearm.add(armMesh);
 
 			artGeometry = new THREE.SphereGeometry(5.5, 10, 10);
 			artMesh = new THREE.Mesh(artGeometry, mat);
 			artMesh.position.set(0, 50, 0);
-			armHand.add(artMesh);
+			forearm.add(artMesh);
 
 			// Rotate and position
-			armHand.rotation.z = -Math.PI/2;
-			armHand.position.set(0, 50, 0);
+			forearm.rotation.x = Math.PI/2;
+			forearm.position.set(0, 50, 0);
 
-			armObject.add(armHand);
+			armObject.add(forearm);
+
+			// Hand
+			let hand = new THREE.Object3D();
+			let wristGeometry = new THREE.CylinderGeometry(5, 5, 1, 10);
+			let wristMesh = new THREE.Mesh(wristGeometry, mat);
+			wristMesh.position.set(0, 0.5, 0);
+			hand.add(wristMesh);
+
+			// Fingers
+			addFinger(hand, mat, 0, 1, 3.7);
+			addFinger(hand, mat, 0, 1, -3.7);
+
+			hand.position.set(0, 54, 0);
+			forearm.add(hand);
+
+			console.log(armObject);
 
 			armObject.position.set(x, y, z);
-
 			obj.add(armObject);
-
 			return armObject;
-		});
-
-		var addFinger = (function(parent, mat, x, y, z) {
-			let geometry = new THREE.BoxGeometry(2.5, 10, 2.5);
-			let mesh = new THREE.Mesh(geometry, mat);
-
-			mesh.position.set(x, y, z);
-			parent.add(mesh);
-		});
-
-		var newHand = (function(mat, x, y, z) {
-			let handObject = new THREE.Group();
-
-			addFinger(handObject, 3.75, 2, 0);
-			addFinger(handObject, -3.75, 2, 0);
-
-			let geometry = new THREE.CylinderGeometry(5, 5, 2, 10);
-			let mesh = new THREE.Mesh(geometry, mat);
-
-			handObject.add(mesh);
 		});
 
 		addBase(this.object, this.material);
@@ -103,7 +106,6 @@ class Robot {
 	}
 
 	update() {
-
 	}
 
 	display() {
@@ -113,5 +115,5 @@ class Robot {
 	// Get object to render
 	getObject3D() {
 		return this.object;
-	};
+	}
 }
