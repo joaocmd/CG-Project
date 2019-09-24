@@ -51,5 +51,5 @@ function input_init() {
 }
 
 function input_getKey(keyCode) {
-    return (isNaN(keyCode)) ? _keyDown[keyCode.charCodeAt(0)] : _keyDown[keyCode];
+    return (typeof keyCode == "string") ? _keyDown[keyCode.charCodeAt(0)] : _keyDown[keyCode];
 }
