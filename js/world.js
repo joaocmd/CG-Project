@@ -1,6 +1,11 @@
-var renderCamera, scene, renderer, inputManager;
+var renderCamera, scene, renderer, objects, inputManager;
 
 var sideCamera, aboveCamera, frontCamera;
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function render() {
 	renderer.render(scene, renderCamera);
@@ -21,10 +26,10 @@ function onResize() {
 
 function createCameras() {
 	'use strict';
-	renderCamera = aboveCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2,
+	aboveCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2,
 										 window.innerHeight / 2, window.innerHeight / -2, 1, 1000);
 	aboveCamera.position.x = 0;
-	aboveCamera.position.y = 100;
+	aboveCamera.position.y = 150;
 	aboveCamera.position.z = 0;
 	aboveCamera.lookAt(scene.position);
 
@@ -40,7 +45,9 @@ function createCameras() {
 	frontCamera.position.x = 0;
 	frontCamera.position.y = 0;
 	frontCamera.position.z = 150;
-	frontCamera.lookAt(scene.position);
+    frontCamera.lookAt(scene.position);
+    
+    renderCamera = aboveCamera;
 }
 
 function createScene() {
@@ -56,8 +63,39 @@ function createRenderer() {
 	document.body.appendChild(renderer.domElement);
 }
 
-function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
+function changeCamera(newCamera) {
+    renderCamera = newCamera;
+    onResize(); //Update projection matrix for the new selected camera
+}
+
+function world_cycle() {
+    //Update
+	objects.forEach(obj => obj.update());
+    if(input_getKeyDown("1")){
+        changeCamera(aboveCamera);
+    } else if(input_getKeyDown("2")){
+        changeCamera(sideCamera);
+    } else if(input_getKeyDown("3")){
+        changeCamera(frontCamera);
+    }
+
+    if(input_getKeyDown("4")){
+        //Add all used materials to avoid double switching a material shared by two objects
+        materialSet = new Set();
+        scene.traverse(function(node){
+            if(node instanceof THREE.Mesh){
+                materialSet.add(node.material);
+            }
+        });
+        for (let mat of materialSet) {
+            mat.wireframe = !mat.wireframe;
+        }
+    }
+	objects.forEach(obj => obj.update());
+
+    //Display
+    render();
+    requestAnimationFrame(world_cycle);
 }
 
 async function world_init() {
@@ -66,25 +104,12 @@ async function world_init() {
 	createCameras();
 	input_init();
 
-	window.addEventListener("resize", onResize);
-
-	let objects = [];
+	objects = [];
 
 	let robot = new Robot(0, 0, 0);
 	scene.add(robot.getObject3D());
-	objects.push(robot);
+    objects.push(robot);
 
-	while (1) {
-		if(input_getKey("1")){
-			renderCamera = aboveCamera;
-		}else if(input_getKey("2")){
-			renderCamera = sideCamera;
-		}else if(input_getKey("3")){
-			renderCamera = frontCamera;
-		}
-
-		objects.forEach(obj => obj.update());
-		render();
-		await sleep(1/6);
-	}
+    window.addEventListener("resize", onResize);
+    world_cycle(objects);
 }
