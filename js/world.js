@@ -31,14 +31,14 @@ function createCameras() {
 	sideCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2,
 										 window.innerHeight / 2, window.innerHeight / -2, 1, 1000);
 	sideCamera.position.x = 150;
-	sideCamera.position.y = 50;
+	sideCamera.position.y = 0;
 	sideCamera.position.z = 0;
 	sideCamera.lookAt(scene.position);
 
 	frontCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, 
 										 window.innerHeight / 2, window.innerHeight / -2, 1, 1000);
 	frontCamera.position.x = 0;
-	frontCamera.position.y = 50;
+	frontCamera.position.y = 0;
 	frontCamera.position.z = 150;
 	frontCamera.lookAt(scene.position);
 }
