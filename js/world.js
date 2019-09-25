@@ -40,6 +40,7 @@ function createCameras() {
 	frontCamera.position.x = 0;
 	frontCamera.position.y = 50;
 	frontCamera.position.z = 150;
+	frontCamera.lookAt(scene.position);
 }
 
 function createScene() {
