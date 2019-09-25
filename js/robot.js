@@ -54,31 +54,31 @@ class Robot {
 			let armObject = new THREE.Group();
 
 			// Vertical arm
-			let armGeometry = new THREE.BoxGeometry(5, 50, 5);
+			let armGeometry = new THREE.BoxGeometry(5, 40, 5);
 			let armMesh = new THREE.Mesh(armGeometry, mat);
 			armMesh.position.set(0, 25, 0);
 			armObject.add(armMesh);
 
 			let artGeometry = new THREE.SphereGeometry(5.5, 10, 10);
 			let artMesh = new THREE.Mesh(artGeometry, mat);
-			artMesh.position.set(0, 50, 0);
+			artMesh.position.set(0, 40, 0);
 			armObject.add(artMesh);
 
-			// Horizontal arm
+			// Forearm
 			let forearm = new THREE.Object3D();
-			armGeometry = new THREE.BoxGeometry(5, 50, 5);//Isto assusta-me mas faz sentido
+			armGeometry = new THREE.BoxGeometry(5, 40, 5);//Isto assusta-me mas faz sentido
 			armMesh = new THREE.Mesh(armGeometry, mat);
-			armMesh.position.set(0, 25, 0);
+			armMesh.position.set(0, 20, 0);
 			forearm.add(armMesh);
 
 			artGeometry = new THREE.SphereGeometry(5.5, 10, 10);
 			artMesh = new THREE.Mesh(artGeometry, mat);
-			artMesh.position.set(0, 50, 0);
+			artMesh.position.set(0, 40, 0);
 			forearm.add(artMesh);
 
 			// Rotate and position
 			forearm.rotation.x = -Math.PI/2;
-			forearm.position.set(0, 50, 0);
+			forearm.position.set(0, 40, 0);
 
 			armObject.add(forearm);
 
@@ -93,7 +93,7 @@ class Robot {
 			addFinger(hand, mat, 0, 1, 3.7);
 			addFinger(hand, mat, 0, 1, -3.7);
 
-			hand.position.set(0, 54, 0);
+			hand.position.set(0, 44, 0);
 			forearm.add(hand);
 
 			armGroup.position.set(x, y, z);
