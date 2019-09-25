@@ -1,6 +1,11 @@
-var renderCamera, scene, renderer, inputManager;
+var renderCamera, scene, renderer, objects, inputManager;
 
 var sideCamera, aboveCamera, frontCamera;
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function render() {
 	renderer.render(scene, renderCamera);
@@ -56,8 +61,34 @@ function createRenderer() {
 	document.body.appendChild(renderer.domElement);
 }
 
-function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
+function changeCamera(newCamera) {
+    renderCamera = newCamera;
+    onResize(); //Update projection matrix for the new selected camera
+}
+
+function world_cycle() {
+    //Update
+	objects.forEach(obj => obj.update());
+    if(input_getKeyDown("1")){
+        changeCamera(aboveCamera);
+    } else if(input_getKeyDown("2")){
+        changeCamera(sideCamera);
+    } else if(input_getKeyDown("3")){
+        changeCamera(frontCamera);
+    }
+
+    if(input_getKeyDown("4")){
+        scene.traverse(function(node){
+            if(node instanceof THREE.Mesh){
+                node.material.wireframe = !node.material.wireframe;
+            }
+        });
+    }
+	objects.forEach(obj => obj.update());
+
+    //Display
+    render();
+    requestAnimationFrame(world_cycle);
 }
 
 async function world_init() {
@@ -66,25 +97,12 @@ async function world_init() {
 	createCameras();
 	input_init();
 
-	window.addEventListener("resize", onResize);
-
-	let objects = [];
+	objects = [];
 
 	let robot = new Robot(0, 0, 0);
 	scene.add(robot.getObject3D());
-	objects.push(robot);
-
-	while (1) {
-		if(input_getKey("1")){
-			renderCamera = aboveCamera;
-		}else if(input_getKey("2")){
-			renderCamera = sideCamera;
-		}else if(input_getKey("3")){
-			renderCamera = frontCamera;
-		}
-
-		objects.forEach(obj => obj.update());
-		render();
-		await sleep(1/6);
-	}
+    objects.push(robot);
+    
+	window.addEventListener("resize", onResize);
+    world_cycle(objects);
 }

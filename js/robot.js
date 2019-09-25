@@ -152,14 +152,6 @@ class Robot {
 
 		this.object.position.z += velocity.z;
 		this.object.position.x += velocity.x;
-
-		if(input_getKey("4")){
-			scene.traverse(function(node){
-				if(node instanceof THREE.Mesh){
-					node.material.wireframe = !node.material.wireframe;
-				}
-			});
-		}
 	}
 
 	display() {

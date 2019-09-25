@@ -32,24 +32,40 @@
         //     // }
         // });
      
+var _key;
 var _keyDown;
 
-function _input_onKeyDown(e) {
+async function _input_onKeyDown(e) {
     let keyCode = e.keyCode;
+    _key[keyCode] = true;
     _keyDown[keyCode] = true;
+    //Key is considered pressed down for the next 100ms
+    await sleep(100);
+    _keyDown[keyCode] = false;
+
 }
 
 function _input_onKeyUp(e) {
     let keyCode = e.keyCode;
-    _keyDown[keyCode] = false;
+    _key[keyCode] = false;
 }
 
 function input_init() {
+    _key = new Array(256).fill(false);
     _keyDown = new Array(256).fill(false);
     window.addEventListener("keydown", _input_onKeyDown);
     window.addEventListener("keyup", _input_onKeyUp);
 }
 
 function input_getKey(keyCode) {
-    return (typeof keyCode == "string") ? _keyDown[keyCode.charCodeAt(0)] : _keyDown[keyCode];
+    return (typeof keyCode == "string") ? _key[keyCode.charCodeAt(0)] : _key[keyCode];
+}
+
+function input_getKeyDown(keyCode) {
+    let keyVal = (typeof keyCode == "string") ? keyCode.charCodeAt(0) : keyCode;
+    if (_keyDown[keyVal]) {
+        _keyDown[keyVal] = false;
+        return true;
+    }
+    return false;
 }
