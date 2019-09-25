@@ -1,3 +1,4 @@
+// FIXME MEASURES IN METERS
 class Robot {
 	constructor(x, y, z) {
 		this.object = new THREE.Object3D();
