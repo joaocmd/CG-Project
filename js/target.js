@@ -1,7 +1,7 @@
 class Target {
 	constructor(x, y, z) {
 		this.object = new THREE.Object3D();
-		this.material = new THREE.MeshBasicMaterial({color: 0x700047});
+		let material = new THREE.MeshBasicMaterial({color: 0x00678a});
 
     // Create Cylinder
     var addTarget = (function(obj, mat, x = 0, y = 0, z = 0) {
@@ -11,7 +11,7 @@ class Target {
       mesh.position.set(x, y, z);
       obj.add(mesh);
     });
-    addTarget(this.object, this.material);
+    addTarget(this.object, material);
     this.object.position.set(x, y, z);
   }
 

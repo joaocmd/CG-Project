@@ -1,12 +1,12 @@
 // FIXME MEASURES IN METERS
 class Robot {
 	constructor(x, y, z) {
-		this.object = new THREE.Object3D();
-		this.rotSpeed = 0.01;
+		this.object = new THREE.Group();
+		this.rotSpeed = 0.01
 		this.walkSpeed = 0.6;
 
-		var darkMat = new THREE.MeshBasicMaterial({color: 0x777777});
-		var lightMat = new THREE.MeshBasicMaterial({color: 0xbbbbbb});
+		let darkMat = new THREE.MeshBasicMaterial({color: 0x777777});
+		let lightMat = new THREE.MeshBasicMaterial({color: 0xbbbbbb});
 
 		// Create Wheel
 		var addWheel = (function(obj, mat, x = 0, y = 0, z = 0) {
@@ -68,7 +68,7 @@ class Robot {
 
 			// Forearm
 			let forearm = new THREE.Object3D();
-			armGeometry = new THREE.BoxGeometry(5, 40, 5);//Isto assusta-me mas faz sentido
+			armGeometry = new THREE.BoxGeometry(5, 40, 5);
 			armMesh = new THREE.Mesh(armGeometry, armMat);
 			armMesh.position.set(0, 20, 0);
 			forearm.add(armMesh);
@@ -122,7 +122,6 @@ class Robot {
 			armRot.x -= this.rotSpeed;
 		}
 		armRot.x = Math.min(Math.max(armRot.x, -Math.PI/5), Math.PI/3);
-		console.log(armRot.x);
 
 		if (input_getKey("A")) {
 			armRot.y += this.rotSpeed;
@@ -133,23 +132,22 @@ class Robot {
 		this.arm.rotation.x = armRot.x;
 		this.armBase.rotation.y = armRot.y;
 
-		let velocity = new THREE.Vector3(0, 0, 0);
+		let forwardVelocity = 0; 
+		let rotDir = 0;
 		if (input_getKey(38)) { //Up
-			velocity.z -= 1;
+			forwardVelocity -= 1;
 		}
 		if (input_getKey(40)) { //Down
-			velocity.z += 1;
+			forwardVelocity += 1;
 		}
-
-		let rotDir = 0;
 		if (input_getKey(39)) { //Right
 			rotDir -= 1;
 		}
 		if (input_getKey(37)) { //Left
 			rotDir += 1;
 		}
-		this.object.rotation.y += rotDir * this.rotSpeed;
-		this.object.translateZ(velocity.z * this.walkSpeed);
+		this.object.rotation.y += rotDir * this.rotSpeed * ((forwardVelocity != 0) ? -forwardVelocity : 1); //Invert controls for backwards
+		this.object.translateZ(forwardVelocity * this.walkSpeed);
 	}
 
 	getObject3D() {

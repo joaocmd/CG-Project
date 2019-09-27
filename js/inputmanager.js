@@ -17,8 +17,8 @@ function _input_onKeyUp(e) {
 }
 
 function input_init() {
-    _input_key = new Array(256).fill(false);
-    _input_keyDown = new Array(256).fill(false);
+    _input_key = new Array(128).fill(false);
+    _input_keyDown = new Array(128).fill(false);
     window.addEventListener("keydown", _input_onKeyDown);
     window.addEventListener("keyup", _input_onKeyUp);
 }
