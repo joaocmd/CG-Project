@@ -40,13 +40,13 @@ function createCameras() {
 	sideCamera.position.z = 0;
 	sideCamera.lookAt(scene.position);
 
-	frontCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, 
+	frontCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2,
 										 window.innerHeight / 2, window.innerHeight / -2, 1, 1000);
 	frontCamera.position.x = 0;
 	frontCamera.position.y = 0;
 	frontCamera.position.z = 150;
     frontCamera.lookAt(scene.position);
-    
+
     renderCamera = aboveCamera;
 }
 
@@ -105,6 +105,12 @@ async function world_init() {
 	input_init();
 
 	objects = [];
+
+  let cylinder = new Cylinder(0, 21, -200);
+  scene.add(cylinder.getObject3D());
+
+  let target = new Target(0, 48, -200);
+  scene.add(target.getObject3D());
 
 	let robot = new Robot(0, 0, 0);
 	scene.add(robot.getObject3D());
