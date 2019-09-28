@@ -87,7 +87,7 @@ class Robot {
 			// Hand
 			let hand = new THREE.Group();
 
-			let wristGeometry = new THREE.CylinderGeometry(5, 5, 1, 5);
+			let wristGeometry = new THREE.CylinderGeometry(5, 5, 1.5, 5);
 			let wristMesh = new THREE.Mesh(wristGeometry, armMat);
 			wristMesh.position.set(0, 0.5, 0);
 			hand.add(wristMesh);

@@ -11,43 +11,47 @@ function render() {
 	renderer.render(scene, renderCamera);
 }
 
-function onResize() {
+function updateProjMatrix() {
 	'use strict';
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
 	if (window.innerHeight > 0 && window.innerWidth > 0) {
-		renderCamera.left = window.innerWidth / -4;
-		renderCamera.right = window.innerWidth / 4;
-		renderCamera.top = window.innerHeight / 4;
-		renderCamera.bottom = window.innerHeight / -4;
+		renderCamera.left = window.innerWidth / -3.5;
+		renderCamera.right = window.innerWidth / 3.5;
+		renderCamera.top = window.innerHeight / 3.5;
+		renderCamera.bottom = window.innerHeight / -3.5;
 		renderCamera.updateProjectionMatrix();
 	}
 }
 
+function selectCamera(newCamera) {
+    renderCamera = newCamera;
+    updateProjMatrix();
+}
+
 function createCameras() {
 	'use strict';
-	aboveCamera = new THREE.OrthographicCamera(window.innerWidth / -4, window.innerWidth / 4,
-										 window.innerHeight / 4, window.innerHeight / -4, 1, 5000);
+	let near = 1;
+	let far = 5000;
+	aboveCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
 	aboveCamera.position.x = 0;
 	aboveCamera.position.y = 500;
 	aboveCamera.position.z = 0;
 	aboveCamera.lookAt(scene.position);
 
-	sideCamera = new THREE.OrthographicCamera(window.innerWidth / -4, window.innerWidth / 4,
-										 window.innerHeight / 4, window.innerHeight / -4, 1, 5000);
+	sideCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
 	sideCamera.position.x = 500;
 	sideCamera.position.y = 0;
 	sideCamera.position.z = 0;
 	sideCamera.lookAt(scene.position);
 
-	frontCamera = new THREE.OrthographicCamera(window.innerWidth / -4, window.innerWidth / 4,
-										 window.innerHeight / 4, window.innerHeight / -4, 1, 5000);
+	frontCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
 	frontCamera.position.x = 0;
 	frontCamera.position.y = 0;
 	frontCamera.position.z = -500; //Frente do robo ou frente do eixo?
-    frontCamera.lookAt(scene.position);
-
-    renderCamera = aboveCamera;
+	frontCamera.lookAt(scene.position);
+	
+	selectCamera(aboveCamera);
 }
 
 function createScene() {
@@ -63,20 +67,15 @@ function createRenderer() {
 	document.body.appendChild(renderer.domElement);
 }
 
-function changeCamera(newCamera) {
-    renderCamera = newCamera;
-    onResize(); //Update projection matrix for the new selected camera
-}
-
 function world_cycle() {
     //Update
 	objects.forEach(obj => obj.update());
     if(input_getKeyDown("1")){
-        changeCamera(aboveCamera);
+        selectCamera(aboveCamera);
     } else if(input_getKeyDown("2")){
-        changeCamera(sideCamera);
+        selectCamera(sideCamera);
     } else if(input_getKeyDown("3")){
-        changeCamera(frontCamera);
+        selectCamera(frontCamera);
     }
 
     if(input_getKeyDown("4")){
@@ -106,9 +105,9 @@ async function world_init() {
 
 	objects = [];
 
-	let pillar = new Pillar(0, 21, -200);
-  	scene.add(pillar.getObject3D());
-
+	let pillar = new Pillar(0, 0, -200);
+  	scene.add(pillar.getObject3D()); 
+   
   	let target = new Target(0, 48, -200);
 	scene.add(target.getObject3D());
 
@@ -119,6 +118,6 @@ async function world_init() {
 	scene.add(robot.getObject3D());
     objects.push(robot);
 
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", updateProjMatrix);
     world_cycle(objects);
 }

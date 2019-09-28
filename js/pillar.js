@@ -8,7 +8,7 @@ class Pillar {
       let geometry = new THREE.CylinderGeometry(6, 6, 40, 8);
       let mesh = new THREE.Mesh(geometry, mat);
 
-      mesh.position.set(x, y, z);
+      mesh.position.set(x, y + 20, z);
       obj.add(mesh);
     });
     addCylinder(this.object, material);
