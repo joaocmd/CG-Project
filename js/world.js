@@ -16,35 +16,35 @@ function onResize() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
 	if (window.innerHeight > 0 && window.innerWidth > 0) {
-		renderCamera.left = window.innerWidth / -2;
-		renderCamera.right = window.innerWidth / 2;
-		renderCamera.top = window.innerHeight / 2;
-		renderCamera.bottom = window.innerHeight / -2;
+		renderCamera.left = window.innerWidth / -4;
+		renderCamera.right = window.innerWidth / 4;
+		renderCamera.top = window.innerHeight / 4;
+		renderCamera.bottom = window.innerHeight / -4;
 		renderCamera.updateProjectionMatrix();
 	}
 }
 
 function createCameras() {
 	'use strict';
-	aboveCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2,
-										 window.innerHeight / 2, window.innerHeight / -2, 1, 10000);
+	aboveCamera = new THREE.OrthographicCamera(window.innerWidth / -4, window.innerWidth / 4,
+										 window.innerHeight / 4, window.innerHeight / -4, 1, 5000);
 	aboveCamera.position.x = 0;
-	aboveCamera.position.y = 1500;
+	aboveCamera.position.y = 500;
 	aboveCamera.position.z = 0;
 	aboveCamera.lookAt(scene.position);
 
-	sideCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2,
-										 window.innerHeight / 2, window.innerHeight / -2, 1, 10000);
-	sideCamera.position.x = 1500;
+	sideCamera = new THREE.OrthographicCamera(window.innerWidth / -4, window.innerWidth / 4,
+										 window.innerHeight / 4, window.innerHeight / -4, 1, 5000);
+	sideCamera.position.x = 500;
 	sideCamera.position.y = 0;
 	sideCamera.position.z = 0;
 	sideCamera.lookAt(scene.position);
 
-	frontCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2,
-										 window.innerHeight / 2, window.innerHeight / -2, 1, 10000);
+	frontCamera = new THREE.OrthographicCamera(window.innerWidth / -4, window.innerWidth / 4,
+										 window.innerHeight / 4, window.innerHeight / -4, 1, 5000);
 	frontCamera.position.x = 0;
 	frontCamera.position.y = 0;
-	frontCamera.position.z = -1500; //Frente do robo ou frente do eixo?
+	frontCamera.position.z = -500; //Frente do robo ou frente do eixo?
     frontCamera.lookAt(scene.position);
 
     renderCamera = aboveCamera;

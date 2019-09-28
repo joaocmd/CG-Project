@@ -56,9 +56,9 @@ class Robot {
 			let armObject = new THREE.Group();
 
 			// Vertical arm
-			let armGeometry = new THREE.BoxGeometry(5, 40, 5);
+			let armGeometry = new THREE.BoxGeometry(5, 35, 5);
 			let armMesh = new THREE.Mesh(armGeometry, armMat);
-			armMesh.position.set(0, 25, 0);
+			armMesh.position.set(0, 20, 0);
 			armObject.add(armMesh);
 
 			let artGeometry = new THREE.SphereGeometry(5.5, 5, 5);
