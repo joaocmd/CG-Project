@@ -5,7 +5,7 @@ class Pillar {
 
     // Create Cylinder
     var addCylinder = (function(obj, mat, x = 0, y = 0, z = 0) {
-      let geometry = new THREE.CylinderGeometry(6, 6, 42, 8);
+      let geometry = new THREE.CylinderGeometry(6, 6, 40, 8);
       let mesh = new THREE.Mesh(geometry, mat);
 
       mesh.position.set(x, y, z);
