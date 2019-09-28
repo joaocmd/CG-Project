@@ -50,7 +50,7 @@ function createCameras() {
 	frontCamera.position.y = 0;
 	frontCamera.position.z = -500; //Frente do robo ou frente do eixo?
 	frontCamera.lookAt(scene.position);
-	
+
 	selectCamera(aboveCamera);
 }
 
@@ -107,7 +107,7 @@ async function world_init() {
 
 	let pillar = new Pillar(0, 0, -200);
   	scene.add(pillar.getObject3D()); 
-   
+
   	let target = new Target(0, 48, -200);
 	scene.add(target.getObject3D());
 
