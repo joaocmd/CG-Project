@@ -132,22 +132,27 @@ class Robot {
 		this.arm.rotation.x = armRot.x;
 		this.armBase.rotation.y = armRot.y;
 
-		let forwardVelocity = 0; 
-		let rotDir = 0;
+		let velocity = new THREE.Vector3(0, 0, 0);
 		if (input_getKey(38)) { //Up
-			forwardVelocity -= 1;
+			velocity.z -= 1;
 		}
 		if (input_getKey(40)) { //Down
-			forwardVelocity += 1;
+			velocity.z += 1;
 		}
 		if (input_getKey(39)) { //Right
-			rotDir -= 1;
+			velocity.x += 1;
 		}
 		if (input_getKey(37)) { //Left
-			rotDir += 1;
+			velocity.x -= 1;
 		}
-		this.object.rotation.y += rotDir * this.rotSpeed * ((forwardVelocity != 0) ? -forwardVelocity : 1); //Invert controls for backwards
-		this.object.translateZ(forwardVelocity * this.walkSpeed);
+		//Normalize vector magnitude for constant velocity and apply speed
+		if(velocity.length() !== 0){
+			velocity.multiplyScalar(1/velocity.length() * this.walkSpeed);	
+			velocity.multiplyScalar(1/velocity.length() * this.walkSpeed);	
+		}	
+
+		this.object.position.z += velocity.z;	
+		this.object.position.x += velocity.x;	
 	}
 
 	getObject3D() {
