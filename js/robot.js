@@ -1,9 +1,8 @@
-// FIXME MEASURES IN METERS
 class Robot {
 	constructor(x, y, z) {
 		this.object = new THREE.Group();
-		this.rotSpeed = 0.01
-		this.walkSpeed = 0.6;
+		this.rotSpeed = Math.PI/8;
+		this.walkSpeed = 25;
 
 		let darkMat = new THREE.MeshBasicMaterial({color: 0x777777});
 		let lightMat = new THREE.MeshBasicMaterial({color: 0xbbbbbb});
@@ -116,18 +115,18 @@ class Robot {
 	update() {
 		let armRot = new THREE.Vector3(this.arm.rotation.x, this.armBase.rotation.y, 0);
 		if (input_getKey("Q"))  {
-			armRot.x += this.rotSpeed;
+			armRot.x += this.rotSpeed * time_deltaTime;
 		}
 		if (input_getKey("W")) {
-			armRot.x -= this.rotSpeed;
+			armRot.x -= this.rotSpeed * time_deltaTime;
 		}
 		armRot.x = Math.min(Math.max(armRot.x, -Math.PI/5), Math.PI/3);
 
 		if (input_getKey("A")) {
-			armRot.y += this.rotSpeed;
+			armRot.y += this.rotSpeed * time_deltaTime;
 		}
 		if (input_getKey("S")) {
-			armRot.y -= this.rotSpeed;
+			armRot.y -= this.rotSpeed * time_deltaTime;
 		}
 		this.arm.rotation.x = armRot.x;
 		this.armBase.rotation.y = armRot.y;
@@ -146,8 +145,8 @@ class Robot {
 		if (input_getKey(37)) { //Left
 			rotDir += 1;
 		}
-		this.object.rotation.y += rotDir * this.rotSpeed * ((forwardVelocity != 0) ? -forwardVelocity : 1); //Invert controls for backwards
-		this.object.translateZ(forwardVelocity * this.walkSpeed);
+		this.object.rotation.y += rotDir * this.rotSpeed * ((forwardVelocity != 0) ? -forwardVelocity : 1) * time_deltaTime; //Invert controls for backwards
+		this.object.translateZ(forwardVelocity * this.walkSpeed * time_deltaTime);
 	}
 
 	getObject3D() {

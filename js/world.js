@@ -2,6 +2,7 @@ var renderCamera, scene, renderer, objects, inputManager;
 
 var sideCamera, aboveCamera, frontCamera;
 
+var time_lastFrame = time_deltaTime = 0;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -67,7 +68,10 @@ function createRenderer() {
 	document.body.appendChild(renderer.domElement);
 }
 
-function world_cycle() {
+function world_cycle(timestamp) {
+	time_deltaTime = (timestamp - time_lastFrame)/1000;
+	time_lastFrame = timestamp;
+
     //Update
 	objects.forEach(obj => obj.update());
     if(input_getKeyDown("1")){
@@ -94,7 +98,7 @@ function world_cycle() {
 
     //Display
     render();
-    requestAnimationFrame(world_cycle);
+    window.requestAnimationFrame(world_cycle);
 }
 
 async function world_init() {
@@ -118,6 +122,6 @@ async function world_init() {
 	scene.add(robot.getObject3D());
     objects.push(robot);
 
-    window.addEventListener("resize", updateProjMatrix);
-    world_cycle(objects);
+	window.addEventListener("resize", updateProjMatrix);
+	window.requestAnimationFrame(world_cycle);
 }
