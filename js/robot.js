@@ -148,11 +148,8 @@ class Robot {
 		//Normalize vector magnitude for constant velocity and apply speed
 		if(velocity.length() !== 0){
 			velocity.multiplyScalar(1/velocity.length() * this.walkSpeed * time_deltaTime);
-			velocity.multiplyScalar(1/velocity.length() * this.walkSpeed * time_deltaTime);
 		}
-
-		this.object.position.z += velocity.z;
-		this.object.position.x += velocity.x;
+		this.object.position.add(velocity);
 	}
 
 	getObject3D() {
