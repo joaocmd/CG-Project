@@ -25,7 +25,7 @@ class Robot {
 			baseMesh.position.set(0, 10, 0);
 			base.add(baseMesh);
 
-			let capGeometry = new THREE.SphereGeometry(12.5, 8, 4, 0, Math.PI * 2, 0, Math.PI/2);
+			let capGeometry = new THREE.SphereGeometry(12.5, 10, 6, 0, Math.PI * 2, 0, Math.PI/2);
 			let capMesh = new THREE.Mesh(capGeometry, wheelsMat);
 			capMesh.position.set(0, 12, 0);
 			base.add(capMesh);
@@ -61,7 +61,7 @@ class Robot {
 			armMesh.position.set(0, 20, 0);
 			armObject.add(armMesh);
 
-			let artGeometry = new THREE.SphereGeometry(5.5, 5, 5);
+			let artGeometry = new THREE.SphereGeometry(5.5, 6, 6);
 			let artMesh = new THREE.Mesh(artGeometry, mat2);
 			artMesh.position.set(0, 40, 0);
 			armObject.add(artMesh);
@@ -73,7 +73,7 @@ class Robot {
 			armMesh.position.set(0, 20, 0);
 			forearm.add(armMesh);
 
-			artGeometry = new THREE.SphereGeometry(5.5, 5, 5);
+			artGeometry = new THREE.SphereGeometry(5.5, 6, 6);
 			artMesh = new THREE.Mesh(artGeometry, mat2);
 			artMesh.position.set(0, 40, 0);
 			forearm.add(artMesh);

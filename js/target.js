@@ -5,7 +5,7 @@ class Target {
 
     // Create Cylinder
     var addTarget = (function(obj, mat, x = 0, y = 0, z = 0) {
-      let geometry = new THREE.TorusGeometry(6, 2, 8, 8);
+      let geometry = new THREE.TorusGeometry(6, 2, 6, 8);
       let mesh = new THREE.Mesh(geometry, mat);
 
       mesh.position.set(x, y, z);
