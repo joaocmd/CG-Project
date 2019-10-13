@@ -3,6 +3,10 @@ var CAN_COLOR = 0x333333;
 
 class Cannon {
 	constructor(x, y, z){
+		this.reloadTime = 0.5;
+		this.currReloadTime = this.reloadTime;
+		this.ballSpeed =  350;
+
 		this.selected = false;
 		this.rotSpeed = Math.PI/8
 
@@ -55,13 +59,34 @@ class Cannon {
 		this.setColor(CAN_COLOR);
 	}
 
+	shoot() {
+		let direction = new THREE.Vector3(0, 0, -1);
+		direction.applyQuaternion(this.object.quaternion);
+
+		let ball = new Ball(0, 0, 0);
+		ball.getObject3D().position.copy(this.object.position).add(direction.clone().multiplyScalar(180));
+
+		ball.setVelocity(direction.multiplyScalar(this.ballSpeed));
+		scene.add(ball.object);
+		balls.push(ball);
+		objects.push(ball);
+		this.currReloadTime = this.reloadTime;
+	}
+
 	update(){
+		this.currReloadTime -= time_deltaTime;
 		if(this.selected){
 			if(input_getKey(37)){
 				this.object.rotation.y += this.rotSpeed * time_deltaTime;
 			}
 			if(input_getKey(39)){
 				this.object.rotation.y -= this.rotSpeed * time_deltaTime;
+			}
+
+			if(input_getKeyDown(32)) {
+				if (this.currReloadTime <= 0) {
+					this.shoot();
+				}
 			}
 		}
 	}

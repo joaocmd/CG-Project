@@ -106,7 +106,6 @@ function createFences() {
 function createBalls() {
 	for (let i = 0; i < 30; i++) {
 		let ball = new Ball(randFloat(leftLimit, rightLimit), 0, randFloat(backLimit, -backLimit));
-		ball.setVelocity(randFloat(-200, 200), 0, randFloat(-200, 200));
 		scene.add(ball.object);
 		balls.push(ball);
 		objects.push(ball);
@@ -172,11 +171,10 @@ function world_cycle(timestamp) {
 }
 
 function randFloat(min, max) {
-
 	return Math.random() * (max-min) + min
 }
 
-async function world_init() {
+function world_init() {
 	createRenderer();
 	createScene();
 	createCameras();
