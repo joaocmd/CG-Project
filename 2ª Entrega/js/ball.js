@@ -34,8 +34,8 @@ class Ball {
 		this.object.position.set(x, y, z);
 	}
 
-	setVelocity(x, y, z) {
-		this.velocity.set(x, y, z);
+	setVelocity(velocity) {
+		this.velocity.copy(velocity);
 	}
 
 	handleCollisions() {
