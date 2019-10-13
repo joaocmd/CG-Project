@@ -4,6 +4,7 @@ var CAN_COLOR = 0x780000;
 class Cannon {
 	constructor(x, y, z){
 		this.selected = false;
+		this.rotSpeed = Math.PI/15
 
 		this.object = new THREE.Group();
 		let geometry = new THREE.CylinderGeometry(25, 25, 175);
@@ -57,10 +58,10 @@ class Cannon {
 	update(){
 		if(this.selected){
 			if(input_getKey(37)){
-				this.object.rotation.y += Math.PI/15 * time_deltaTime;
+				this.object.rotation.y += this.rotSpeed * time_deltaTime;
 			}
 			if(input_getKey(39)){
-				this.object.rotation.y += -Math.PI/15 * time_deltaTime;
+				this.object.rotation.y -= this.rotSpeed * time_deltaTime;
 			}
 		}
 	}
