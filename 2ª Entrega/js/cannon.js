@@ -55,7 +55,14 @@ class Cannon {
 	}
 
 	update(){
-
+		if(this.selected){
+			if(input_getKey(37)){
+				this.object.rotation.y += Math.PI/15 * time_deltaTime;
+			}
+			if(input_getKey(39)){
+				this.object.rotation.y += -Math.PI/15 * time_deltaTime;
+			}
+		}
 	}
 
 	getObject3D(){
