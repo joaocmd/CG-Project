@@ -58,7 +58,9 @@ function createCameras() {
 function createScene() {
 	'use strict';
 	scene = new THREE.Scene();
-	scene.add(new THREE.AxesHelper(100));
+	let axes = new THREE.AxesHelper(100);
+	axes.position.set(0, 1, 0);
+	scene.add(axes);
 }
 
 function createRenderer() {
@@ -120,7 +122,7 @@ async function world_init() {
 
 	let robot = new Robot(0, 0, 0);
 	scene.add(robot.getObject3D());
-    objects.push(robot);
+	objects.push(robot);
 
 	window.addEventListener("resize", updateProjMatrix);
 	window.requestAnimationFrame(world_cycle);

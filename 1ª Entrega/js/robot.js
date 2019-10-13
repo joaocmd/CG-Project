@@ -24,7 +24,7 @@ class Robot {
 			baseMesh.position.set(0, 10, 0);
 			base.add(baseMesh);
 
-			let capGeometry = new THREE.SphereGeometry(12.5, 8, 4, 0, Math.PI * 2, 0, Math.PI/2);
+			let capGeometry = new THREE.SphereGeometry(12.5, 10, 6, 0, Math.PI * 2, 0, Math.PI/2);
 			let capMesh = new THREE.Mesh(capGeometry, wheelsMat);
 			capMesh.position.set(0, 12, 0);
 			base.add(capMesh);
@@ -60,7 +60,7 @@ class Robot {
 			armMesh.position.set(0, 20, 0);
 			armObject.add(armMesh);
 
-			let artGeometry = new THREE.SphereGeometry(5.5, 5, 5);
+			let artGeometry = new THREE.SphereGeometry(5.5, 6, 6);
 			let artMesh = new THREE.Mesh(artGeometry, mat2);
 			artMesh.position.set(0, 40, 0);
 			armObject.add(artMesh);
@@ -72,7 +72,7 @@ class Robot {
 			armMesh.position.set(0, 20, 0);
 			forearm.add(armMesh);
 
-			artGeometry = new THREE.SphereGeometry(5.5, 5, 5);
+			artGeometry = new THREE.SphereGeometry(5.5, 6, 6);
 			artMesh = new THREE.Mesh(artGeometry, mat2);
 			artMesh.position.set(0, 40, 0);
 			forearm.add(artMesh);
@@ -131,22 +131,24 @@ class Robot {
 		this.arm.rotation.x = armRot.x;
 		this.armBase.rotation.y = armRot.y;
 
-		let forwardVelocity = 0; 
-		let rotDir = 0;
+		let velocity = new THREE.Vector3(0, 0, 0);
 		if (input_getKey(38)) { //Up
-			forwardVelocity -= 1;
+			velocity.z -= 1;
 		}
 		if (input_getKey(40)) { //Down
-			forwardVelocity += 1;
+			velocity.z += 1;
 		}
 		if (input_getKey(39)) { //Right
-			rotDir -= 1;
+			velocity.x += 1;
 		}
 		if (input_getKey(37)) { //Left
-			rotDir += 1;
+			velocity.x -= 1;
 		}
-		this.object.rotation.y += rotDir * this.rotSpeed * ((forwardVelocity != 0) ? -forwardVelocity : 1) * time_deltaTime; //Invert controls for backwards
-		this.object.translateZ(forwardVelocity * this.walkSpeed * time_deltaTime);
+		//Normalize vector magnitude for constant velocity and apply speed
+		if(velocity.length() !== 0){
+			velocity.multiplyScalar(1/velocity.length() * this.walkSpeed * time_deltaTime);
+		}
+		this.object.position.add(velocity);
 	}
 
 	getObject3D() {
