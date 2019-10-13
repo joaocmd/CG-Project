@@ -13,11 +13,11 @@ class Ball {
 	constructor(x, y, z) {
 		this.object = new THREE.Group();
 
-		this.velocity = THREE.Vector3(0, 0, 0);
+		this.velocity = new THREE.Vector3(0, 0, 0);
 		this.friction = 25;
 		this.gravity = -9.8;
 
-		this.radius = 10;
+		this.radius = 30;
 
 		this.axesHelper = new THREE.AxesHelper(50);
 		this.object.add(this.axesHelper);
@@ -34,48 +34,28 @@ class Ball {
 		this.object.position.set(x, y, z);
 	}
 
-	setVelocity(velocity) {
-		this.velocity =  velocity;
+	setVelocity(x, y, z) {
+		this.velocity.set(x, y, z);
 	}
 
-	update() {
-		if (this.velocity.equals(_zeroVector)) {
-			return;
+	handleCollisions() {
+		// Wall Collision
+		if (this.object.position.z - this.radius <= -backLimit) {
+			if (this.object.position.x - this.radius <= leftLimit) {
+				this.object.position.x = leftLimit + this.radius;
+				this.velocity.x = -this.velocity.x; //faster than using Vector3.reflect since the colliders are parallel
+			}
+			if (this.object.position.x + this.radius >= rightLimit) {
+				this.object.position.x = rightLimit - this.radius;
+				this.velocity.x = -this.velocity.x;
+			}
+			if (this.object.position.z - this.radius <= backLimit) {
+				this.object.position.z = backLimit + this.radius;
+				this.velocity.z = -this.velocity.z;
+			}
 		}
 
-		// Basic movement
-		_currentVelocity.copy(this.velocity).multiplyScalar(time_deltaTime);
-		this.object.position.add(_currentVelocity);
-
-		_axis.crossVectors(_upVector, _currentVelocity);
-		_axis.normalize();
-		this.object.rotateOnWorldAxis(_axis, _currentVelocity.length()/this.radius);
-
-		_frictionVector.copy(_currentVelocity);
-		_frictionVector.normalize();
-		_frictionVector.negate();
-		_frictionVector.multiplyScalar(this.friction*time_deltaTime);
-		this.velocity.add(_frictionVector);
-		
-		//Set velocity to zero if came to a full stop (deny acceleration)
-		if (Math.abs(this.velocity.angleTo(_frictionVector)) <= 0.3) {
-			this.velocity.set(0, 0, 0);
-		}
-
-		if (this.object.position.x - this.radius <= -260) {
-			this.object.position.x = -260 + this.radius;
-			this.velocity.x = -this.velocity.x; //faster than using Vector3.reflect since the colliders are parallel
-		}
-		if (this.object.position.x + this.radius >= 260) {
-			this.object.position.x = 260 - this.radius;
-			this.velocity.x = -this.velocity.x;
-		}
-		if (this.object.position.z - this.radius <= -260) {
-			this.object.position.z = -260 + this.radius;
-			this.velocity.z = -this.velocity.z;
-		}
-
-		// Collision detection
+		// Ball Collision
 		balls.forEach(other => {
 			if (other != this) {
 				_normal.copy(other.object.position).sub(this.object.position)
@@ -97,6 +77,31 @@ class Ball {
 				}
 			}	
 		});
+	}
+
+	update() {
+		if (!this.velocity.equals(_zeroVector)) {
+			// Basic movement
+			_currentVelocity.copy(this.velocity).multiplyScalar(time_deltaTime);
+			this.object.position.add(_currentVelocity);
+
+			_axis.crossVectors(_upVector, _currentVelocity);
+			_axis.normalize();
+			this.object.rotateOnWorldAxis(_axis, _currentVelocity.length()/this.radius);
+
+			_frictionVector.copy(_currentVelocity);
+			_frictionVector.normalize();
+			_frictionVector.negate();
+			_frictionVector.multiplyScalar(this.friction*time_deltaTime);
+			this.velocity.add(_frictionVector);
+			
+			//Set velocity to zero if came to a full stop (deny acceleration)
+			if (Math.abs(this.velocity.angleTo(_frictionVector)) <= 0.3) {
+				this.velocity.set(0, 0, 0);
+			}
+		}
+
+		this.handleCollisions();
 	}
 
 	toggleAxes() {
