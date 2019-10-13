@@ -60,11 +60,13 @@ function createCameras() {
 }
 
 function selectCannon(newCannon){
+	selectedCannon.unselect();
 	selectedCannon = newCannon;
+	selectedCannon.select();
 }
 
 function createCannons(){
-	leftCannon = new Cannon(-300, 0, -800);
+	leftCannon = new Cannon(300, 0, -800);
 	scene.add(leftCannon.getObject3D());
     objects.push(leftCannon);
 
@@ -72,9 +74,13 @@ function createCannons(){
 	scene.add(middleCannon.getObject3D());
     objects.push(middleCannon);
 
-	rightCannon = new Cannon(300, 0, -800);
+	rightCannon = new Cannon(-300, 0, -800);
 	scene.add(rightCannon.getObject3D());
     objects.push(rightCannon);
+
+	selectedCannon = middleCannon;
+
+	selectCannon(middleCannon);
 }
 
 function createScene() {
@@ -144,11 +150,12 @@ async function world_init() {
 	createRenderer();
 	createScene();
 	createCameras();
-	createCannons();
 	input_init();
 
 	balls = [];
 	objects = [];
+
+	createCannons();
 
 	let fence = new Fence(0, 0, 600);
 	scene.add(fence.getObject3D());
