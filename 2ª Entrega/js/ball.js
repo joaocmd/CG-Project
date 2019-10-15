@@ -19,7 +19,7 @@ class Ball {
 
 		this.radius = 30;
 
-		this.axesHelper = new THREE.AxesHelper(50);
+		this.axesHelper = new THREE.AxesHelper(75);
 		this.object.add(this.axesHelper);
 		this.axesHelper.visible = axes;
 
@@ -98,7 +98,7 @@ class Ball {
 			this.velocity.sub(_frictionVector);
 			
 			//Set velocity to zero if came to a full stop (deny acceleration)
-			if (Math.abs(this.velocity.angleTo(_frictionVector)) <= 0.3) {
+			if (Math.abs(this.velocity.angleTo(_frictionVector)) >= 0.3) {
 				this.velocity.set(0, 0, 0);
 			}
 		}
