@@ -21,7 +21,7 @@ class Ball {
 
 		this.axesHelper = new THREE.AxesHelper(50);
 		this.object.add(this.axesHelper);
-		this.axesHelper.visible = false;
+		this.axesHelper.visible = Boolean(axes);
 
 		let geometry = new THREE.SphereGeometry(this.radius, 12, 8);
 
