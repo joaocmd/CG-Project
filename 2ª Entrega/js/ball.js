@@ -27,7 +27,7 @@ class Ball {
 
 		let color = new THREE.Color(0xffffff);
 		color.setHex(Math.random() * 0xffffff)
-		let material = new THREE.MeshBasicMaterial({color: color});
+		let material = new THREE.MeshBasicMaterial({color: color, wireframe: Boolean(wireframe)});
 
 		let mesh = new THREE.Mesh(geometry, material);
 		this.object.add(mesh);
