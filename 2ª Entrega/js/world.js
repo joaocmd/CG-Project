@@ -109,7 +109,7 @@ function createBalls() {
 	for (let i = 0; i < 30; i++) {
 		let ball = new Ball(randFloat(leftLimit, rightLimit), 0, randFloat(backLimit, -backLimit));
 		scene.add(ball.object);
-		ball.setVelocity(randFloat(50, 200), 0 , randFloat(10, 200));
+		ball.setVelocity(randFloat(50, 150), 0 , randFloat(50, 150));
 		balls.push(ball);
 		objects.push(ball);
 	}
