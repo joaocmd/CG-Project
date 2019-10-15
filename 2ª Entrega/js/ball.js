@@ -34,7 +34,7 @@ class Ball {
 		this.object.position.set(x, y, z);
 	}
 
-	setVelocity(velocity) {
+	setVelocityVector(velocity) {
 		this.velocity.copy(velocity);
 	}
 
