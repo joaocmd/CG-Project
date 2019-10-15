@@ -95,9 +95,8 @@ class Ball {
 
 			_frictionVector.copy(_currentVelocity);
 			_frictionVector.normalize();
-			_frictionVector.negate();
 			_frictionVector.multiplyScalar(this.friction*time_deltaTime);
-			this.velocity.add(_frictionVector);
+			this.velocity.sub(_frictionVector);
 			
 			//Set velocity to zero if came to a full stop (deny acceleration)
 			if (Math.abs(this.velocity.angleTo(_frictionVector)) <= 0.3) {
