@@ -65,7 +65,7 @@ class Cannon {
 		let ball = new Ball(0, 0, 0);
 		ball.getObject3D().position.copy(this.object.position).add(direction.clone().multiplyScalar(180));
 
-		ball.setVelocity(direction.multiplyScalar(Math.random() * 800 + 200));
+		ball.setVelocity(direction.multiplyScalar(randFloat(200, 1000));
 		scene.add(ball.object);
 		balls.push(ball);
 		objects.push(ball);
