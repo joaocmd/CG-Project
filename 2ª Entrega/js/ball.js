@@ -94,8 +94,7 @@ class Ball {
 			this.object.rotateOnWorldAxis(_axis, _currentVelocity.length()/this.radius);
 
 			_frictionVector.copy(_currentVelocity);
-			_frictionVector.normalize();
-			_frictionVector.multiplyScalar(this.friction*time_deltaTime);
+			_frictionVector.normalize().multiplyScalar(this.friction*time_deltaTime);
 			this.velocity.sub(_frictionVector);
 			
 			//Set velocity to zero if came to a full stop (deny acceleration)
