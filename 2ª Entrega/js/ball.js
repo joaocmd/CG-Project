@@ -38,6 +38,10 @@ class Ball {
 		this.velocity.copy(velocity);
 	}
 
+	setVelocity(x, y, z){
+		this.velocity.set(x, y, z);
+	}
+
 	handleCollisions() {
 		// Wall Collision
 		if (this.object.position.z - this.radius <= -backLimit) {
