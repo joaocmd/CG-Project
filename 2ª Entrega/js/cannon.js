@@ -5,7 +5,6 @@ class Cannon {
 	constructor(x, y, z){
 		this.reloadTime = 0.5;
 		this.currReloadTime = this.reloadTime;
-		this.ballSpeed =  350;
 
 		this.selected = false;
 		this.rotSpeed = Math.PI/8
@@ -66,7 +65,7 @@ class Cannon {
 		let ball = new Ball(0, 0, 0);
 		ball.getObject3D().position.copy(this.object.position).add(direction.clone().multiplyScalar(180));
 
-		ball.setVelocity(direction.multiplyScalar(this.ballSpeed));
+		ball.setVelocityVector(direction.multiplyScalar(randFloat(200, 1000)));
 		scene.add(ball.object);
 		balls.push(ball);
 		objects.push(ball);
@@ -83,7 +82,7 @@ class Cannon {
 				this.object.rotation.y -= this.rotSpeed * time_deltaTime;
 			}
 
-			if(input_getKeyDown(32)) {
+			if(input_getKey(32)) {
 				if (this.currReloadTime <= 0) {
 					this.shoot();
 				}

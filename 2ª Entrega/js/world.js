@@ -1,5 +1,7 @@
 var selectedCannon, renderCamera, scene, renderer, inputManager;
 
+var wireframe = axes = false
+
 var objects, balls;
 
 var sideCamera, aboveCamera, frontCamera;
@@ -107,6 +109,7 @@ function createBalls() {
 	for (let i = 0; i < 30; i++) {
 		let ball = new Ball(randFloat(leftLimit, rightLimit), 0, randFloat(backLimit, -backLimit));
 		scene.add(ball.object);
+		ball.setVelocity(randFloat(-250, 250), 0 , randFloat(-250, 250));
 		balls.push(ball);
 		objects.push(ball);
 	}
@@ -148,6 +151,7 @@ function world_cycle(timestamp) {
 	}
 
     if(input_getKeyDown("4")){
+		wireframe = !wireframe;
         materialSet = new Set();
         scene.traverse(function(node){
             if(node instanceof THREE.Mesh){
@@ -155,13 +159,14 @@ function world_cycle(timestamp) {
             }
         });
         for (let mat of materialSet) {
-            mat.wireframe = !mat.wireframe;
+            mat.wireframe = wireframe;
         }
     }
 
 	objects.forEach(obj => obj.update());
 
     if(input_getKeyDown("R")){
+		axes = !axes;
 		balls.forEach(ball => ball.toggleAxes());
     }
 

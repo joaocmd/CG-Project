@@ -21,21 +21,25 @@ class Ball {
 
 		this.axesHelper = new THREE.AxesHelper(50);
 		this.object.add(this.axesHelper);
-		this.axesHelper.visible = false;
+		this.axesHelper.visible = axes;
 
 		let geometry = new THREE.SphereGeometry(this.radius, 12, 8);
 
 		let color = new THREE.Color(0xffffff);
 		color.setHex(Math.random() * 0xffffff)
-		let material = new THREE.MeshBasicMaterial({color: color});
+		let material = new THREE.MeshBasicMaterial({color: color, wireframe: wireframe});
 
 		let mesh = new THREE.Mesh(geometry, material);
 		this.object.add(mesh);
 		this.object.position.set(x, y, z);
 	}
 
-	setVelocity(velocity) {
+	setVelocityVector(velocity) {
 		this.velocity.copy(velocity);
+	}
+
+	setVelocity(x, y, z){
+		this.velocity.set(x, y, z);
 	}
 
 	handleCollisions() {
@@ -105,7 +109,7 @@ class Ball {
 	}
 
 	toggleAxes() {
-		this.axesHelper.visible = !this.axesHelper.visible
+		this.axesHelper.visible = axes
 	}
 
 	getObject3D() {
