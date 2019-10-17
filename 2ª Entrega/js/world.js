@@ -4,12 +4,14 @@ var wireframe = axes = false
 
 var objects, balls;
 
-var sideCamera, aboveCamera, frontCamera;
+var sideCamera, aboveCamera, frontCamera, ballCamera;
 var leftCannon, middleCanon, rigthCannon;
 
 var time_lastFrame = time_deltaTime = 0;
 
 var leftLimit, rightLimit, backLimit;
+
+var ball_s;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -58,6 +60,12 @@ function createCameras() {
 	frontCamera.position.y = 0;
 	frontCamera.position.z = -2000;
 	frontCamera.lookAt(scene.position);
+
+  ballCamera = new THREE.PerspectiveCamera(45, 2.5, near, far);
+  ballCamera.position.x = 0;
+  ballCamera.position.y = 100;
+  ballCamera.position.z = 1000;
+  ballCamera.lookAt(scene.position);
 
 	selectCamera(aboveCamera);
 }
@@ -138,7 +146,7 @@ function world_cycle(timestamp) {
     }else if(input_getKeyDown("2")){
         selectCamera(sideCamera);
     }else if(input_getKeyDown("3")){
-        selectCamera(frontCamera);
+        selectCamera(ballCamera);
     }
 
 	// Select Cannons
@@ -163,7 +171,16 @@ function world_cycle(timestamp) {
         }
     }
 
-	objects.forEach(obj => obj.update());
+    let ball_s = balls[balls.length - 1];
+
+    //ballCamera.position.copy(ball_s.object.position);
+
+    ballCamera.position.x = ball_s.object.position.x;
+    ballCamera.position.y = ball_s.object.position.y + 20;
+    ballCamera.position.z = ball_s.object.position.z + 100;
+
+
+	  objects.forEach(obj => obj.update());
 
     if(input_getKeyDown("R")){
 		axes = !axes;
