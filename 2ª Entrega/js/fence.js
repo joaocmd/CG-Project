@@ -6,7 +6,7 @@ class Fence {
     this.length = 1200;
     let geometry = new THREE.BoxGeometry(this.length, this.height, this.width);
     let material = new THREE.MeshBasicMaterial({color: 0x5F381C});
-    0x613A1F
+    //0x613A1F
     let mesh = new THREE.Mesh(geometry, material);
     this.object.add(mesh);
  

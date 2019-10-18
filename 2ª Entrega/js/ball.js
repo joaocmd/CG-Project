@@ -4,6 +4,8 @@ let _zeroVector = new THREE.Vector3(0, 0, 0);
 let _normal = new THREE.Vector3();
 let _overlap = new THREE.Vector3();
 
+const GRAVITY = -9.8 * 100; // cm/s^2
+
 let _currentVelocity = new THREE.Vector3();
 let _axis = new THREE.Vector3();
 let _frictionVector =  new THREE.Vector3();
@@ -16,7 +18,6 @@ class Ball {
 
 		this.velocity = new THREE.Vector3(0, 0, 0);
 		this.friction = 25;
-		this.gravity = -9.8;
 
 		this.radius = 30;
 
@@ -101,10 +102,11 @@ class Ball {
 
 			if ((time_lastFrame - this.creation_time) > 500) {
 				if (this.object.position.x < leftLimit - 2*this.radius || this.object.position.x > rightLimit + 2*this.radius || this.object.position.z > 600) {
+					this.velocity.y += GRAVITY * time_deltaTime;
 					/*_GravityVector.copy(_currentVelocity);
 					_GravityVector.set(0, 1, 0).multiplyScalar(this.gravity*time_deltaTime);
 					this.velocity.add(_GravityVector);*/
-					this.object.position.set(0, -10000, 0);
+					//this.object.position.set(0, -10000, 0);
 				}
 			}
 

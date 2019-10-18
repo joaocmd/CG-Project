@@ -39,8 +39,6 @@ function selectCamera(newCamera) {
 }
 
 function createCameras() {
-	// TODO create 2 perspective cameras
-
 	let near = 1;
 	let far = 5000;
 	aboveCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
@@ -169,8 +167,6 @@ function world_cycle(timestamp) {
     ballCamera.position.x = ball_s.object.position.x;
     ballCamera.position.y = ball_s.object.position.y + 20;
     ballCamera.position.z = ball_s.object.position.z + 100;
-
-	  objects.forEach(obj => obj.update());
 
     if(input_getKeyDown("R")){
 		axes = !axes;
