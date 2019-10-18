@@ -69,13 +69,22 @@ class Ball {
 				if (_normal.lengthSq() <= Math.pow(this.radius * 2, 2)) {
 					let distance = _normal.length();
 					let overlapLength = this.radius*2 - distance;
+
 					_overlap.copy(_normal).normalize().multiplyScalar(overlapLength/2);
 
-					this.object.position.sub(_overlap);
-					other.object.position.add(_overlap);
+					// Subtract overlap
+					this.object.position.x -= _overlap.x;
+					this.object.position.z -= _overlap.z;
+
+					// Add overlap
+					other.object.position.x += _overlap.x;
+					other.object.position.z += _overlap.z;
 
 					_normal.normalize();
-					_relativeVelocity.copy(this.velocity).sub(other.velocity);
+
+					// Subtract other velocity
+					_relativeVelocity.x = this.velocity.x - other.velocity.x;
+					_relativeVelocity.z = this.velocity.z - other.velocity.z;
 
 					_normal.multiplyScalar(_relativeVelocity.dot(_normal));
 
