@@ -62,7 +62,7 @@ class Cannon {
 		let direction = new THREE.Vector3(0, 0, -1);
 		direction.applyQuaternion(this.object.quaternion);
 
-		let ball = new Ball(0, 0, 0);
+		let ball = new Ball(0, 0, 0, time_lastFrame);
 		ball.getObject3D().position.copy(this.object.position).add(direction.clone().multiplyScalar(180));
 
 		ball.setVelocityVector(direction.multiplyScalar(randFloat(200, 1000)));

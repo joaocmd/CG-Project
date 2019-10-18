@@ -7,10 +7,11 @@ let _overlap = new THREE.Vector3();
 let _currentVelocity = new THREE.Vector3();
 let _axis = new THREE.Vector3();
 let _frictionVector =  new THREE.Vector3();
+let _GravityVector = new THREE.Vector3();
 let _relativeVelocity = new THREE.Vector3();
 
 class Ball {
-	constructor(x, y, z) {
+	constructor(x, y, z, creation_time) {
 		this.object = new THREE.Group();
 
 		this.velocity = new THREE.Vector3(0, 0, 0);
@@ -23,7 +24,7 @@ class Ball {
 		this.object.add(this.axesHelper);
 		this.axesHelper.visible = axes;
 
-		let geometry = new THREE.SphereGeometry(this.radius, 12, 8);
+		let geometry = new THREE.SphereGeometry(this.radius, 20, 20);
 
 		let color = new THREE.Color(0xffffff);
 		color.setHex(Math.random() * 0xffffff)
@@ -32,6 +33,7 @@ class Ball {
 		let mesh = new THREE.Mesh(geometry, material);
 		this.object.add(mesh);
 		this.object.position.set(x, y, z);
+		this.creation_time = creation_time;
 	}
 
 	setVelocityVector(velocity) {
@@ -44,7 +46,7 @@ class Ball {
 
 	handleCollisions() {
 		// Wall Collision
-		if (this.object.position.z - this.radius <= -backLimit) {
+		if (this.object.position.z - this.radius <= -backLimit && this.object.position.x + this.radius >= leftLimit && this.object.position.x - this.radius <= rightLimit) {
 			if (this.object.position.x - this.radius <= leftLimit) {
 				this.object.position.x = leftLimit + this.radius;
 				this.velocity.x = -this.velocity.x; //faster than using Vector3.reflect since the colliders are parallel
@@ -79,7 +81,7 @@ class Ball {
 					this.velocity.sub(_normal);
 					other.velocity.add(_normal);
 				}
-			}	
+			}
 		});
 	}
 
@@ -96,7 +98,16 @@ class Ball {
 			_frictionVector.copy(_currentVelocity);
 			_frictionVector.normalize().multiplyScalar(this.friction*time_deltaTime);
 			this.velocity.sub(_frictionVector);
-			
+
+			if ((time_lastFrame - this.creation_time) > 500) {
+				if (this.object.position.x < leftLimit - 2*this.radius || this.object.position.x > rightLimit + 2*this.radius || this.object.position.z > 600) {
+					/*_GravityVector.copy(_currentVelocity);
+					_GravityVector.set(0, 1, 0).multiplyScalar(this.gravity*time_deltaTime);
+					this.velocity.add(_GravityVector);*/
+					this.object.position.set(0, -10000, 0);
+				}
+			}
+
 			//Set velocity to zero if came to a full stop (deny acceleration)
 			if (Math.abs(this.velocity.angleTo(_frictionVector)) >= 0.3) {
 				this.velocity.set(0, 0, 0);

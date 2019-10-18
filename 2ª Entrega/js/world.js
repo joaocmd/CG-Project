@@ -49,17 +49,11 @@ function createCameras() {
 	aboveCamera.position.z = 100;
 	aboveCamera.lookAt(new THREE.Vector3(0, 0, 100));
 
-	sideCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
-	sideCamera.position.x = 2000;
-	sideCamera.position.y = 0;
-	sideCamera.position.z = 0;
+	sideCamera = new THREE.PerspectiveCamera(45, 2.5, near, far);
+	sideCamera.position.x = 1000;
+	sideCamera.position.y = 300;
+	sideCamera.position.z = 1500;
 	sideCamera.lookAt(scene.position);
-
-	frontCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
-	frontCamera.position.x = 0;
-	frontCamera.position.y = 0;
-	frontCamera.position.z = -2000;
-	frontCamera.lookAt(scene.position);
 
   ballCamera = new THREE.PerspectiveCamera(45, 2.5, near, far);
   ballCamera.position.x = 0;
@@ -115,7 +109,7 @@ function createFences() {
 
 function createBalls() {
 	for (let i = 0; i < 30; i++) {
-		let ball = new Ball(randFloat(leftLimit, rightLimit), 0, randFloat(backLimit, -backLimit));
+		let ball = new Ball(randFloat(leftLimit, rightLimit), 0, randFloat(backLimit, -backLimit), time_lastFrame);
 		scene.add(ball.object);
 		ball.setVelocity(randFloat(-250, 250), 0 , randFloat(-250, 250));
 		balls.push(ball);
@@ -172,13 +166,9 @@ function world_cycle(timestamp) {
     }
 
     let ball_s = balls[balls.length - 1];
-
-    //ballCamera.position.copy(ball_s.object.position);
-
     ballCamera.position.x = ball_s.object.position.x;
     ballCamera.position.y = ball_s.object.position.y + 20;
     ballCamera.position.z = ball_s.object.position.z + 100;
-
 
 	  objects.forEach(obj => obj.update());
 
