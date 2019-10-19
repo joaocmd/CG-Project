@@ -118,14 +118,14 @@ class Ball {
 			_frictionVector.normalize().multiplyScalar(this.friction*time_deltaTime);
 			this.velocity.sub(_frictionVector);
 
-			if ((time_lastFrame - this.creation_time) > 300 && !this.isInside()) {
-					this.velocity.y += GRAVITY * time_deltaTime;
-			}
-
 			//Set velocity to zero if came to a full stop (deny acceleration)
 			if (Math.abs(this.velocity.angleTo(_frictionVector)) >= 0.3) {
 				this.velocity.set(0, 0, 0);
 			}
+		}
+
+		if ((time_lastFrame - this.creation_time) > 300 && !this.isInside()) {
+			this.velocity.y += GRAVITY * time_deltaTime;
 		}
 
 		this.handleCollisions();
