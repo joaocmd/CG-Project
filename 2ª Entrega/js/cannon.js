@@ -7,7 +7,7 @@ class Cannon {
 		this.currReloadTime = this.reloadTime;
 
 		this.selected = false;
-		this.rotSpeed = Math.PI/8
+		this.rotSpeed = Math.PI/4;
 
 		this.object = new THREE.Group();
 		let geometry = new THREE.CylinderGeometry(35, 35, 175);

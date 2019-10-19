@@ -9,7 +9,6 @@ const GRAVITY = -9.8 * 100; // cm/s^2
 let _currentVelocity = new THREE.Vector3();
 let _axis = new THREE.Vector3();
 let _frictionVector =  new THREE.Vector3();
-let _GravityVector = new THREE.Vector3();
 let _relativeVelocity = new THREE.Vector3();
 
 class Ball {
@@ -17,7 +16,7 @@ class Ball {
 		this.object = new THREE.Group();
 
 		this.velocity = new THREE.Vector3(0, 0, 0);
-		this.friction = 25;
+		this.friction = 100;
 
 		this.radius = 30;
 
@@ -25,7 +24,7 @@ class Ball {
 		this.object.add(this.axesHelper);
 		this.axesHelper.visible = axes;
 
-		let geometry = new THREE.SphereGeometry(this.radius, 20, 20);
+		let geometry = new THREE.SphereGeometry(this.radius, 14, 10);
 
 		let color = new THREE.Color(0xffffff);
 		color.setHex(Math.random() * 0xffffff)
@@ -45,12 +44,22 @@ class Ball {
 		this.velocity.set(x, y, z);
 	}
 
+	isInside() {
+		return this.object.position.x <= rightLimit + 2*this.radius &&
+			   this.object.position.x >= leftLimit - 2*this.radius &&
+			   this.object.position.z <= -backLimit + this.radius &&
+			   this.object.position.y == 0;
+	}
+
 	handleCollisions() {
+
 		// Wall Collision
-		if (this.object.position.z - this.radius <= -backLimit && this.object.position.x + this.radius >= leftLimit && this.object.position.x - this.radius <= rightLimit) {
+		if (this.isInside()) {
+			this.velocity.y = 0;
+			this.object.position.y = 0;
 			if (this.object.position.x - this.radius <= leftLimit) {
 				this.object.position.x = leftLimit + this.radius;
-				this.velocity.x = -this.velocity.x; //faster than using Vector3.reflect since the colliders are parallel
+				this.velocity.x = -this.velocity.x; //faster than using Vector3.reflect since the colliders are alligned
 			}
 			if (this.object.position.x + this.radius >= rightLimit) {
 				this.object.position.x = rightLimit - this.radius;
@@ -109,14 +118,8 @@ class Ball {
 			_frictionVector.normalize().multiplyScalar(this.friction*time_deltaTime);
 			this.velocity.sub(_frictionVector);
 
-			if ((time_lastFrame - this.creation_time) > 500) {
-				if (this.object.position.x < leftLimit - 2*this.radius || this.object.position.x > rightLimit + 2*this.radius || this.object.position.z > 600) {
+			if ((time_lastFrame - this.creation_time) > 300 && !this.isInside()) {
 					this.velocity.y += GRAVITY * time_deltaTime;
-					/*_GravityVector.copy(_currentVelocity);
-					_GravityVector.set(0, 1, 0).multiplyScalar(this.gravity*time_deltaTime);
-					this.velocity.add(_GravityVector);*/
-					//this.object.position.set(0, -10000, 0);
-				}
 			}
 
 			//Set velocity to zero if came to a full stop (deny acceleration)
@@ -134,5 +137,9 @@ class Ball {
 
 	getObject3D() {
 		return this.object;
+	}
+
+	addCamera() {
+
 	}
 }
