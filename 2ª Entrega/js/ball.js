@@ -74,7 +74,9 @@ class Ball {
 		// Ball Collision
 		balls.forEach(other => {
 			if (other != this) {
-				_normal.copy(other.object.position).sub(this.object.position)
+				_normal.x = other.object.position.x - this.object.position.x;
+				_normal.z = other.object.position.z - this.object.position.z;
+
 				if (_normal.lengthSq() <= Math.pow(this.radius * 2, 2)) {
 					let distance = _normal.length();
 					let overlapLength = this.radius*2 - distance;
