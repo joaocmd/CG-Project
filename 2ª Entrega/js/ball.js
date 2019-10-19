@@ -126,7 +126,7 @@ class Ball {
 			}
 		}
 
-		if ((time_lastFrame - this.creation_time) > 300 && !this.isInside()) {
+		if ((time_lastFrame - this.creation_time) > 450 && !this.isInside()) {
 			this.velocity.y += GRAVITY * time_deltaTime;
 		}
 

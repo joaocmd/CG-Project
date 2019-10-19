@@ -4,7 +4,7 @@ var wireframe = axes = false
 
 var objects, balls;
 
-var sideCamera, aboveCamera, frontCamera, ballCamera;
+var sideCamera, aboveCamera, ballCamera;
 var leftCannon, middleCanon, rigthCannon;
 
 var time_lastFrame = time_deltaTime = 0;
@@ -48,16 +48,16 @@ function createCameras() {
 	aboveCamera.lookAt(new THREE.Vector3(0, 0, 100));
 
 	sideCamera = new THREE.PerspectiveCamera(45, 2.5, near, far);
-	sideCamera.position.x = 1000;
-	sideCamera.position.y = 300;
+	sideCamera.position.x = -1000;
+	sideCamera.position.y = 800;
 	sideCamera.position.z = 1500;
 	sideCamera.lookAt(scene.position);
 
-  ballCamera = new THREE.PerspectiveCamera(45, 2.5, near, far);
-  ballCamera.position.x = 0;
-  ballCamera.position.y = 100;
-  ballCamera.position.z = 1000;
-  ballCamera.lookAt(scene.position);
+	ballCamera = new THREE.PerspectiveCamera(45, 2.5, near, far);
+	ballCamera.position.x = 0;
+	ballCamera.position.y = 0;
+	ballCamera.position.z = 0;
+	ballCamera.lookAt(scene.position);
 
 	selectCamera(aboveCamera);
 }
@@ -165,8 +165,9 @@ function world_cycle(timestamp) {
 
     let ball_s = balls[balls.length - 1];
     ballCamera.position.x = ball_s.object.position.x;
-    ballCamera.position.y = ball_s.object.position.y + 20;
-    ballCamera.position.z = ball_s.object.position.z + 100;
+    ballCamera.position.y = ball_s.object.position.y + 400;
+	ballCamera.position.z = ball_s.object.position.z + 500;
+	ballCamera.lookAt(ball_s.getObject3D().position);
 
     if(input_getKeyDown("R")){
 		axes = !axes;
