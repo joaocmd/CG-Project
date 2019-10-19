@@ -59,11 +59,11 @@ class Cannon {
 	}
 
 	shoot() {
-		let direction = new THREE.Vector3(0, 0, -1);
-		direction.applyQuaternion(this.object.quaternion);
+		let direction = this.object.getWorldDirection().negate();
 
 		let ball = new Ball(0, 0, 0, time_lastFrame);
 		ball.getObject3D().position.copy(this.object.position).add(direction.clone().multiplyScalar(180));
+		ball.getObject3D().rotation.copy(this.object.rotation);
 
 		ball.setVelocityVector(direction.multiplyScalar(randFloat(400, 2000)));
 		scene.add(ball.object);
