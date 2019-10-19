@@ -65,7 +65,7 @@ class Cannon {
 		ball.getObject3D().position.copy(this.object.position).add(direction.clone().multiplyScalar(180));
 		ball.getObject3D().rotation.copy(this.object.rotation);
 
-		ball.setVelocityVector(direction.multiplyScalar(randFloat(400, 2000)));
+		ball.setVelocityVector(direction.multiplyScalar(randFloat(400, 1200)));
 		scene.add(ball.object);
 		balls.push(ball);
 		objects.push(ball);
