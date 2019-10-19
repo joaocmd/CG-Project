@@ -103,13 +103,16 @@ function createFences() {
 	scene.add(fence.getObject3D());
 	fence.getObject3D().rotation.y = Math.PI / 2;
 	rightLimit -= fence.width/2;
+
+	floor = new Floor(0, 0, 0);
+	scene.add(floor.getObject3D());
 }
 
 function createBalls() {
 	for (let i = 0; i < 30; i++) {
 		let ball = new Ball(randFloat(leftLimit+25, rightLimit-25), 0, randFloat(backLimit-25, -backLimit+25), time_lastFrame);
 		scene.add(ball.object);
-		ball.setVelocity(randFloat(-500, 500), 0 , randFloat(-500, 500));
+		ball.setVelocity(randFloat(-500, 500), 0, randFloat(-500, 500));
 		balls.push(ball);
 		objects.push(ball);
 	}
