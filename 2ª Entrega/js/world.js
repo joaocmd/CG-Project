@@ -25,10 +25,15 @@ function updateProjMatrix() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
 	if (window.innerHeight > 0 && window.innerWidth > 0) {
-		renderCamera.left = window.innerWidth / -1;
-		renderCamera.right = window.innerWidth / 1;
-		renderCamera.top = window.innerHeight / 1;
-		renderCamera.bottom = window.innerHeight / -1;
+		if (renderCamera.type == "OrthographicCamera") {
+			renderCamera.left = window.innerWidth / -1;
+			renderCamera.right = window.innerWidth / 1;
+			renderCamera.top = window.innerHeight / 1;
+			renderCamera.bottom = window.innerHeight / -1;
+			renderCamera.updateProjectionMatrix();
+		} else {
+			renderCamera.aspect = window.innerWidth/window.innerHeight;
+		}
 		renderCamera.updateProjectionMatrix();
 	}
 }
@@ -47,13 +52,13 @@ function createCameras() {
 	aboveCamera.position.z = 100;
 	aboveCamera.lookAt(new THREE.Vector3(0, 0, 100));
 
-	sideCamera = new THREE.PerspectiveCamera(45, 2.5, near, far);
-	sideCamera.position.x = -1000;
-	sideCamera.position.y = 800;
-	sideCamera.position.z = 1500;
+	sideCamera = new THREE.PerspectiveCamera(70, 0, near, far);
+	sideCamera.position.x = -600;
+	sideCamera.position.y = 600;
+	sideCamera.position.z = 1200;
 	sideCamera.lookAt(scene.position);
 
-	ballCamera = new THREE.PerspectiveCamera(45, 2.5, near, far);
+	ballCamera = new THREE.PerspectiveCamera(70, 0, near, far);
 	ballCamera.position.x = 0;
 	ballCamera.position.y = 0;
 	ballCamera.position.z = 0;
@@ -168,8 +173,8 @@ function world_cycle(timestamp) {
 
     let ball_s = balls[balls.length - 1];
     ballCamera.position.x = ball_s.object.position.x;
-    ballCamera.position.y = ball_s.object.position.y + 400;
-	ballCamera.position.z = ball_s.object.position.z + 500;
+    ballCamera.position.y = ball_s.object.position.y + 300;
+	ballCamera.position.z = ball_s.object.position.z + 300;
 	ballCamera.lookAt(ball_s.getObject3D().position);
 
     if(input_getKeyDown("R")){
