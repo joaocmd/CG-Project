@@ -48,7 +48,7 @@ class Ball {
 		return this.object.position.x <= rightLimit + 2*this.radius &&
 			   this.object.position.x >= leftLimit - 2*this.radius &&
 			   this.object.position.z <= -backLimit + this.radius &&
-			   this.object.position.y == 0;
+			   Math.abs(this.object.position.y) <= 30;
 	}
 
 	handleCollisions() {
@@ -74,9 +74,7 @@ class Ball {
 		// Ball Collision
 		balls.forEach(other => {
 			if (other != this) {
-				_normal.x = other.object.position.x - this.object.position.x;
-				_normal.z = other.object.position.z - this.object.position.z;
-
+				_normal.copy(other.object.position).sub(this.object.position);
 				if (_normal.lengthSq() <= Math.pow(this.radius * 2, 2)) {
 					let distance = _normal.length();
 					let overlapLength = this.radius*2 - distance;
@@ -84,20 +82,12 @@ class Ball {
 					_overlap.copy(_normal).normalize().multiplyScalar(overlapLength/2);
 
 					// Subtract overlap
-					this.object.position.x -= _overlap.x;
-					this.object.position.z -= _overlap.z;
-
-					// Add overlap
-					other.object.position.x += _overlap.x;
-					other.object.position.z += _overlap.z;
-
-					_normal.normalize();
+					this.object.position.sub(_overlap);
+					other.object.position.add(_overlap);
 
 					// Subtract other velocity
-					_relativeVelocity.x = this.velocity.x - other.velocity.x;
-					_relativeVelocity.z = this.velocity.z - other.velocity.z;
-
-					_normal.multiplyScalar(_relativeVelocity.dot(_normal));
+					_relativeVelocity = this.velocity.clone().sub(other.velocity);
+					_normal.normalize().multiplyScalar(_relativeVelocity.dot(_normal));
 
 					this.velocity.sub(_normal);
 					other.velocity.add(_normal);
