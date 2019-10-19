@@ -1,13 +1,14 @@
 var SEL_COLOR = 0xAAAAAA;
 var CAN_COLOR = 0x333333;
 
+const CAN_REL_TIME = 0.5
+const CAN_ROT_SPEED = Math.PI / 4
+
 class Cannon {
 	constructor(x, y, z){
-		this.reloadTime = 0.5;
-		this.currReloadTime = this.reloadTime;
+		this.currReloadTime = CAN_REL_TIME;
 
 		this.selected = false;
-		this.rotSpeed = Math.PI/4;
 
 		this.object = new THREE.Group();
 		let geometry = new THREE.CylinderGeometry(35, 35, 175);
@@ -69,17 +70,17 @@ class Cannon {
 		scene.add(ball.object);
 		balls.push(ball);
 		objects.push(ball);
-		this.currReloadTime = this.reloadTime;
+		this.currReloadTime = CAN_REL_TIME;
 	}
 
 	update(){
 		this.currReloadTime -= time_deltaTime;
 		if(this.selected){
 			if(input_getKey(37)){
-				this.object.rotation.y += this.rotSpeed * time_deltaTime;
+				this.object.rotation.y += CAN_ROT_SPEED * time_deltaTime;
 			}
 			if(input_getKey(39)){
-				this.object.rotation.y -= this.rotSpeed * time_deltaTime;
+				this.object.rotation.y -= CAN_ROT_SPEED * time_deltaTime;
 			}
 
 			if(input_getKey(32)) {

@@ -115,9 +115,12 @@ function createFences() {
 
 function createBalls() {
 	for (let i = 0; i < 30; i++) {
-		let ball = new Ball(randFloat(leftLimit+35, rightLimit-35), 0, randFloat(backLimit-35, -backLimit+35), time_lastFrame);
+		let ball = new Ball(randFloat(leftLimit + BALL_RADIUS * 2, rightLimit + BALL_RADIUS * 2), 0, randFloat(backLimit + BALL_RADIUS * 2, -backLimit+35), time_lastFrame);
+
 		scene.add(ball.object);
+
 		ball.setVelocity(randFloat(-400, 400), 0, randFloat(-400, 400));
+
 		balls.push(ball);
 		objects.push(ball);
 	}
