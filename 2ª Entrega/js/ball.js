@@ -112,10 +112,12 @@ class Ball {
 			_currentVelocity.copy(this.velocity).multiplyScalar(time_deltaTime);
 			this.object.position.add(_currentVelocity);
 
-			_axis.crossVectors(_upVector, _currentVelocity);
+			// Ball rotation
+			_axis.crossVectors(_upVector, _currentVelocity.clone().projectOnPlane(_upVector));
 			_axis.normalize();
 			this.object.rotateOnWorldAxis(_axis, _currentVelocity.length()/this.radius);
 
+			// Drag
 			_frictionVector.copy(_currentVelocity);
 			_frictionVector.normalize().multiplyScalar(this.friction*time_deltaTime);
 			this.velocity.sub(_frictionVector);
