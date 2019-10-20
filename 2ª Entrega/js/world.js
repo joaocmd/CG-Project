@@ -98,19 +98,19 @@ function createFences() {
 	backLimit = -600;
 	let fence = new Fence(0, 0, backLimit);
 	scene.add(fence.getObject3D());
-	backLimit += fence.width/2;
+	backLimit += FENCE_WIDTH / 2;
 
 	leftLimit = -570;
 	fence = new Fence(0, 0, leftLimit);
 	scene.add(fence.getObject3D());
 	fence.getObject3D().rotation.y = Math.PI / 2;
-	leftLimit += fence.width/2;
+	leftLimit += FENCE_WIDTH / 2;
 
 	rightLimit = 570;
 	fence = new Fence(0, 0, rightLimit);
 	scene.add(fence.getObject3D());
 	fence.getObject3D().rotation.y = Math.PI / 2;
-	rightLimit -= fence.width/2;
+	rightLimit -= FENCE_WIDTH / 2;
 
 	floor = new Floor(0, 0, 0);
 	scene.add(floor.getObject3D());
@@ -122,7 +122,7 @@ function createBalls() {
 
 		scene.add(ball.object);
 
-		//ball.setVelocity(randFloat(-400, 400), 0, randFloat(-400, 400));
+		ball.setVelocity(randFloat(-400, 400), 0, randFloat(-400, 400));
 
 		balls.push(ball);
 		objects.push(ball);
