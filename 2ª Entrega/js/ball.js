@@ -131,8 +131,4 @@ class Ball {
 	getObject3D() {
 		return this.object;
 	}
-
-	addCamera() {
-
-	}
 }

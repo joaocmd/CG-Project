@@ -13,6 +13,9 @@ var leftLimit, rightLimit, backLimit;
 
 var ball_s;
 
+var followVec = new THREE.Vector3();
+var followVel = new THREE.Vector3();
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -174,10 +177,18 @@ function world_cycle(timestamp) {
         }
     }
 
-    let ball_s = balls[balls.length - 1];
-    ballCamera.position.x = ball_s.object.position.x;
-    ballCamera.position.y = ball_s.object.position.y + 300;
-	ballCamera.position.z = ball_s.object.position.z + 300;
+	let ball_s = balls[balls.length - 1];
+	if (renderCamera == ballCamera) {
+		followVel.copy(ball_s.velocity);
+		if (!followVel.equals(_zeroVector)) {
+			followVec.copy(ball_s.getObject3D().position);
+			// followVec.sub(followVel.normalize().multiplyScalar(200));
+			followVec.z += 200;
+			followVec.y += 200;
+		}
+	}
+
+	ballCamera.position.copy(followVec);
 	ballCamera.lookAt(ball_s.getObject3D().position);
 
     if(input_getKeyDown("R")){
