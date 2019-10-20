@@ -219,5 +219,8 @@ function world_init() {
 	createBalls();
 
     window.addEventListener("resize", updateProjMatrix);
+
+	balls.forEach(obj => obj.update());
+
     window.requestAnimationFrame(world_cycle);
 }
