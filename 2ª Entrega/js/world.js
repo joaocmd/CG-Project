@@ -118,11 +118,11 @@ function createFences() {
 
 function createBalls() {
 	for (let i = 0; i < 30; i++) {
-		let ball = new Ball(randFloat(leftLimit + BALL_RADIUS * 2, rightLimit - BALL_RADIUS * 2), 0, randFloat(backLimit + BALL_RADIUS * 2, -backLimit), time_lastFrame);
+		let ball = new Ball(randFloat(leftLimit + BALL_RADIUS * 3, rightLimit - BALL_RADIUS * 3), 0, randFloat(backLimit + BALL_RADIUS * 3, -backLimit), time_lastFrame);
 
 		scene.add(ball.object);
 
-		ball.setVelocity(randFloat(-400, 400), 0, randFloat(-400, 400));
+		//ball.setVelocity(randFloat(-400, 400), 0, randFloat(-400, 400));
 
 		balls.push(ball);
 		objects.push(ball);
@@ -180,7 +180,7 @@ function world_cycle(timestamp) {
 	let ball_s = balls[balls.length - 1];
 	if (renderCamera == ballCamera) {
 		followVel.copy(ball_s.velocity);
-		if (!followVel.equals(_zeroVector)) {
+		if (!followVel.equals(NULL_VECTOR)) {
 			followVec.copy(ball_s.getObject3D().position);
 			// followVec.sub(followVel.normalize().multiplyScalar(200));
 			followVec.z += 200;
@@ -218,7 +218,7 @@ function world_init() {
 	createFences();
 	createBalls();
 
-    window.addEventListener("resize", updateProjMatrix);
+	window.addEventListener("resize", updateProjMatrix);
 
 	balls.forEach(obj => obj.update());
 
