@@ -46,7 +46,7 @@ class Ball {
 	isInside() {
 		return this.object.position.x <= rightLimit + FENCE_WIDTH &&
 			   this.object.position.x >= leftLimit - FENCE_WIDTH &&
-			   this.object.position.z <= -backLimit + 5 * BALL_RADIUS / 6 &&
+			   this.object.position.z <= -backLimit + BALL_RADIUS * 9 / 10 &&
 			   Math.abs(this.object.position.y) <= 30;
 	}
 
