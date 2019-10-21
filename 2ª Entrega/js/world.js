@@ -11,7 +11,7 @@ var time_lastFrame = time_deltaTime = 0;
 
 var leftLimit, rightLimit, backLimit;
 
-var ball_s;
+var ball_last;
 
 var followVec = new THREE.Vector3();
 var followVel = new THREE.Vector3();
@@ -139,6 +139,27 @@ function createRenderer() {
 	document.body.appendChild(renderer.domElement);
 }
 
+function setBallCamera(lerpFactor, followVelocity) {
+	let ball_s = balls[balls.length - 1];
+	if (ball_s != ball_last) {
+		ball_last = ball_s;
+		lerpFactor = 1;
+	}
+	followVel.copy(ball_s.velocity);
+	if (!followVel.equals(NULL_VECTOR)) {
+		followVec.copy(ball_s.getObject3D().position);
+		if (followVelocity) {
+			followVec.sub(followVel.normalize().multiplyScalar(200));
+		} else {
+			followVec.z += 200;
+		}
+		followVec.y += 200;
+	}
+
+	ballCamera.position.lerp(followVec, lerpFactor);
+	ballCamera.lookAt(ball_s.getObject3D().position);
+}
+
 function world_cycle(timestamp) {
 	time_deltaTime = (timestamp - time_lastFrame) / 1000;
 	time_lastFrame = timestamp;
@@ -177,24 +198,12 @@ function world_cycle(timestamp) {
         }
     }
 
-	let ball_s = balls[balls.length - 1];
-	if (renderCamera == ballCamera) {
-		followVel.copy(ball_s.velocity);
-		if (!followVel.equals(NULL_VECTOR)) {
-			followVec.copy(ball_s.getObject3D().position);
-			// followVec.sub(followVel.normalize().multiplyScalar(200));
-			followVec.z += 200;
-			followVec.y += 200;
-		}
-	}
-
-	ballCamera.position.copy(followVec);
-	ballCamera.lookAt(ball_s.getObject3D().position);
-
     if(input_getKeyDown("R")){
 		axes = !axes;
 		balls.forEach(ball => ball.toggleAxes());
-    }
+	}
+
+	setBallCamera(0.1, true);
 
     //Display
     render();
