@@ -1,47 +1,45 @@
 class Floor {
   constructor(x, y, z) {
-    const width = 1500;
+    const depth = 1500;
     const length = 2000;
     const wallHeight = 1000;
 
-    this.meshes = []
-
+    this.meshesMaterials = []
     this.object = new THREE.Group();
-    let floorGeometry = new THREE.BoxGeometry(length, 5, width);
-    this.floorPhongMaterial = new THREE.MeshBasicMaterial({color: 0x991717});
-    this.floorLambertMaterial = new THREE.MeshLambertMaterial({color: 0x991717});
+
+    let floorMaterials = [
+      new THREE.MeshBasicMaterial({color: 0x991717}),
+      new THREE.MeshLambertMaterial({color: 0x991717})
+    ];
+    let floorGeometry = new THREE.BoxGeometry(length, 5, depth);
+    let floorMesh = new THREE.Mesh(floorGeometry);
+    this.meshesMaterials.push(new MeshMaterials([floorMesh], floorMaterials));
     
-    this.floorMesh = new THREE.Mesh(floorGeometry, this.floorPhongMaterial);
-    this.meshes.push(this.floorMesh);
 
-    this.wallPhongMaterial = new THREE.MeshBasicMaterial({color: 0xe3e3e3});
-    this.wallLambertMaterial = new THREE.MeshLambertMaterial({color: 0xe3e3e3});
-
+    let wallMeshMaterials = new MeshMaterials([], [
+      new THREE.MeshBasicMaterial({color: 0xe3e3e3}),
+      new THREE.MeshLambertMaterial({color: 0xe3e3e3})
+    ]);
+    this.meshesMaterials.push(wallMeshMaterials);
 
     let wallGeometry = new THREE.BoxGeometry(length, 5, wallHeight);
-    this.wallMesh1 = new THREE.Mesh(wallGeometry, this.wallPhongMaterial);
-    this.meshes.push(this.wallMesh1);
-    this.wallMesh1.rotation.x = Math.PI/2;
-    this.wallMesh1.position.z = -width/2;
-    this.wallMesh1.position.y = wallHeight/2;
+    let wallMesh = new THREE.Mesh(wallGeometry);
+    wallMesh.rotation.x = Math.PI/2;
+    wallMesh.position.z = -depth/2;
+    wallMesh.position.y = wallHeight/2;
+    wallMeshMaterials.meshes.push(wallMesh);
 
-    wallGeometry = new THREE.BoxGeometry(wallHeight, 5, width);
-    this.wallMesh2 = new THREE.Mesh(wallGeometry, this.wallPhongMaterial);
-    this.meshes.push(this.wallMesh2);
-    this.wallMesh2.rotation.z = Math.PI/2;
-    this.wallMesh2.position.x = length/2;
-    this.wallMesh2.position.y = wallHeight/2;
+    wallGeometry = new THREE.BoxGeometry(wallHeight, 5, depth);
+    wallMesh = new THREE.Mesh(wallGeometry);
+    wallMesh.rotation.z = Math.PI/2;
+    wallMesh.position.x = length/2;
+    wallMesh.position.y = wallHeight/2;
+    wallMeshMaterials.meshes.push(wallMesh);
 
-    this.object.position.set(x, y - 30 - 2.5, z);
+    this.object.position.set(x, y - 2.5, z);
 
-    this.meshes.forEach(mesh => this.object.add(mesh));
-    //this.updateMaterial();
-  }
-
-  updateMaterial () {
-    this.meshes.forEach(mesh => {
-      mesh.geometry.groups[0].materialIndex = useMaterial;
-    });
+    AddMeshMaterialsToObject(this.meshesMaterials, this.object);
+    UpdateMeshMaterials(this.meshesMaterials);
   }
 
   getObject3D() {
