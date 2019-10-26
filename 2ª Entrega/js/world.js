@@ -4,12 +4,17 @@ var wireframe = axes = false
 
 var objects, balls;
 
-var sideCamera, aboveCamera, frontCamera;
+var sideCamera, aboveCamera, ballCamera;
 var leftCannon, middleCanon, rigthCannon;
 
 var time_lastFrame = time_deltaTime = 0;
 
 var leftLimit, rightLimit, backLimit;
+
+var ball_last;
+
+var followVec = new THREE.Vector3();
+var followVel = new THREE.Vector3();
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -23,10 +28,15 @@ function updateProjMatrix() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
 	if (window.innerHeight > 0 && window.innerWidth > 0) {
-		renderCamera.left = window.innerWidth / -1;
-		renderCamera.right = window.innerWidth / 1;
-		renderCamera.top = window.innerHeight / 1;
-		renderCamera.bottom = window.innerHeight / -1;
+		if (renderCamera.type == "OrthographicCamera") {
+			renderCamera.left = window.innerWidth / -1;
+			renderCamera.right = window.innerWidth / 1;
+			renderCamera.top = window.innerHeight / 1;
+			renderCamera.bottom = window.innerHeight / -1;
+			renderCamera.updateProjectionMatrix();
+		} else {
+			renderCamera.aspect = window.innerWidth/window.innerHeight;
+		}
 		renderCamera.updateProjectionMatrix();
 	}
 }
@@ -37,8 +47,6 @@ function selectCamera(newCamera) {
 }
 
 function createCameras() {
-	// TODO create 2 perspective cameras
-
 	let near = 1;
 	let far = 5000;
 	aboveCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
@@ -47,17 +55,17 @@ function createCameras() {
 	aboveCamera.position.z = 100;
 	aboveCamera.lookAt(new THREE.Vector3(0, 0, 100));
 
-	sideCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
-	sideCamera.position.x = 2000;
-	sideCamera.position.y = 0;
-	sideCamera.position.z = 0;
+	sideCamera = new THREE.PerspectiveCamera(70, 0, near, far);
+	sideCamera.position.x = -600;
+	sideCamera.position.y = 600;
+	sideCamera.position.z = 1200;
 	sideCamera.lookAt(scene.position);
 
-	frontCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
-	frontCamera.position.x = 0;
-	frontCamera.position.y = 0;
-	frontCamera.position.z = -2000;
-	frontCamera.lookAt(scene.position);
+	ballCamera = new THREE.PerspectiveCamera(70, 0, near, far);
+	ballCamera.position.x = 0;
+	ballCamera.position.y = 0;
+	ballCamera.position.z = 0;
+	ballCamera.lookAt(scene.position);
 
 	selectCamera(aboveCamera);
 }
@@ -90,26 +98,32 @@ function createFences() {
 	backLimit = -600;
 	let fence = new Fence(0, 0, backLimit);
 	scene.add(fence.getObject3D());
-	backLimit += fence.width/2;
+	backLimit += FENCE_WIDTH / 2;
 
 	leftLimit = -570;
 	fence = new Fence(0, 0, leftLimit);
 	scene.add(fence.getObject3D());
 	fence.getObject3D().rotation.y = Math.PI / 2;
-	leftLimit += fence.width/2;
+	leftLimit += FENCE_WIDTH / 2;
 
 	rightLimit = 570;
 	fence = new Fence(0, 0, rightLimit);
 	scene.add(fence.getObject3D());
 	fence.getObject3D().rotation.y = Math.PI / 2;
-	rightLimit -= fence.width/2;
+	rightLimit -= FENCE_WIDTH / 2;
+
+	floor = new Floor(0, 0, 0);
+	scene.add(floor.getObject3D());
 }
 
 function createBalls() {
 	for (let i = 0; i < 30; i++) {
-		let ball = new Ball(randFloat(leftLimit, rightLimit), 0, randFloat(backLimit, -backLimit));
+		let ball = new Ball(randFloat(leftLimit + BALL_RADIUS * 3, rightLimit - BALL_RADIUS * 3), 0, randFloat(backLimit + BALL_RADIUS * 3, -backLimit), time_lastFrame);
+
 		scene.add(ball.object);
-		ball.setVelocity(randFloat(-250, 250), 0 , randFloat(-250, 250));
+
+		ball.setVelocity(randFloat(-400, 400), 0, randFloat(-400, 400));
+
 		balls.push(ball);
 		objects.push(ball);
 	}
@@ -125,6 +139,27 @@ function createRenderer() {
 	document.body.appendChild(renderer.domElement);
 }
 
+function setBallCamera(lerpFactor, followVelocity) {
+	let ball_s = balls[balls.length - 1];
+	if (ball_s != ball_last) {
+		ball_last = ball_s;
+		lerpFactor = 1;
+	}
+	followVel.copy(ball_s.velocity);
+	if (!followVel.equals(NULL_VECTOR)) {
+		followVec.copy(ball_s.getObject3D().position);
+		if (followVelocity) {
+			followVec.sub(followVel.normalize().multiplyScalar(200));
+		} else {
+			followVec.z += 200;
+		}
+		followVec.y += 200;
+	}
+
+	ballCamera.position.lerp(followVec, lerpFactor);
+	ballCamera.lookAt(ball_s.getObject3D().position);
+}
+
 function world_cycle(timestamp) {
 	time_deltaTime = (timestamp - time_lastFrame) / 1000;
 	time_lastFrame = timestamp;
@@ -138,7 +173,7 @@ function world_cycle(timestamp) {
     }else if(input_getKeyDown("2")){
         selectCamera(sideCamera);
     }else if(input_getKeyDown("3")){
-        selectCamera(frontCamera);
+        selectCamera(ballCamera);
     }
 
 	// Select Cannons
@@ -163,12 +198,12 @@ function world_cycle(timestamp) {
         }
     }
 
-	objects.forEach(obj => obj.update());
-
     if(input_getKeyDown("R")){
 		axes = !axes;
 		balls.forEach(ball => ball.toggleAxes());
-    }
+	}
+
+	setBallCamera(0.1, true);
 
     //Display
     render();
@@ -192,6 +227,9 @@ function world_init() {
 	createFences();
 	createBalls();
 
-    window.addEventListener("resize", updateProjMatrix);
+	window.addEventListener("resize", updateProjMatrix);
+
+	balls.forEach(obj => obj.update());
+
     window.requestAnimationFrame(world_cycle);
 }

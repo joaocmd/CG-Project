@@ -1,13 +1,14 @@
 var SEL_COLOR = 0xAAAAAA;
 var CAN_COLOR = 0x333333;
 
+const CAN_REL_TIME = 0.5
+const CAN_ROT_SPEED = Math.PI / 4
+
 class Cannon {
 	constructor(x, y, z){
-		this.reloadTime = 0.5;
-		this.currReloadTime = this.reloadTime;
+		this.currReloadTime = CAN_REL_TIME;
 
 		this.selected = false;
-		this.rotSpeed = Math.PI/8
 
 		this.object = new THREE.Group();
 		let geometry = new THREE.CylinderGeometry(35, 35, 175);
@@ -59,27 +60,27 @@ class Cannon {
 	}
 
 	shoot() {
-		let direction = new THREE.Vector3(0, 0, -1);
-		direction.applyQuaternion(this.object.quaternion);
+		let direction = this.object.getWorldDirection().negate();
 
-		let ball = new Ball(0, 0, 0);
+		let ball = new Ball(0, 0, 0, time_lastFrame);
 		ball.getObject3D().position.copy(this.object.position).add(direction.clone().multiplyScalar(180));
+		ball.getObject3D().rotation.copy(this.object.rotation);
 
-		ball.setVelocityVector(direction.multiplyScalar(randFloat(200, 1000)));
+		ball.setVelocityVector(direction.multiplyScalar(randFloat(600, 1500)));
 		scene.add(ball.object);
 		balls.push(ball);
 		objects.push(ball);
-		this.currReloadTime = this.reloadTime;
+		this.currReloadTime = CAN_REL_TIME;
 	}
 
 	update(){
 		this.currReloadTime -= time_deltaTime;
 		if(this.selected){
 			if(input_getKey(37)){
-				this.object.rotation.y += this.rotSpeed * time_deltaTime;
+				this.object.rotation.y += CAN_ROT_SPEED * time_deltaTime;
 			}
 			if(input_getKey(39)){
-				this.object.rotation.y -= this.rotSpeed * time_deltaTime;
+				this.object.rotation.y -= CAN_ROT_SPEED * time_deltaTime;
 			}
 
 			if(input_getKey(32)) {
