@@ -96,7 +96,7 @@ function world_init() {
 	scene.add(floor.getObject3D());
 	objects.push(floor);
 
-	let painting = new Painting(0, 0, 0);
+	let painting = new Painting(-700, 150, -730);
 	scene.add(painting.getObject3D());
 	objects.push(painting);
 
