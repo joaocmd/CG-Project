@@ -1,10 +1,10 @@
 class  Painting{
   constructor(x, y, z) {
-    const squaresY = 8;
-    const squaresX = 13;
-    const squareSize = 80;
-    const squareSep =  20;
-    const dotRadius = 22;
+    const squaresY = 10;
+    const squaresX = 18;
+    const squareSize = 60;
+    const squareSep =  15;
+    const dotRadius = 17;
     const frameWidth = 20;
 
     let totalWidth = ((squareSize+squareSep) * squaresX) - squareSep;
@@ -18,12 +18,12 @@ class  Painting{
     bgMesh.position.x = totalWidth/2 - squareSize/2;
     bgMesh.position.y = totalHeight/2 - squareSize/2;
     this.meshesMaterials.push(new MeshMaterials([bgMesh], [
-      new THREE.MeshBasicMaterial({color: 0x777777}),
+      new THREE.MeshPhongMaterial({color: 0x777777}),
       new THREE.MeshLambertMaterial({color: 0x777777})
     ]));
 
     let squareMeshMaterials = new MeshMaterials([], [
-      new THREE.MeshBasicMaterial({color: 0x000}),
+      new THREE.MeshPhongMaterial({color: 0x000}),
       new THREE.MeshLambertMaterial({color: 0x000})
     ]);
     this.meshesMaterials.push(squareMeshMaterials);
@@ -38,11 +38,11 @@ class  Painting{
     }
 
     let dotMeshMaterials = new MeshMaterials([], [
-      new THREE.MeshBasicMaterial({color: 0xc6c6c6}),
+      new THREE.MeshPhongMaterial({color: 0xc6c6c6}),
       new THREE.MeshLambertMaterial({color: 0xc6c6c6})
     ]);
     this.meshesMaterials.push(dotMeshMaterials);
-    let dotGeometry = new THREE.CylinderGeometry(dotRadius, dotRadius, 8, 10);
+    let dotGeometry = new THREE.CylinderGeometry(dotRadius, dotRadius, 8, 24);
     for (let x = 0; x < squaresX-1; x++) {
       for (let y = 0; y < squaresY-1; y++) {
         let dotMesh = new THREE.Mesh(dotGeometry);
@@ -54,7 +54,7 @@ class  Painting{
     }
 
     let frameMeshMaterials = new MeshMaterials([], [
-      new THREE.MeshBasicMaterial({color: 0x613a1f}),
+      new THREE.MeshPhongMaterial({color: 0x613a1f}),
       new THREE.MeshLambertMaterial({color: 0x613a1f})
     ]);
     this.meshesMaterials.push(frameMeshMaterials);
@@ -79,5 +79,9 @@ class  Painting{
 
   getObject3D() {
     return this.object;
+  }
+
+  getMeshesMaterials() {
+    return this.meshesMaterials;
   }
 }

@@ -45,10 +45,9 @@ function createCameras() {
 	sceneCamera.lookAt(scene.position);
 
 	artCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
-	artCamera.position.x = -600;
-	artCamera.position.y = 600;
-	artCamera.position.z = 1200;
-	artCamera.lookAt(scene.position);
+	artCamera.position.x = 0;
+	artCamera.position.y = 500;
+	artCamera.position.z = 0;
 
 	selectCamera(sceneCamera);
 }
@@ -67,10 +66,15 @@ function world_cycle(timestamp) {
 	time_deltaTime = (timestamp - time_lastFrame) / 1000;
 	time_lastFrame = timestamp;
 
+	if (input_getKeyDown("E")) {
+		useMaterial = (useMaterial + 1)%2;
+		objects.forEach(obj => UpdateMeshMaterials(obj.getMeshesMaterials()));
+	}
+
 	// Select Cameras
-    if(input_getKeyDown("5")){
+    if (input_getKeyDown("5")) {
         selectCamera(sceneCamera);
-    }else if(input_getKeyDown("6")){
+    } else if (input_getKeyDown("6")) {
         selectCamera(artCamera);
     }
 
@@ -83,6 +87,16 @@ function randFloat(min, max) {
 	return Math.random() * (max-min) + min
 }
 
+function createLights() {
+	lights = []
+
+	let sun = new THREE.DirectionalLight();
+	sun.position.copy(sceneCamera.position);
+	scene.add(sun);
+	lights.push(sun) 
+	sun.target = objects[0].getObject3D();
+}
+
 function world_init() {
 	createRenderer();
 	createScene();
@@ -90,7 +104,6 @@ function world_init() {
 	input_init();
 
 	objects = [];
-	lights = [];
 
 	let floor = new Floor(0, 0, 0);
 	scene.add(floor.getObject3D());
@@ -100,6 +113,7 @@ function world_init() {
 	scene.add(painting.getObject3D());
 	objects.push(painting);
 
+	createLights();
 	window.addEventListener("resize", updateProjMatrix);
     window.requestAnimationFrame(world_cycle);
 }

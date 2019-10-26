@@ -12,7 +12,7 @@ function AddMeshMaterialsToObject(meshesMaterials, object) {
 }
 
 function UpdateMeshMaterials(meshesMaterials) {
-    meshesMaterials.forEach(pair => {
-      pair.meshes.forEach(mesh => mesh.material = pair.materials[0])
-    });
+	meshesMaterials.forEach(pair => {
+		pair.meshes.forEach(mesh => mesh.material = pair.materials[useMaterial])
+	});
 }

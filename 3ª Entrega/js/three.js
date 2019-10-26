@@ -8748,11 +8748,11 @@
 	 * }
 	 */
 
-	function MeshBasicMaterial( parameters ) {
+	function MeshPhongMaterial( parameters ) {
 
 		Material.call( this );
 
-		this.type = 'MeshBasicMaterial';
+		this.type = 'MeshPhongMaterial';
 
 		this.color = new Color( 0xffffff ); // emissive
 
@@ -8787,12 +8787,12 @@
 
 	}
 
-	MeshBasicMaterial.prototype = Object.create( Material.prototype );
-	MeshBasicMaterial.prototype.constructor = MeshBasicMaterial;
+	MeshPhongMaterial.prototype = Object.create( Material.prototype );
+	MeshPhongMaterial.prototype.constructor = MeshPhongMaterial;
 
-	MeshBasicMaterial.prototype.isMeshBasicMaterial = true;
+	MeshPhongMaterial.prototype.isMeshPhongMaterial = true;
 
-	MeshBasicMaterial.prototype.copy = function ( source ) {
+	MeshPhongMaterial.prototype.copy = function ( source ) {
 
 		Material.prototype.copy.call( this, source );
 
@@ -10782,7 +10782,7 @@
 		this.type = 'Mesh';
 
 		this.geometry = geometry !== undefined ? geometry : new BufferGeometry();
-		this.material = material !== undefined ? material : new MeshBasicMaterial( { color: Math.random() * 0xffffff } );
+		this.material = material !== undefined ? material : new MeshPhongMaterial( { color: Math.random() * 0xffffff } );
 
 		this.drawMode = TrianglesDrawMode;
 
@@ -18138,7 +18138,7 @@
 			MeshDepthMaterial: 'depth',
 			MeshDistanceMaterial: 'distanceRGBA',
 			MeshNormalMaterial: 'normal',
-			MeshBasicMaterial: 'basic',
+			MeshPhongMaterial: 'basic',
 			MeshLambertMaterial: 'lambert',
 			MeshPhongMaterial: 'phong',
 			MeshToonMaterial: 'phong',
@@ -25017,7 +25017,7 @@
 
 				if ( material.isMeshPhongMaterial ||
 					material.isMeshLambertMaterial ||
-					material.isMeshBasicMaterial ||
+					material.isMeshPhongMaterial ||
 					material.isMeshStandardMaterial ||
 					material.isShaderMaterial ||
 					material.skinning ) {
@@ -25126,7 +25126,7 @@
 
 				}
 
-				if ( material.isMeshBasicMaterial ) {
+				if ( material.isMeshPhongMaterial ) {
 
 					refreshUniformsCommon( m_uniforms, material );
 
@@ -33086,7 +33086,7 @@
 		MeshLambertMaterial: MeshLambertMaterial,
 		MeshDepthMaterial: MeshDepthMaterial,
 		MeshDistanceMaterial: MeshDistanceMaterial,
-		MeshBasicMaterial: MeshBasicMaterial,
+		MeshPhongMaterial: MeshPhongMaterial,
 		MeshMatcapMaterial: MeshMatcapMaterial,
 		LineDashedMaterial: LineDashedMaterial,
 		LineBasicMaterial: LineBasicMaterial,
@@ -45736,7 +45736,7 @@
 		this.color = color;
 
 		var geometry = new SphereBufferGeometry( sphereSize, 4, 2 );
-		var material = new MeshBasicMaterial( { wireframe: true, fog: false } );
+		var material = new MeshPhongMaterial( { wireframe: true, fog: false } );
 
 		Mesh.call( this, geometry, material );
 
@@ -45748,7 +45748,7 @@
 
 		/*
 		var distanceGeometry = new THREE.IcosahedronBufferGeometry( 1, 2 );
-		var distanceMaterial = new THREE.MeshBasicMaterial( { color: hexColor, fog: false, wireframe: true, opacity: 0.1, transparent: true } );
+		var distanceMaterial = new THREE.MeshPhongMaterial( { color: hexColor, fog: false, wireframe: true, opacity: 0.1, transparent: true } );
 
 		this.lightSphere = new THREE.Mesh( bulbGeometry, bulbMaterial );
 		this.lightDistance = new THREE.Mesh( distanceGeometry, distanceMaterial );
@@ -45843,7 +45843,7 @@
 		geometry2.addAttribute( 'position', new Float32BufferAttribute( positions2, 3 ) );
 		geometry2.computeBoundingSphere();
 
-		this.add( new Mesh( geometry2, new MeshBasicMaterial( { side: BackSide, fog: false } ) ) );
+		this.add( new Mesh( geometry2, new MeshPhongMaterial( { side: BackSide, fog: false } ) ) );
 
 		this.update();
 
@@ -45910,7 +45910,7 @@
 		var geometry = new OctahedronBufferGeometry( size );
 		geometry.rotateY( Math.PI * 0.5 );
 
-		this.material = new MeshBasicMaterial( { wireframe: true, fog: false } );
+		this.material = new MeshPhongMaterial( { wireframe: true, fog: false } );
 		if ( this.color === undefined ) { this.material.vertexColors = VertexColors; }
 
 		var position = geometry.getAttribute( 'position' );
@@ -46930,7 +46930,7 @@
 		geometry2.addAttribute( 'position', new Float32BufferAttribute( positions2, 3 ) );
 		geometry2.computeBoundingSphere();
 
-		this.add( new Mesh( geometry2, new MeshBasicMaterial( { color: color, opacity: 0.2, transparent: true, depthWrite: false } ) ) );
+		this.add( new Mesh( geometry2, new MeshPhongMaterial( { color: color, opacity: 0.2, transparent: true, depthWrite: false } ) ) );
 
 	}
 
@@ -47001,7 +47001,7 @@
 		this.line.matrixAutoUpdate = false;
 		this.add( this.line );
 
-		this.cone = new Mesh( _coneGeometry, new MeshBasicMaterial( { color: color } ) );
+		this.cone = new Mesh( _coneGeometry, new MeshPhongMaterial( { color: color } ) );
 		this.cone.matrixAutoUpdate = false;
 		this.add( this.cone );
 
@@ -49263,7 +49263,7 @@
 	exports.Matrix4 = Matrix4;
 	exports.MaxEquation = MaxEquation;
 	exports.Mesh = Mesh;
-	exports.MeshBasicMaterial = MeshBasicMaterial;
+	exports.MeshPhongMaterial = MeshPhongMaterial;
 	exports.MeshDepthMaterial = MeshDepthMaterial;
 	exports.MeshDistanceMaterial = MeshDistanceMaterial;
 	exports.MeshFaceMaterial = MeshFaceMaterial;

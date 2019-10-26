@@ -8,7 +8,7 @@ class Floor {
     this.object = new THREE.Group();
 
     let floorMaterials = [
-      new THREE.MeshBasicMaterial({color: 0x991717}),
+      new THREE.MeshPhongMaterial({color: 0x991717}),
       new THREE.MeshLambertMaterial({color: 0x991717})
     ];
     let floorGeometry = new THREE.BoxGeometry(length, 5, depth);
@@ -17,7 +17,7 @@ class Floor {
     
 
     let wallMeshMaterials = new MeshMaterials([], [
-      new THREE.MeshBasicMaterial({color: 0xe3e3e3}),
+      new THREE.MeshPhongMaterial({color: 0xe3e3e3}),
       new THREE.MeshLambertMaterial({color: 0xe3e3e3})
     ]);
     this.meshesMaterials.push(wallMeshMaterials);
@@ -44,5 +44,9 @@ class Floor {
 
   getObject3D() {
     return this.object;
+  }
+
+  getMeshesMaterials() {
+    return this.meshesMaterials;
   }
 }

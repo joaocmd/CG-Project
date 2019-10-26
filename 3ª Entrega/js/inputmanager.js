@@ -7,7 +7,7 @@ async function _input_onKeyDown(e) {
     _input_keyDown[keyCode] = true;
     //Key is considered pressed down for the next 100ms
     //await sleep(100);
-    _input_keyDown[keyCode] = false;
+    //_input_keyDown[keyCode] = false;
 
 }
 
