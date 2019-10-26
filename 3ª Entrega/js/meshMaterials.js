@@ -3,16 +3,12 @@ class MeshMaterials {
 		this.meshes = meshes
 		this.materials = materials
 	}
-}
 
-function AddMeshMaterialsToObject(meshesMaterials, object) {
-    meshesMaterials.forEach(meshMaterial => {
-      meshMaterial.meshes.forEach(mesh => object.add(mesh))
-    });
-}
+	addToObject(object) {
+		this.meshesMaterials.forEach(mesh => object.add(mesh));
+	}
 
-function UpdateMeshMaterials(meshesMaterials) {
-	meshesMaterials.forEach(pair => {
-		pair.meshes.forEach(mesh => mesh.material = pair.materials[useMaterial])
-	});
+	updateMeshMaterials(){
+		this.meshes.forEach(mesh => mesh.material = pair.materials[useMaterial]);
+	}
 }
