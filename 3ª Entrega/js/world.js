@@ -74,15 +74,6 @@ function world_cycle(timestamp) {
         selectCamera(artCamera);
     }
 
-	// Select Cannons
-	if(input_getKeyDown("Q")){
-		selectCannon(leftCannon);
-	}else if(input_getKeyDown("W")){
-		selectCannon(middleCannon);
-	}else if(input_getKeyDown("E")){
-		selectCannon(rightCannon);
-	}
-
     //Display
     render();
     window.requestAnimationFrame(world_cycle);
