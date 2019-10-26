@@ -1,8 +1,8 @@
 var renderCamera, scene, renderer, inputManager;
 
-var wireframe = axes = false
+var useMaterial = 0;
 
-var objects, balls;
+var objects, lights;
 
 var sceneCamera, artCamera;
 
@@ -38,13 +38,13 @@ function selectCamera(newCamera) {
 function createCameras() {
 	let near = 1;
 	let far = 5000;
-	sceneCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
-	sceneCamera.position.x = 0;
-	sceneCamera.position.y = 2000;
-	sceneCamera.position.z = 100;
-	sceneCamera.lookAt(new THREE.Vector3(0, 0, 100));
+	sceneCamera = new THREE.PerspectiveCamera(70, 0, near, far);
+	sceneCamera.position.x = -1400;
+	sceneCamera.position.y = 1400;
+	sceneCamera.position.z = 1400;
+	sceneCamera.lookAt(scene.position);
 
-	artCamera = new THREE.PerspectiveCamera(70, 0, near, far);
+	artCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
 	artCamera.position.x = -600;
 	artCamera.position.y = 600;
 	artCamera.position.z = 1200;
@@ -90,8 +90,16 @@ function world_init() {
 	input_init();
 
 	objects = [];
+	lights = [];
+
+	let floor = new Floor(0, 0, 0);
+	scene.add(floor.getObject3D());
+	objects.push(floor);
+
+	let painting = new Painting(0, 0, 0);
+	scene.add(painting.getObject3D());
+	objects.push(painting);
 
 	window.addEventListener("resize", updateProjMatrix);
-
     window.requestAnimationFrame(world_cycle);
 }
