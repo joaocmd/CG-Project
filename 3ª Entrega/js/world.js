@@ -41,8 +41,8 @@ function createCameras() {
 
 	sceneCamera = new THREE.PerspectiveCamera(70, 0, near, far);
 	sceneCamera.position.x = 0;
-	sceneCamera.position.y = 100;
-	sceneCamera.position.z = 0;
+	sceneCamera.position.y = 1000;
+	sceneCamera.position.z = 500;
 	sceneCamera.lookAt(scene.position);
 
 	artCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
@@ -110,11 +110,11 @@ function world_init() {
 	scene.add(floor.getObject3D());
 	objects.push(floor);
 
-	let painting = new Painting(0, 10, 20);
+	let painting = new Painting(-500, 0, 0);
 	scene.add(painting.getObject3D());
 	objects.push(painting);
 
-	let sculpture = new Icosahedron(0,0,0);
+	let sculpture = new Icosahedron(0,0,0, 100);
 	scene.add(sculpture.getObject3D());
 	objects.push(sculpture);
 

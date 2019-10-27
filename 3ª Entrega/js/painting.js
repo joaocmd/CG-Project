@@ -23,7 +23,7 @@ class  Painting{
 			 new THREE.MeshLambertMaterial({color: 0x777777})]));
 
 		let squareMeshMaterials = new MeshMaterials([],
-			[new THREE.MeshBasicMaterial({color: 0x000})
+			[new THREE.MeshBasicMaterial({color: 0x000}),
 			 new THREE.MeshPhongMaterial({color: 0x000}),
 			 new THREE.MeshLambertMaterial({color: 0x000})]);
 

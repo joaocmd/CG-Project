@@ -1,7 +1,7 @@
 const GOLDEN = (1 + Math.sqrt(5)) / 2
 
 class Icosahedron{
-	constructor(x, y, z){
+	constructor(x, y, z, scaleFactor){
 		this.object = new THREE.Object3D();
 		this.materials = [new THREE.MeshBasicMaterial({color: 0xfb3c19}),
 						  new THREE.MeshPhongMaterial({color: 0x00b5e4}),
@@ -27,6 +27,7 @@ class Icosahedron{
 		this.meshMaterials = new MeshMaterials([new THREE.Mesh(this.geometry)], this.materials);
 
 		this.object.position.set(x, y, z);
+		this.object.scale.multiplyScalar(scaleFactor);
 
 		this.meshMaterials.addToObject(this.object);
 		this.meshMaterials.update();
@@ -41,10 +42,10 @@ class Icosahedron{
 		let val2 = Math.abs(value);
 
 		this.vertices.forEach(function(vertex) {
-											vertex.x += random(val1, val2);
-											vertex.y += random(val1, val2);
-											vertex.z += random(val1, val2);
-										});
+									vertex.x += random(val1, val2);
+									vertex.y += random(val1, val2);
+									vertex.z += random(val1, val2);
+								});
 	}
 
 	generateFaces(){
