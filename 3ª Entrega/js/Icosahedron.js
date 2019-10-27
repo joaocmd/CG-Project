@@ -1,4 +1,5 @@
-const GOLDEN = (1 + Math.sqrt(5)) / 2
+const GOLDEN = (1 + Math.sqrt(5)) / 2;
+const RANDOM_FACTOR = 0.5;
 
 class Icosahedron{
 	constructor(x, y, z, scaleFactor){
@@ -17,7 +18,7 @@ class Icosahedron{
 						 new THREE.Vector3(GOLDEN, 0, -1),  new THREE.Vector3(GOLDEN, 0, 1),
 						 new THREE.Vector3(-GOLDEN, 0, -1), new THREE.Vector3(-GOLDEN, 0, 1)];
 
-		this.randomizeVertices(0.3);
+		this.randomizeVertices(RANDOM_FACTOR);
 		this.vertices.forEach(vertex => this.geometry.vertices.push(vertex));
 
 		this.generateFaces();
