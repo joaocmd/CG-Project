@@ -3,9 +3,9 @@ const GOLDEN = (1 + Math.sqrt(5)) / 2
 class Icosahedron{
 	constructor(x, y, z, scaleFactor){
 		this.object = new THREE.Object3D();
-		this.materials = [new THREE.MeshBasicMaterial({color: 0xfb3c19}),
-						  new THREE.MeshPhongMaterial({color: 0x00b5e4}),
-						  new THREE.MeshLambertMaterial({color: 0xf6d443})];
+		this.materials = [new THREE.MeshPhongMaterial({color: 0x00b5e4}),
+						  new THREE.MeshLambertMaterial({color: 0xf6d443}),
+						  new THREE.MeshBasicMaterial({color: 0xfb3c19})];
 
 		this.geometry = new THREE.Geometry();
 

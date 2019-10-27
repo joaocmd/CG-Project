@@ -19,13 +19,13 @@ class  Painting{
 		bgMesh.position.y = totalHeight/2 - squareSize/2;
 		// Add background
 		this.meshMaterials.push(new MeshMaterials(bgMesh,
-			[new THREE.MeshBasicMaterial({color: 0x777777}),
-			 new THREE.MeshPhongMaterial({color: 0x777777}),
-			 new THREE.MeshLambertMaterial({color: 0x777777})]));
+			[new THREE.MeshPhongMaterial({color: 0x777777}),
+			 new THREE.MeshLambertMaterial({color: 0x777777}),
+			 new THREE.MeshBasicMaterial({color: 0x777777}),]));
 
-		let squareMaterials =  [new THREE.MeshBasicMaterial({color: 0x000}),
-								new THREE.MeshPhongMaterial({color: 0x000}),
-								new THREE.MeshLambertMaterial({color: 0x000})];
+		let squareMaterials =  [new THREE.MeshPhongMaterial({color: 0x000}),
+								new THREE.MeshLambertMaterial({color: 0x000}),
+								new THREE.MeshBasicMaterial({color: 0x000})];
 
 		// Add square mesh
 		this.meshMaterials.push(new MeshMaterials([], squareMaterials));
@@ -40,9 +40,9 @@ class  Painting{
 			}
 		}
 
-		let dotMaterials = [new THREE.MeshBasicMaterial({color: 0xc6c6c6}),
-							new THREE.MeshPhongMaterial({color: 0xc6c6c6}),
-							new THREE.MeshLambertMaterial({color: 0xc6c6c6})];
+		let dotMaterials = [new THREE.MeshPhongMaterial({color: 0xc6c6c6}),
+							new THREE.MeshLambertMaterial({color: 0xc6c6c6}),
+							new THREE.MeshBasicMaterial({color: 0xc6c6c6})];
 
 		// Add dot mesh
 		this.meshMaterials.push(new MeshMaterials([], dotMaterials));
@@ -58,9 +58,9 @@ class  Painting{
 			}
 		}
 
-		let frameMaterials = [new THREE.MeshBasicMaterial({color: 0x613a1f}),
-							  new THREE.MeshPhongMaterial({color: 0x613a1f}),
-							  new THREE.MeshLambertMaterial({color: 0x613a1f})];
+		let frameMaterials = [new THREE.MeshPhongMaterial({color: 0x613a1f}),
+							  new THREE.MeshLambertMaterial({color: 0x613a1f}),
+							  new THREE.MeshBasicMaterial({color: 0x613a1f})];
 
 		// Add frameMesh
 		this.meshMaterials.push(new MeshMaterials([], frameMaterials));
