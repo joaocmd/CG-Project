@@ -110,11 +110,11 @@ function world_init() {
 	scene.add(floor.getObject3D());
 	objects.push(floor);
 
-	let painting = new Painting(-500, 0, 0);
+	let painting = new Painting(-800, 150, -730);
 	scene.add(painting.getObject3D());
 	objects.push(painting);
 
-	let sculpture = new Icosahedron(0,0,0, 100);
+	let sculpture = new Icosahedron(0, 0, 0, 100);
 	scene.add(sculpture.getObject3D());
 	objects.push(sculpture);
 
