@@ -92,7 +92,7 @@ function createLights() {
 	lights = []
 
 	let sun = new THREE.DirectionalLight();
-	sun.position.copy(sceneCamera.position);
+	sun.position.set(-500, 1000, 500);
 	scene.add(sun);
 	lights.push(sun) 
 	sun.target = objects[0].getObject3D();
