@@ -69,7 +69,7 @@ function world_cycle(timestamp) {
 
 	if (input_getKeyDown("E")) {
 		useMaterial = (useMaterial + 1)%2;
-		objects.forEach(obj => UpdateMeshMaterials(obj.getMeshesMaterials()));
+		objects.forEach(obj => obj.update());
 	}
 
 	// Select Cameras
@@ -110,7 +110,7 @@ function world_init() {
 	scene.add(floor.getObject3D());
 	objects.push(floor);
 
-	let painting = new Painting(-800, 150, -730);
+	let painting = new Painting(0, 10, 20);
 	scene.add(painting.getObject3D());
 	objects.push(painting);
 

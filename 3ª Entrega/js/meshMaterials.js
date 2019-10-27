@@ -5,10 +5,10 @@ class MeshMaterials {
 	}
 
 	addToObject(object) {
-		this.meshesMaterials.forEach(mesh => object.add(mesh));
+		this.meshes.forEach(mesh => object.add(mesh));
 	}
 
-	updateMeshMaterials(){
-		this.meshes.forEach(mesh => mesh.material = pair.materials[useMaterial]);
+	update(){
+		this.meshes.forEach(mesh => mesh.material = this.materials[useMaterial]);
 	}
 }

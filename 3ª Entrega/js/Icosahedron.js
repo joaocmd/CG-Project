@@ -3,9 +3,13 @@ const GOLDEN = (1 + Math.sqrt(5)) / 2
 class Icosahedron{
 	constructor(x, y, z){
 		this.object = new THREE.Object3D();
-		this.basic = new THREE.MeshBasicMaterial({color: 0xff00ff})
+		this.materials = [new THREE.MeshBasicMaterial({color: 0xfb3c19}),
+						  new THREE.MeshPhongMaterial({color: 0x00b5e4}),
+						  new THREE.MeshLambertMaterial({color: 0xf6d443})];
 
 		this.geometry = new THREE.Geometry();
+
+		// Vertice definition
 		this.vertices = [new THREE.Vector3(-1, GOLDEN, 0),  new THREE.Vector3(1, GOLDEN, 0),
 						 new THREE.Vector3(-1, -GOLDEN, 0), new THREE.Vector3(1, -GOLDEN, 0),
 						 new THREE.Vector3(0, -1, GOLDEN),  new THREE.Vector3(0, 1, GOLDEN),
@@ -13,17 +17,19 @@ class Icosahedron{
 						 new THREE.Vector3(GOLDEN, 0, -1),  new THREE.Vector3(GOLDEN, 0, 1),
 						 new THREE.Vector3(-GOLDEN, 0, -1), new THREE.Vector3(-GOLDEN, 0, 1)];
 
-		this.randomizeVertices(0.2);
+		this.randomizeVertices(0.3);
 		this.vertices.forEach(vertex => this.geometry.vertices.push(vertex));
 
 		this.generateFaces();
 		this.geometry.computeFaceNormals();
 		this.geometry.computeFlatVertexNormals();
 
-		this.mesh = new THREE.Mesh(this.geometry, this.basic);
-		this.object.add(this.mesh);
+		this.meshMaterials = new MeshMaterials([new THREE.Mesh(this.geometry)], this.materials);
 
 		this.object.position.set(x, y, z);
+
+		this.meshMaterials.addToObject(this.object);
+		this.meshMaterials.update();
 	}
 
 	getObject3D(){
@@ -34,15 +40,11 @@ class Icosahedron{
 		let val1 = -Math.abs(value);
 		let val2 = Math.abs(value);
 
-		this.vertices.forEach(vertex => function(vertex) {
-											vertex.x += this.random(val1, val2);
-											vertex.y += this.random(val1, val2);
-											vertex.z += this.random(val1, val2);
+		this.vertices.forEach(function(vertex) {
+											vertex.x += random(val1, val2);
+											vertex.y += random(val1, val2);
+											vertex.z += random(val1, val2);
 										});
-	}
-
-	random(val1, val2){
-		return Math.random() * (val2 - val1) + val1;
 	}
 
 	generateFaces(){
@@ -69,6 +71,10 @@ class Icosahedron{
 	}
 
 	update(){
-
+		this.meshMaterials.update();
 	}
+}
+
+function random(val1, val2){
+	return Math.random() * (val2 - val1) + val1;
 }
