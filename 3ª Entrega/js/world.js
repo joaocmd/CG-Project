@@ -1,5 +1,6 @@
 var renderCamera, scene, renderer, inputManager;
 
+var useBasicMaterial = false;
 var useMaterial = 0;
 
 var objects, lights;
@@ -67,9 +68,16 @@ function world_cycle(timestamp) {
 	time_deltaTime = (timestamp - time_lastFrame) / 1000;
 	time_lastFrame = timestamp;
 
+	if (input_getKeyDown("W")) {
+		useBasicMaterial = !useBasicMaterial;
+		let matIndex = useBasicMaterial ? 2 : useMaterial;
+		objects.forEach(obj => obj.update(matIndex));
+	}
 	if (input_getKeyDown("E")) {
 		useMaterial = (useMaterial + 1)%2;
-		objects.forEach(obj => obj.update());
+		if (!useBasicMaterial) {
+			objects.forEach(obj => obj.update(useMaterial));
+		}
 	}
 
 	// Select Cameras
@@ -85,7 +93,7 @@ function world_cycle(timestamp) {
 	}
 	for (let i = 1; i <= 4; i++) {
 		if (input_getKeyDown(i.toString())) {
-			lights[i-1].toggle();
+			lights[i].toggle();
 		}
 	}
 
@@ -109,25 +117,21 @@ function createLights() {
 
 	let spotlight = new Spotlight(500, 1000, 1000, Math.PI / 4, 0, 0, 0xff4444);
 	scene.add(spotlight.getObject3D());
-	objects.push(spotlight);
 	lights.push(spotlight);
 
 
 	spotlight = new Spotlight(-500, 1000, 1000, Math.PI / 4, 0, 0, 0x44ff44);
 	scene.add(spotlight.getObject3D());
-	objects.push(spotlight);
 	lights.push(spotlight);
 
 
 	spotlight = new Spotlight(700, 1000, 0, Math.PI / 4, 0, -(Math.PI / 4), 0xffff44);
 	scene.add(spotlight.getObject3D());
-	objects.push(spotlight);
 	lights.push(spotlight);
 
 
 	spotlight = new Spotlight(-700, 1000, 0, Math.PI/2, 0, 0, 0x4444ff);
 	scene.add(spotlight.getObject3D());
-	objects.push(spotlight);
 	lights.push(spotlight);
 }
 

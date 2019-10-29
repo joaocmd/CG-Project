@@ -17,7 +17,7 @@ class MeshMaterials {
 		this.meshes.push(mesh);
 	}
 
-	update(){
-		this.meshes.forEach(mesh => mesh.material = this.materials[useMaterial]);
+	update(materialIndex){
+		this.meshes.forEach(mesh => mesh.material = this.materials[materialIndex]);
 	}
 }

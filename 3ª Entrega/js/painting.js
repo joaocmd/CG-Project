@@ -76,7 +76,7 @@ class  Painting{
 
 		this.meshMaterials.forEach(function(mesh){
 										mesh.addToObject(object);
-										mesh.update();
+										mesh.update(0);
 									});
 	}
 
@@ -89,8 +89,8 @@ class  Painting{
 		return frameMesh;
 	}
 
-	update(){
-		this.meshMaterials.forEach(mesh => mesh.update());
+	update(materialIndex){
+		this.meshMaterials.forEach(mesh => mesh.update(materialIndex));
 	}
 
 	getObject3D() {

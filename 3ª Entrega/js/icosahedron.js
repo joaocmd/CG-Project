@@ -35,7 +35,7 @@ class Icosahedron{
 		this.meshMaterials = new MeshMaterials([new THREE.Mesh(this.geometry), pedestalMesh], this.materials);
 
 		this.meshMaterials.addToObject(this.object);
-		this.meshMaterials.update();
+		this.meshMaterials.update(0);
 	}
 
 	getObject3D(){
@@ -76,8 +76,8 @@ class Icosahedron{
 		this.geometry.faces.push(new THREE.Face3(9, 8, 1));
 	}
 
-	update(){
-		this.meshMaterials.update();
+	update(materialIndex){
+		this.meshMaterials.update(materialIndex);
 	}
 }
 
