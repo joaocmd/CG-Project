@@ -80,6 +80,9 @@ function world_cycle(timestamp) {
     }
 
 	// Toggle Lights
+	if (input_getKeyDown("Q")) {
+		lights[0].visible = !lights[0].visible;
+	}
 	for (let i = 1; i <= 4; i++) {
 		if (input_getKeyDown(i.toString())) {
 			lights[i-1].toggle();
@@ -101,8 +104,8 @@ function createLights() {
 	let sun = new THREE.DirectionalLight();
 	sun.position.set(-500, 1000, 500);
 	scene.add(sun);
+	lights.push(sun);
 	sun.target = objects[0].getObject3D();
-	sun.castShadow = true;
 
 	let spotlight = new Spotlight(500, 1000, 1000, Math.PI / 4, 0, 0, 0xff4444);
 	scene.add(spotlight.getObject3D());
