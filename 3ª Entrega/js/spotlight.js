@@ -4,12 +4,17 @@ class Spotlight {
   constructor(x, y, z, rot_x, rot_y, rot_z, color) {
 
     this.object = new THREE.Group();
-    let geometry = new THREE.ConeGeometry(90, 200, 32);
-    let material = new THREE.MeshBasicMaterial({color: 0x222222});
-    let mesh = new THREE.Mesh(geometry, material);
+    let geometry = new THREE.ConeGeometry(90, 200, 32, 32);
+		let materials = [new THREE.MeshPhongMaterial({color: 0x222222}),
+							       new THREE.MeshLambertMaterial({color: 0x222222}),
+							       new THREE.MeshBasicMaterial({color: 0x222222})];
+    let mesh = new THREE.Mesh(geometry);
     mesh.rotation.x = -Math.PI/2;
 
+		this.meshMaterials = new MeshMaterials([mesh], materials);
     this.object.add(mesh);
+		this.meshMaterials.update(0);
+
 
 		this.object.position.set(x, y, z);
     this.object.rotation.set(rot_x, rot_y, rot_z)
@@ -42,7 +47,11 @@ class Spotlight {
     }
   }
 
-  getObject3D(){
+  getObject3D() {
 		return this.object;
+  }
+  
+	update(materialIndex){
+		this.meshMaterials.update(materialIndex);
 	}
 }
