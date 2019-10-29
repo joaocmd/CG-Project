@@ -6,8 +6,6 @@ var objects, lights;
 
 var sceneCamera, artCamera;
 
-var selected, spotligth_1, spotligth_2, spotligth_3, spotligth_4;
-
 var time_lastFrame = time_deltaTime = 0;
 
 function render() {
@@ -65,12 +63,15 @@ function createRenderer() {
 	document.body.appendChild(renderer.domElement);
 }
 
+<<<<<<< HEAD
 function selectSpotlight(new_spotlight) {
 	selected.turn_off();
 	selected = new_spotlight;
 	selected.turn_on();
 }
 
+=======
+>>>>>>> master
 function world_cycle(timestamp) {
 	time_deltaTime = (timestamp - time_lastFrame) / 1000;
 	time_lastFrame = timestamp;
@@ -87,6 +88,7 @@ function world_cycle(timestamp) {
         selectCamera(artCamera);
     }
 
+<<<<<<< HEAD
 		if (input_getKeyDown("1")) {
 			selectSpotlight(spotligth_1);
 	} else if (input_getKeyDown("2")){
@@ -96,6 +98,8 @@ function world_cycle(timestamp) {
 	} else if (input_getKeyDown("4")) {
 			selectSpotlight(spotligth_4)
 	}
+=======
+>>>>>>> master
     //Display
     render();
     window.requestAnimationFrame(world_cycle);
@@ -111,6 +115,7 @@ function createLights() {
 	let sun = new THREE.DirectionalLight();
 	sun.position.set(-500, 1000, 500);
 	scene.add(sun);
+<<<<<<< HEAD
 	lights.push(sun)
 	sun.target = objects[0].getObject3D();
 }
@@ -143,6 +148,12 @@ function createSpotligths() {
 	selectSpotlight(spotligth_1);
 }
 
+=======
+	lights.push(sun) 
+	sun.target = objects[0].getObject3D();
+}
+
+>>>>>>> master
 function world_init() {
 	createRenderer();
 	createScene();
@@ -163,8 +174,11 @@ function world_init() {
 	scene.add(sculpture.getObject3D());
 	objects.push(sculpture);
 
+<<<<<<< HEAD
 	createSpotligths();
 
+=======
+>>>>>>> master
 	createLights();
 	window.addEventListener("resize", updateProjMatrix);
     window.requestAnimationFrame(world_cycle);
