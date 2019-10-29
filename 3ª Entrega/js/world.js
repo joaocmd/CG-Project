@@ -118,25 +118,25 @@ function createLights() {
 	lights.push(sun);
 	sun.target = objects[0].getObject3D();
 
-	let spotlight = new Spotlight(500, 1000, 1000, Math.PI / 2, 0, 0, 0xff4444);
+	let spotlight = new Spotlight(500, 1000, 1000, 3*Math.PI/4, -Math.PI/32, 0, 0xff4444);
 	scene.add(spotlight.getObject3D());
 	objects.push(spotlight);
 	lights.push(spotlight);
 
 
-	spotlight = new Spotlight(-500, 1000, 1000, Math.PI / 2, 0, 0, 0x44ff44);
+	spotlight = new Spotlight(-500, 1000, 1000, 3*Math.PI/4, Math.PI/8, 0, 0x44ff44);
 	scene.add(spotlight.getObject3D());
 	objects.push(spotlight);
 	lights.push(spotlight);
 
 
-	spotlight = new Spotlight(700, 1000, 0, Math.PI / 2, 0, -(Math.PI / 4), 0xffff44);
+	spotlight = new Spotlight(700, 1000, 0, 3*Math.PI/4, -0.5, 0, 0xffff44);
 	scene.add(spotlight.getObject3D());
 	objects.push(spotlight);
 	lights.push(spotlight);
 
 
-	spotlight = new Spotlight(-700, 1000, 0, Math.PI/2, 0, 0, 0x4444ff);
+	spotlight = new Spotlight(-1000, 50, 300, 4.4*Math.PI/4, 0.4, 0, 0x4444ff);
 	scene.add(spotlight.getObject3D());
 	objects.push(spotlight);
 	lights.push(spotlight);

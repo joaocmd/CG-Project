@@ -26,13 +26,12 @@ class Spotlight {
     this.object.add(this.lamp);
 
     this.light = new THREE.SpotLight(color);
-    this.light.target.position.copy(this.object.position).add(this.object.getWorldDirection());
-    let arrow = new THREE.ArrowHelper(this.object.getWorldDirection(), this.object.position, 300, 0xffaa22);
-    scene.add(arrow);
+    let targetPos = this.object.position.clone().add(this.object.getWorldDirection().multiplyScalar(500));
+    let target = new THREE.Object3D();
+    target.position.copy(targetPos);
+    scene.add(target);
+    this.light.target = target;
     
-    scene.add(this.light.target);
-    arrow = new THREE.ArrowHelper(this.light.target.position, this.object.position, 300, 0xffaa22);
-    scene.add(arrow);
     this.light.angle = Math.PI/8;
     this.light.penumbra = 0.2;
     this.object.add(this.light);
