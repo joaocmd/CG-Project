@@ -4,7 +4,7 @@ class Spotlight {
   constructor(x, y, z, rot_x, rot_y, rot_z, color) {
 
     this.object = new THREE.Group();
-    let geometry = new THREE.ConeGeometry(90, 200, 32, 32);
+    let geometry = new THREE.ConeGeometry(85, 200, 32, 32);
 		let materials = [new THREE.MeshPhongMaterial({color: 0x222222}),
 							       new THREE.MeshLambertMaterial({color: 0x222222}),
 							       new THREE.MeshBasicMaterial({color: 0x222222})];
