@@ -16,16 +16,19 @@ function render() {
 function updateProjMatrix() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
+	let aspect = window.innerWidth/window.innerHeight;
 	if (window.innerHeight > 0 && window.innerWidth > 0) {
-		if (renderCamera.type == "OrthographicCamera") {
+		if (renderCamera instanceof THREE.OrthographicCamera) {
 			//Look for correct resizing
-			renderCamera.left = window.innerWidth / -1;
-			renderCamera.right = window.innerWidth / 1;
-			renderCamera.top = window.innerHeight / 1;
-			renderCamera.bottom = window.innerHeight / -1;
+			let length = 675;
+			let dy = length*2/aspect;
+			renderCamera.left = -length;
+			renderCamera.right = length;
+			renderCamera.top = 0.5 * dy;
+			renderCamera.bottom = -0.5 * dy;
 			renderCamera.updateProjectionMatrix();
 		} else {
-			renderCamera.aspect = window.innerWidth/window.innerHeight;
+			renderCamera.aspect = aspect;
 		}
 		renderCamera.updateProjectionMatrix();
 	}
@@ -47,9 +50,9 @@ function createCameras() {
 	sceneCamera.lookAt(scene.position);
 
 	artCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
-	artCamera.position.x = 0;
-	artCamera.position.y = 500;
-	artCamera.position.z = 1500;
+	artCamera.position.x = -370;
+	artCamera.position.y = 515;
+	artCamera.position.z = 700;
 
 	selectCamera(sceneCamera);
 }
@@ -151,7 +154,7 @@ function world_init() {
 	scene.add(floor.getObject3D());
 	objects.push(floor);
 
-	let painting = new Painting(-1000, 150, -730);
+	let painting = new Painting(-1000, 120, -730);
 	scene.add(painting.getObject3D());
 	objects.push(painting);
 

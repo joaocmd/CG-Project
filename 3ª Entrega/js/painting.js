@@ -1,14 +1,16 @@
 class  Painting{
 	constructor(x, y, z) {
-		const squaresY = 10;
-		const squaresX = 18;
-		const squareSize = 60;
-		const squareSep =  15;
-		const dotRadius = 17;
+		const squaresY = 14;
+		const squaresX = 22;
+		const squareSize = 50;
+		const squareSep =  10;
+		const dotRadius = 12;
 		const frameWidth = 20;
 
 		let totalWidth = ((squareSize+squareSep) * squaresX) - squareSep;
 		let totalHeight = ((squareSize+squareSep) * squaresY) - squareSep;
+		console.log(totalWidth)
+		console.log(totalHeight)
 
 		this.object = new THREE.Group();
 		this.meshMaterials = [];
