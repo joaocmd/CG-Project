@@ -14,11 +14,11 @@ class Spotlight {
 		this.object.position.set(x, y, z);
     this.object.rotation.set(rot_x, rot_y, rot_z)
 
-    this.lamp = new THREE.SphereGeometry(90, 32, 32);
+    let lampGeometry = new THREE.SphereGeometry(90, 32, 32);
     this.lampMaterial = new THREE.MeshBasicMaterial({color: color});
-    mesh = new THREE.Mesh(this.lamp, this.lampMaterial);
-    mesh.position.set(0, 0, 100);
-    this.object.add(mesh);
+    this.lamp = new THREE.Mesh(lampGeometry, this.lampMaterial);
+    this.lamp.position.set(0, 0, 100);
+    this.object.add(this.lamp);
 
     this.light = new THREE.SpotLight(color);
     this.light.target.position.copy(this.object.position).add(this.object.getWorldDirection());
