@@ -1,7 +1,7 @@
 class Floor {
 	constructor(x, y, z) {
 		const depth = 1500;
-		const length = 2000;
+		const length = 2200;
 		const wallHeight = 1000;
 
 		this.meshMaterials = []
@@ -10,7 +10,7 @@ class Floor {
 		let floorMaterials = [new THREE.MeshPhongMaterial({color: 0x991717}),
 							  new THREE.MeshLambertMaterial({color: 0x991717}),
 							  new THREE.MeshBasicMaterial({color: 0x991717})];
-		let floorGeometry = new THREE.BoxGeometry(length, 5, depth);
+		let floorGeometry = new THREE.BoxGeometry(length, 5, depth, 10, 10);
 		let floorMesh = new THREE.Mesh(floorGeometry);
 
 		// Add floor mesh
@@ -20,7 +20,7 @@ class Floor {
 							 new THREE.MeshLambertMaterial({color: 0xe3e3e3}),
 							 new THREE.MeshBasicMaterial({color: 0xe3e3e3})];
 
-		let wallGeometry = new THREE.BoxGeometry(length, 5, wallHeight);
+		let wallGeometry = new THREE.BoxGeometry(length, 5, wallHeight, 10, 10);
 		let wallMesh = new THREE.Mesh(wallGeometry);
 		wallMesh.rotation.x = Math.PI/2;
 		wallMesh.position.z = -depth/2;

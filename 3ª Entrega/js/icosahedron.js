@@ -1,5 +1,5 @@
 const GOLDEN = (1 + Math.sqrt(5)) / 2;
-const RANDOM_FACTOR = 0.5;
+const RANDOM_FACTOR = 0.2;
 
 class Icosahedron{
 	constructor(x, y, z, scaleFactor){
@@ -25,10 +25,14 @@ class Icosahedron{
 		this.geometry.computeFaceNormals();
 		this.geometry.computeFlatVertexNormals();
 
-		this.meshMaterials = new MeshMaterials([new THREE.Mesh(this.geometry)], this.materials);
-
 		this.object.position.set(x, y, z);
 		this.object.scale.multiplyScalar(scaleFactor);
+
+		let pedestalGeometry = new THREE.CylinderGeometry(2.2, 2.3, 0.5, 22, 5);
+		let pedestalMesh = new THREE.Mesh(pedestalGeometry);
+		pedestalMesh.position.y = -1.8;
+
+		this.meshMaterials = new MeshMaterials([new THREE.Mesh(this.geometry), pedestalMesh], this.materials);
 
 		this.meshMaterials.addToObject(this.object);
 		this.meshMaterials.update();

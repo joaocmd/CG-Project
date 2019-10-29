@@ -48,7 +48,7 @@ function createCameras() {
 	artCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
 	artCamera.position.x = 0;
 	artCamera.position.y = 500;
-	artCamera.position.z = 0;
+	artCamera.position.z = 1500;
 
 	selectCamera(sceneCamera);
 }
@@ -63,15 +63,6 @@ function createRenderer() {
 	document.body.appendChild(renderer.domElement);
 }
 
-<<<<<<< HEAD
-function selectSpotlight(new_spotlight) {
-	selected.turn_off();
-	selected = new_spotlight;
-	selected.turn_on();
-}
-
-=======
->>>>>>> master
 function world_cycle(timestamp) {
 	time_deltaTime = (timestamp - time_lastFrame) / 1000;
 	time_lastFrame = timestamp;
@@ -88,18 +79,13 @@ function world_cycle(timestamp) {
         selectCamera(artCamera);
     }
 
-<<<<<<< HEAD
-		if (input_getKeyDown("1")) {
-			selectSpotlight(spotligth_1);
-	} else if (input_getKeyDown("2")){
-			selectSpotlight(spotligth_2);
-	} else if (input_getKeyDown("3")){
-			selectSpotlight(spotligth_3);
-	} else if (input_getKeyDown("4")) {
-			selectSpotlight(spotligth_4)
+	// Toggle Lights
+	for (let i = 1; i <= 4; i++) {
+		if (input_getKeyDown(i.toString())) {
+			lights[i-1].toggle();
+		}
 	}
-=======
->>>>>>> master
+
     //Display
     render();
     window.requestAnimationFrame(world_cycle);
@@ -115,45 +101,33 @@ function createLights() {
 	let sun = new THREE.DirectionalLight();
 	sun.position.set(-500, 1000, 500);
 	scene.add(sun);
-<<<<<<< HEAD
-	lights.push(sun)
 	sun.target = objects[0].getObject3D();
+	sun.castShadow = true;
+
+	let spotlight = new Spotlight(500, 1000, 1000, Math.PI / 4, 0, 0, 0xff4444);
+	scene.add(spotlight.getObject3D());
+	objects.push(spotlight);
+	lights.push(spotlight);
+
+
+	spotlight = new Spotlight(-500, 1000, 1000, Math.PI / 4, 0, 0, 0x44ff44);
+	scene.add(spotlight.getObject3D());
+	objects.push(spotlight);
+	lights.push(spotlight);
+
+
+	spotlight = new Spotlight(700, 1000, 0, Math.PI / 4, 0, -(Math.PI / 4), 0xffff44);
+	scene.add(spotlight.getObject3D());
+	objects.push(spotlight);
+	lights.push(spotlight);
+
+
+	spotlight = new Spotlight(-700, 1000, 0, Math.PI/2, 0, 0, 0x4444ff);
+	scene.add(spotlight.getObject3D());
+	objects.push(spotlight);
+	lights.push(spotlight);
 }
 
-function createSpotligths() {
-
-	let painting = objects[objects.length - 2];
-	let sculpture = objects[objects.length - 1];
-
-	spotligth_1 = new Spotlight(500, 1000, 1000, Math.PI / 4, 0, 0, painting.getObject3D());
-	scene.add(spotligth_1.getObject3D());
-	objects.push(spotligth_1);
-
-
-	spotligth_2 = new Spotlight(-500, 1000, 1000, Math.PI / 4, 0, 0, sculpture.getObject3D());
-	scene.add(spotligth_2.getObject3D());
-	objects.push(spotligth_2);
-
-
-	spotligth_3 = new Spotlight(700, 1000, 0, Math.PI / 4, 0, -(Math.PI / 4), sculpture.getObject3D());
-	scene.add(spotligth_3.getObject3D());
-	objects.push(spotligth_3);
-
-
-	spotligth_4 = new Spotlight(-1100, 1000, -300, 0, 0, Math.PI / 4, painting.getObject3D());
-	scene.add(spotligth_4.getObject3D());
-	objects.push(spotligth_4);
-
-	selected = spotligth_1;
-	selectSpotlight(spotligth_1);
-}
-
-=======
-	lights.push(sun) 
-	sun.target = objects[0].getObject3D();
-}
-
->>>>>>> master
 function world_init() {
 	createRenderer();
 	createScene();
@@ -166,19 +140,14 @@ function world_init() {
 	scene.add(floor.getObject3D());
 	objects.push(floor);
 
-	let painting = new Painting(-800, 150, -730);
+	let painting = new Painting(-1000, 150, -730);
 	scene.add(painting.getObject3D());
 	objects.push(painting);
 
-	let sculpture = new Icosahedron(0, 500, 0, 200);
+	let sculpture = new Icosahedron(700, 305, 0, 150);
 	scene.add(sculpture.getObject3D());
 	objects.push(sculpture);
 
-<<<<<<< HEAD
-	createSpotligths();
-
-=======
->>>>>>> master
 	createLights();
 	window.addEventListener("resize", updateProjMatrix);
     window.requestAnimationFrame(world_cycle);

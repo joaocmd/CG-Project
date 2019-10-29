@@ -1,42 +1,48 @@
-var SPOT_COLOR = 0x6D6D6D;
+const OFF_MATERIAL = new THREE.MeshBasicMaterial({color: 0x333333});
 
 class Spotlight {
-  constructor(x, y, z, rot_x, rot_y, rot_z, target) {
+  constructor(x, y, z, rot_x, rot_y, rot_z, color) {
 
     this.object = new THREE.Group();
-    let geometry = new THREE.ConeGeometry(93.75, 200, 32);
-    let material = new THREE.MeshBasicMaterial({color: SPOT_COLOR});
-    this.mesh = new THREE.Mesh(geometry, material);
+    let geometry = new THREE.ConeGeometry(90, 200, 32);
+    let material = new THREE.MeshBasicMaterial({color: 0x222222});
+    let mesh = new THREE.Mesh(geometry, material);
+    mesh.rotation.x = -Math.PI/2;
 
-    this.object.add(this.mesh);
+    this.object.add(mesh);
 
 		this.object.position.set(x, y, z);
     this.object.rotation.set(rot_x, rot_y, rot_z)
 
-    geometry = new THREE.SphereGeometry(93.75, 600, 32);
-    material = new THREE.MeshBasicMaterial({color: 0xE0E06A});
-    let mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(0, -100, 0);
+    this.lamp = new THREE.SphereGeometry(90, 32, 32);
+    this.lampMaterial = new THREE.MeshBasicMaterial({color: color});
+    mesh = new THREE.Mesh(this.lamp, this.lampMaterial);
+    mesh.position.set(0, 0, 100);
     this.object.add(mesh);
 
-    var spot_l = new THREE.SpotLight(0xffffff);
-    spot_l.target = target;
-    spot_l.angle = 0;
-    this.object.add(spot_l);
+    this.light = new THREE.SpotLight(color);
+    this.light.target.position.copy(this.object.position).add(this.object.getWorldDirection());
+    let arrow = new THREE.ArrowHelper(this.object.getWorldDirection(), this.object.position, 300, 0xffaa22);
+    scene.add(arrow);
+    
+    scene.add(this.light.target);
+    arrow = new THREE.ArrowHelper(this.light.target.position, this.object.position, 300, 0xffaa22);
+    scene.add(arrow);
+    this.light.angle = Math.PI/8;
+    this.light.penumbra = 0.2;
+    this.object.add(this.light);
   }
 
-  turn_on() {
-    this.object.children[2].angle = 0.2;
-  }
-
-  turn_off() {
-    this.object.children[2].angle = 0;
+  toggle() {
+    this.light.visible = !this.light.visible;
+    if (this.light.visible) {
+      this.lamp.material = this.lampMaterial;
+    } else {
+      this.lamp.material = OFF_MATERIAL;
+    }
   }
 
   getObject3D(){
 		return this.object;
-	}
-
-  update(){
 	}
 }
