@@ -64,6 +64,8 @@ function createScene() {
 function createRenderer() {
 	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 	document.body.appendChild(renderer.domElement);
 }
 
@@ -114,6 +116,9 @@ function createLights() {
 
 	let sun = new THREE.DirectionalLight();
 	sun.position.set(-500, 1000, 500);
+	sun.castShadow = true;
+	sun.shadow.camera.far = 5000;
+	sun.intensity = 0.5;
 	scene.add(sun);
 	lights.push(sun);
 	sun.target = objects[0].getObject3D();

@@ -12,6 +12,7 @@ class Floor {
 							  new THREE.MeshBasicMaterial({color: 0x991717})];
 		let floorGeometry = new THREE.BoxGeometry(length, 5, depth, 180, 180);
 		let floorMesh = new THREE.Mesh(floorGeometry);
+		floorMesh.receiveShadow = true;
 
 		// Add floor mesh
 		this.meshMaterials.push(new MeshMaterials(floorMesh, floorMaterials));
@@ -22,6 +23,7 @@ class Floor {
 
 		let wallGeometry = new THREE.BoxGeometry(length, 5, wallHeight, 180, 180);
 		let wallMesh = new THREE.Mesh(wallGeometry);
+		wallMesh.receiveShadow = true;
 		wallMesh.rotation.x = Math.PI/2;
 		wallMesh.position.z = -depth/2;
 		wallMesh.position.y = wallHeight/2;
@@ -31,6 +33,7 @@ class Floor {
 
 		wallGeometry = new THREE.BoxGeometry(wallHeight, 5, depth);
 		wallMesh = new THREE.Mesh(wallGeometry);
+		wallMesh.receiveShadow = true;
 		wallMesh.rotation.z = Math.PI/2;
 		wallMesh.position.x = length/2;
 		wallMesh.position.y = wallHeight/2;

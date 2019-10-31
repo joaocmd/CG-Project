@@ -30,9 +30,15 @@ class Icosahedron{
 
 		let pedestalGeometry = new THREE.CylinderGeometry(2.2, 2.3, 0.5, 22, 5);
 		let pedestalMesh = new THREE.Mesh(pedestalGeometry);
+		pedestalMesh.receiveShadow = true;
+		pedestalMesh.castShadow = true;
 		pedestalMesh.position.y = -1.8;
 
-		this.meshMaterials = new MeshMaterials([new THREE.Mesh(this.geometry), pedestalMesh], this.materials);
+		let icoMesh = new THREE.Mesh(this.geometry);
+		icoMesh.castShadow = true;
+		icoMesh.receiveShadow = true;
+
+		this.meshMaterials = new MeshMaterials([icoMesh, pedestalMesh], this.materials);
 
 		this.meshMaterials.addToObject(this.object);
 		this.meshMaterials.update(0);

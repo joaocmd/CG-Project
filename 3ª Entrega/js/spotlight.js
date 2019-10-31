@@ -11,12 +11,12 @@ class Spotlight {
     let mesh = new THREE.Mesh(geometry);
     mesh.rotation.x = -Math.PI/2;
 
-		this.meshMaterials = new MeshMaterials([mesh], materials);
+	this.meshMaterials = new MeshMaterials([mesh], materials);
     this.object.add(mesh);
-		this.meshMaterials.update(0);
+	this.meshMaterials.update(0);
 
 
-		this.object.position.set(x, y, z);
+	this.object.position.set(x, y, z);
     this.object.rotation.set(rot_x, rot_y, rot_z)
 
     let lampGeometry = new THREE.SphereGeometry(90, 32, 32);
@@ -26,6 +26,9 @@ class Spotlight {
     this.object.add(this.lamp);
 
     this.light = new THREE.SpotLight(color);
+	this.light.castShadow = true;
+	this.light.shadow.camera.near = 0.1;
+	this.light.shadow.camera.far = 5000
     let targetPos = this.object.position.clone().add(this.object.getWorldDirection().multiplyScalar(500));
     let target = new THREE.Object3D();
     target.position.copy(targetPos);
