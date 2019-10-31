@@ -2,10 +2,10 @@ class  Painting{
 	constructor(x, y, z) {
 		const squaresY = 14;
 		const squaresX = 22;
-		const squareSize = 50;
-		const squareSep =  10;
-		const dotRadius = 12;
-		const frameWidth = 20;
+		const squareSize = 50.0;
+		const squareSep =  squareSize/3.0;
+		const dotRadius = Math.sqrt(2*(Math.pow(squareSep/2, 2)));
+		const frameWidth = 20.0;
 
 		let totalWidth = ((squareSize+squareSep) * squaresX) - squareSep;
 		let totalHeight = ((squareSize+squareSep) * squaresY) - squareSep;
@@ -53,8 +53,8 @@ class  Painting{
 		for (let x = 0; x < squaresX-1; x++) {
 			for (let y = 0; y < squaresY-1; y++) {
 				let dotMesh = new THREE.Mesh(dotGeometry);
-				dotMesh.position.x = ((squareSize+squareSep) * x) + squareSize/2 + dotRadius/2;
-				dotMesh.position.y = ((squareSize+squareSep) * y) + squareSize/2 + dotRadius/2;
+				dotMesh.position.x = ((squareSize+squareSep) * x) + squareSize/2 + squareSep/2;
+				dotMesh.position.y = ((squareSize+squareSep) * y) + squareSize/2 + squareSep/2;
 				dotMesh.rotation.x = Math.PI/2;
 				this.meshMaterials[2].addMesh(dotMesh);
 			}

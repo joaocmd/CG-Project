@@ -10,9 +10,10 @@ class Floor {
 		let floorMaterials = [new THREE.MeshPhongMaterial({color: 0x991717}),
 							  new THREE.MeshLambertMaterial({color: 0x991717}),
 							  new THREE.MeshBasicMaterial({color: 0x991717})];
-		let floorGeometry = new THREE.BoxGeometry(length, 5, depth, 180, 180);
+		let floorGeometry = new THREE.PlaneGeometry(length, depth, 100, 100);
 		let floorMesh = new THREE.Mesh(floorGeometry);
 		floorMesh.receiveShadow = true;
+		floorMesh.rotation.x = -Math.PI/2;
 
 		// Add floor mesh
 		this.meshMaterials.push(new MeshMaterials(floorMesh, floorMaterials));
@@ -21,20 +22,20 @@ class Floor {
 							 new THREE.MeshLambertMaterial({color: 0xe3e3e3}),
 							 new THREE.MeshBasicMaterial({color: 0xe3e3e3})];
 
-		let wallGeometry = new THREE.BoxGeometry(length, 5, wallHeight, 180, 180);
+		let wallGeometry = new THREE.PlaneGeometry(length, wallHeight, 100, 100);
 		let wallMesh = new THREE.Mesh(wallGeometry);
 		wallMesh.receiveShadow = true;
-		wallMesh.rotation.x = Math.PI/2;
 		wallMesh.position.z = -depth/2;
 		wallMesh.position.y = wallHeight/2;
 
 		// Add 1 wall
 		this.meshMaterials.push(new MeshMaterials(wallMesh, wallMaterials));
 
-		wallGeometry = new THREE.BoxGeometry(wallHeight, 5, depth);
+		wallGeometry = new THREE.PlaneGeometry(wallHeight, depth, 100, 100);
 		wallMesh = new THREE.Mesh(wallGeometry);
 		wallMesh.receiveShadow = true;
 		wallMesh.rotation.z = Math.PI/2;
+		wallMesh.rotation.y = -Math.PI/2;
 		wallMesh.position.x = length/2;
 		wallMesh.position.y = wallHeight/2;
 

@@ -20,7 +20,7 @@ function updateProjMatrix() {
 	if (window.innerHeight > 0 && window.innerWidth > 0) {
 		if (renderCamera instanceof THREE.OrthographicCamera) {
 			//Look for correct resizing
-			let length = 690;
+			let length = 750;
 			let dy = length*2/aspect;
 			renderCamera.left = -length;
 			renderCamera.right = length;
@@ -50,8 +50,8 @@ function createCameras() {
 	sceneCamera.lookAt(scene.position);
 
 	artCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
-	artCamera.position.x = -370;
-	artCamera.position.y = 515;
+	artCamera.position.x = -300;
+	artCamera.position.y = 500;
 	artCamera.position.z = -700;
 
 	selectCamera(sceneCamera);
@@ -159,7 +159,7 @@ function world_init() {
 	scene.add(floor.getObject3D());
 	objects.push(floor);
 
-	let painting = new Painting(-1000, 120, -730);
+	let painting = new Painting(-1000, 75, -730);
 	scene.add(painting.getObject3D());
 	objects.push(painting);
 
