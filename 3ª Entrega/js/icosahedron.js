@@ -1,12 +1,12 @@
 const GOLDEN = (1 + Math.sqrt(5)) / 2;
-const RANDOM_FACTOR = 0.5;
+const RANDOM_FACTOR = 0.2;
 
 class Icosahedron{
 	constructor(x, y, z, scaleFactor){
 		this.object = new THREE.Object3D();
-		this.materials = [new THREE.MeshPhongMaterial({color: 0x00b5e4}),
+		this.materials = [new THREE.MeshPhongMaterial({color: 0xf6d443}),
 						  new THREE.MeshLambertMaterial({color: 0xf6d443}),
-						  new THREE.MeshBasicMaterial({color: 0xfb3c19})];
+						  new THREE.MeshBasicMaterial({color: 0xf6d443})];
 
 		this.geometry = new THREE.Geometry();
 
@@ -25,13 +25,23 @@ class Icosahedron{
 		this.geometry.computeFaceNormals();
 		this.geometry.computeFlatVertexNormals();
 
-		this.meshMaterials = new MeshMaterials([new THREE.Mesh(this.geometry)], this.materials);
-
 		this.object.position.set(x, y, z);
 		this.object.scale.multiplyScalar(scaleFactor);
 
+		let pedestalGeometry = new THREE.CylinderGeometry(2.2, 2.3, 0.5, 22, 5);
+		let pedestalMesh = new THREE.Mesh(pedestalGeometry);
+		pedestalMesh.receiveShadow = true;
+		pedestalMesh.castShadow = true;
+		pedestalMesh.position.y = -1.8;
+
+		let icoMesh = new THREE.Mesh(this.geometry);
+		icoMesh.castShadow = true;
+		icoMesh.receiveShadow = true;
+
+		this.meshMaterials = new MeshMaterials([icoMesh, pedestalMesh], this.materials);
+
 		this.meshMaterials.addToObject(this.object);
-		this.meshMaterials.update();
+		this.meshMaterials.update(0);
 	}
 
 	getObject3D(){
@@ -72,8 +82,8 @@ class Icosahedron{
 		this.geometry.faces.push(new THREE.Face3(9, 8, 1));
 	}
 
-	update(){
-		this.meshMaterials.update();
+	update(materialIndex){
+		this.meshMaterials.update(materialIndex);
 	}
 }
 

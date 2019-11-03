@@ -1,14 +1,16 @@
 class  Painting{
 	constructor(x, y, z) {
-		const squaresY = 10;
-		const squaresX = 18;
-		const squareSize = 60;
-		const squareSep =  15;
-		const dotRadius = 17;
-		const frameWidth = 20;
+		const squaresY = 14;
+		const squaresX = 22;
+		const squareSize = 50.0;
+		const squareSep =  squareSize/3.0;
+		const dotRadius = Math.sqrt(2*(Math.pow(squareSep/2, 2)));
+		const frameWidth = 20.0;
 
 		let totalWidth = ((squareSize+squareSep) * squaresX) - squareSep;
 		let totalHeight = ((squareSize+squareSep) * squaresY) - squareSep;
+		console.log(totalWidth)
+		console.log(totalHeight)
 
 		this.object = new THREE.Group();
 		this.meshMaterials = [];
@@ -51,8 +53,8 @@ class  Painting{
 		for (let x = 0; x < squaresX-1; x++) {
 			for (let y = 0; y < squaresY-1; y++) {
 				let dotMesh = new THREE.Mesh(dotGeometry);
-				dotMesh.position.x = ((squareSize+squareSep) * x) + squareSize/2 + dotRadius/2;
-				dotMesh.position.y = ((squareSize+squareSep) * y) + squareSize/2 + dotRadius/2;
+				dotMesh.position.x = ((squareSize+squareSep) * x) + squareSize/2 + squareSep/2;
+				dotMesh.position.y = ((squareSize+squareSep) * y) + squareSize/2 + squareSep/2;
 				dotMesh.rotation.x = Math.PI/2;
 				this.meshMaterials[2].addMesh(dotMesh);
 			}
@@ -76,7 +78,7 @@ class  Painting{
 
 		this.meshMaterials.forEach(function(mesh){
 										mesh.addToObject(object);
-										mesh.update();
+										mesh.update(0);
 									});
 	}
 
@@ -89,8 +91,8 @@ class  Painting{
 		return frameMesh;
 	}
 
-	update(){
-		this.meshMaterials.forEach(mesh => mesh.update());
+	update(materialIndex){
+		this.meshMaterials.forEach(mesh => mesh.update(materialIndex));
 	}
 
 	getObject3D() {
