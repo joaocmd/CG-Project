@@ -127,9 +127,9 @@ function createLights() {
 	scene.add(sun);
 	sun.target = materialObjects[0].getObject3D();
 
-	spotlight = new Spotlight(0, 1800, 0, Math.PI/2, 0, 0, 0xff4444);
-	scene.add(spotlight.getObject3D());
-	materialObjects.push(spotlight);
+	let pointLight = new THREE.PointLight(0xffffff);
+	pointLight.position.set(0, 500, 30);
+	scene.add(pointLight);
 }
 
 function world_init() {
