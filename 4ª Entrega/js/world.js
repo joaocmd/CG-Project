@@ -1,3 +1,5 @@
+var controls;
+
 const textureLoader = new THREE.TextureLoader();
 
 var renderCamera, scene, renderer, inputManager;
@@ -7,6 +9,7 @@ const MATERIAL_INDEXES = {
 	SHADED: 0,
 	BASIC: 1,
 }
+
 var useMaterial = MATERIAL_INDEXES.SHADED;
 
 var dynamicObjects = [];
@@ -111,6 +114,7 @@ function world_cycle(timestamp) {
 
     //Display
     render();
+	controls.update();
     window.requestAnimationFrame(world_cycle);
 }
 
@@ -133,6 +137,8 @@ function world_init() {
 	createScene();
 	createCameras();
 	input_init();
+
+	controls = new THREE.OrbitControls(renderCamera, renderer.domElement);
 
 	let board = new Board(0, 0, 0);
 	scene.add(board.getObject3D());

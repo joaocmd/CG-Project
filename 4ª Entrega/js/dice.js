@@ -7,7 +7,6 @@ class Dice {
 
 		this.object = new THREE.Group();
 
-		// Board
 		let materials = 
 		[
 			[
