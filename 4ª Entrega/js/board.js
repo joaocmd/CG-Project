@@ -56,6 +56,10 @@ class Board {
 		this.meshMaterials.forEach(meshMaterial => meshMaterial.update(materialIndex));
 	}
 
+	toggleWireframe() {
+		this.meshMaterials.forEach(meshMaterial => meshMaterial.toggleWireFrame());
+	}
+
 	getObject3D() {
 		return this.object;
 	}

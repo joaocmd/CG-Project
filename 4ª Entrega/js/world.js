@@ -77,11 +77,37 @@ function createRenderer() {
 	document.body.appendChild(renderer.domElement);
 }
 
+function restart() {
+	timeScale = 1;
+}
+
 function world_cycle(timestamp) {
 	time_deltaTime = (timestamp - time_lastFrame) * timeScale/ 1000;
 	time_lastFrame = timestamp;
 
 	dynamicObjects.forEach(obj => obj.update());
+
+	// Ponto 2
+	// Isto está a demorar muito a fazer toggle
+	if (input_getKeyDown("D")) {
+		sun.visible = !sun.visible;
+	}
+	if (input_getKeyDown("P")) {
+		spotlight.toggle();
+	}
+	if (input_getKeyDown("W")) {
+		materialObjects.forEach(obj => obj.toggleWireframe());
+	}
+
+	// Ponto 3
+
+	// Ponto 4
+	if (input_getKeyDown("S")) {
+		timeScale = (timeScale == 0)? 1 : 0;
+	}
+	if (input_getKeyDown("R")) {
+		restart();
+	}
 
     //Display
     render();

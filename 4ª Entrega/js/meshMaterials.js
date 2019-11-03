@@ -17,6 +17,19 @@ class MeshMaterials {
 		this.meshes.push(mesh);
 	}
 
+	toggleWireFrame() {
+		this.materials.forEach(mat => {
+			// Check for multi materials
+			if (Array.isArray(mat)) {
+				mat.forEach(singleMat => {
+					singleMat.wireframe = !singleMat.wireframe
+				})
+			} else {
+				mat.wireframe = !mat.wireframe
+			}
+		});
+	}
+
 	update(materialIndex){
 		this.meshes.forEach(mesh => mesh.material = this.materials[materialIndex]);
 	}

@@ -52,6 +52,10 @@ class Dice {
 		this.meshMaterials.update(materialIndex);
 	}
 
+	toggleWireframe() {
+		this.meshMaterials.toggleWireFrame();
+	}
+
 	update() {
 		this.object.rotateOnWorldAxis(UP_VECTOR, this.spinSpeed * time_deltaTime);
 	}
