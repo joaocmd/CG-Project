@@ -1,6 +1,7 @@
 const textureLoader = new THREE.TextureLoader();
 
 var renderCamera, scene, renderer, inputManager;
+var timeScale = 1;
 
 const MATERIAL_INDEXES = {
 	SHADED: 0,
@@ -77,8 +78,10 @@ function createRenderer() {
 }
 
 function world_cycle(timestamp) {
-	time_deltaTime = (timestamp - time_lastFrame) / 1000;
+	time_deltaTime = (timestamp - time_lastFrame) * timeScale/ 1000;
 	time_lastFrame = timestamp;
+
+	dynamicObjects.forEach(obj => obj.update());
 
     //Display
     render();
@@ -108,6 +111,11 @@ function world_init() {
 	let board = new Board(0, 0, 0);
 	scene.add(board.getObject3D());
 	materialObjects.push(board);
+
+	let dice = new Dice(0, 173.205, 0);
+	scene.add(dice.getObject3D());
+	materialObjects.push(dice);
+	dynamicObjects.push(dice);
 
 
 	createLights();
