@@ -1,9 +1,9 @@
+const ROTATION_DICE = Math.PI / 3;
 const UP_VECTOR = new THREE.Vector3(0, 1, 0);
 
 class Dice {
 	constructor(x, y, z) {
 		const size = 200;
-		this.spinSpeed = Math.PI;
 
 		this.object = new THREE.Group();
 

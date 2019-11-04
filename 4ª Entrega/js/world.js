@@ -149,6 +149,10 @@ function world_init() {
 	materialObjects.push(dice);
 	dynamicObjects.push(dice);
 
+	let ball = new Ball(0,0,0);
+	scene.add(ball.getObject3D());
+	materialObjects.push(ball);
+	dynamicObjects.push(ball);
 
 	createLights();
 	window.addEventListener("resize", updateProjMatrix);
