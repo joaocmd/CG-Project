@@ -4,9 +4,9 @@ const RANDOM_FACTOR = 0.2;
 class Icosahedron{
 	constructor(x, y, z, scaleFactor){
 		this.object = new THREE.Object3D();
-		this.materials = [new THREE.MeshPhongMaterial({color: 0xf6d443}),
-						  new THREE.MeshLambertMaterial({color: 0xf6d443}),
-						  new THREE.MeshBasicMaterial({color: 0xf6d443})];
+		this.materials = [new THREE.MeshPhongMaterial({color: 0x132a66, emissive: 0x010201, specular: 0x0e8ca8, shininess: 30, vertexColors: THREE.NoColors, fog: true}),
+						  new THREE.MeshLambertMaterial({color: 0x132a66, emissive: 0x010201, vertexColors: THREE.NoColors, fog: true}),
+						  new THREE.MeshBasicMaterial({color: 0x132a66})];
 
 		this.geometry = new THREE.Geometry();
 
