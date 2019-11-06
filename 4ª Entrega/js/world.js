@@ -15,7 +15,7 @@ var useMaterial = MATERIAL_INDEXES.SHADED;
 var dynamicObjects = [];
 var materialObjects = [];
 var sun;
-var spotlight;
+var pointlight;
 
 var sceneCamera, msgCamera;
 
@@ -96,7 +96,7 @@ function world_cycle(timestamp) {
 		sun.visible = !sun.visible;
 	}
 	if (input_getKeyDown("P")) {
-		spotlight.toggle();
+		pointlight.visible = !pointlight.visible;
 	}
 	if (input_getKeyDown("W")) {
 		materialObjects.forEach(obj => obj.toggleWireframe());
@@ -127,9 +127,11 @@ function createLights() {
 	scene.add(sun);
 	sun.target = materialObjects[0].getObject3D();
 
-	let pointLight = new THREE.PointLight(0xffffff);
-	pointLight.position.set(0, 500, 30);
-	scene.add(pointLight);
+	pointlight = new THREE.PointLight(0xffffff);
+	pointlight.position.set(0, 500, 30);
+	pointlight.castShadow = true;
+	pointlight.shadow.camera.dar = 10000;
+	scene.add(pointlight);
 }
 
 function world_init() {
@@ -149,6 +151,10 @@ function world_init() {
 	materialObjects.push(dice);
 	dynamicObjects.push(dice);
 
+	let ball = new Ball(0,0,0);
+	scene.add(ball.getObject3D());
+	materialObjects.push(ball);
+	dynamicObjects.push(ball);
 
 	createLights();
 	window.addEventListener("resize", updateProjMatrix);
