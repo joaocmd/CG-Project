@@ -34,7 +34,7 @@ class Dice {
 		]
 
 
-		let geometry = new THREE.BoxGeometry(size, size, size, 4, 4, 4);
+		let geometry = new THREE.BoxGeometry(size, size, size);
 		let mesh = new THREE.Mesh(geometry);
 		mesh.castShadow = true;
 		mesh.rotation.x = -Math.PI/2;

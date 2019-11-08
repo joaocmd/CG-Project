@@ -8,16 +8,12 @@ class Ball{
 		this.object = new THREE.Object3D();
 		this.geometry = new THREE.SphereGeometry(250, 16, 16);
 		this.materials = [new THREE.MeshPhongMaterial({map: textureLoader.load(getTexture("lenna.png")),
-												  bumpMap: textureLoader.load(getTexture("wood_bump.png")),
-												  shininesh: 10}),
+												  bumpMap: textureLoader.load(getTexture("wood_bump.png"))}),
 					 new THREE.MeshBasicMaterial({map: textureLoader.load(getTexture("lenna.png"))})]
 
 		this.ball = new THREE.Mesh(this.geometry);
 		this.meshMaterials = new MeshMaterials(this.ball, this.materials);
 		this.ball.castShadow = true;
-		this.rotation = 0;
-		this.translate = 0;
-		this.accelerate = 1;
 
 		this.meshMaterials.addToObject(this.object);
 		this.updateMeshMaterials(useMaterial);
@@ -51,9 +47,12 @@ class Ball{
 
 	restart() {
 		this.object.rotation.set(0, 0, 0);
+		this.ball.position.set(0, 250, 800);
 		this.rotation = 0;
+		this.ball.rotation.set(0, 0, 0);
+		this.ball.rotateX(-Math.PI / 4);
 		this.translate = 0;
-		this.accelerate = 1;
+		this.accelerate = -1;
 	}
 
 	updateMeshMaterials(materialIndex){
