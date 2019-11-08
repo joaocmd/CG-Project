@@ -110,7 +110,10 @@ function world_cycle(timestamp) {
 	}
 	if (input_getKeyDown("R")) {
 		restart();
-		}
+	}
+	if (input_getKeyDown("B")){
+		dynamicObjects[1].toggleMove();
+	}
 
     //Display
     render();
