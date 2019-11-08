@@ -103,6 +103,9 @@ function world_cycle(timestamp) {
 	}
 
 	// Ponto 3
+	if (input_getKeyDown("B")){
+		dynamicObjects[1].toggleMove();
+	}
 
 	// Ponto 4
 	if (input_getKeyDown("S")) {

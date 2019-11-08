@@ -1,4 +1,7 @@
-const ROTATION_BALL = Math.PI / 2;
+const MAX_ROTATION_BALL = Math.PI / 2;
+const MAX_TRANSLATE_BALL = Math.PI / 2
+const STEP_ROTATION_BALL = Math.PI / 8;
+const STEP_TRANSLATE_BALL = Math.PI / 10;
 
 class Ball{
 	constructor(x, y, z){
@@ -12,6 +15,9 @@ class Ball{
 		this.ball = new THREE.Mesh(this.geometry);
 		this.meshMaterials = new MeshMaterials(this.ball, this.materials);
 		this.ball.castShadow = true;
+		this.rotation = 0;
+		this.translate = 0;
+		this.accelerate = 1;
 
 		this.meshMaterials.addToObject(this.object);
 		this.updateMeshMaterials(useMaterial);
@@ -25,8 +31,18 @@ class Ball{
 	}
 
 	update(){
-		this.object.rotateY(ROTATION_BALL * time_deltaTime);
-		this.ball.rotateY(ROTATION_BALL * 5 * time_deltaTime);
+		this.rotation += STEP_ROTATION_BALL * time_deltaTime * this.accelerate;
+		this.translate += STEP_TRANSLATE_BALL * time_deltaTime * this.accelerate;
+
+		this.rotation = THREE.Math.clamp(this.rotation, 0, MAX_ROTATION_BALL);
+		this.translate = THREE.Math.clamp(this.translate, 0, MAX_TRANSLATE_BALL);
+
+		this.object.rotateY(this.translate * time_deltaTime);
+		this.ball.rotateY(this.rotation * time_deltaTime);
+	}
+
+	toggleMove(){
+		this.accelerate = -this.accelerate;
 	}
 
 	toggleWireframe() {
@@ -35,9 +51,9 @@ class Ball{
 
 	restart() {
 		this.object.rotation.set(0, 0, 0);
-		this.ball.position.set(0, 250, 800);
-		this.ball.rotation.set(0, 0, 0);
-		//this.ball.rotation.set(-Math.PI/4, 0, 0);
+		this.rotation = 0;
+		this.translate = 0;
+		this.accelerate = 1;
 	}
 
 	updateMeshMaterials(materialIndex){
