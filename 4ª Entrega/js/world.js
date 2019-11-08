@@ -109,13 +109,17 @@ function world_cycle(timestamp) {
 		timeScale = (timeScale == 0)? 1 : 0;
 	}
 	if (input_getKeyDown("R")) {
-		dynamicObjects.forEach(obj => obj.restart());
-	}
+		restart();
+		}
 
     //Display
     render();
 	controls.update();
     window.requestAnimationFrame(world_cycle);
+}
+
+function restart() {
+	dynamicObjects.forEach(obj => obj.restart());
 }
 
 function createLights() {

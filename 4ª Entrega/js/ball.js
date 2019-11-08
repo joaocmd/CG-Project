@@ -35,7 +35,6 @@ class Ball{
 	}
 
 	restart() {
-		this.object.position.set(0, 0, 0);
 		this.object.rotation.set(0, 0, 0);
 	}
 
