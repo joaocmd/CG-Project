@@ -7,7 +7,7 @@ class Dice {
 
 		this.object = new THREE.Group();
 
-		let materials = 
+		let materials =
 		[
 			[
 				new THREE.MeshPhongMaterial({map: textureLoader.load(getTexture("dice1.png")),
@@ -57,6 +57,10 @@ class Dice {
 
 	update() {
 		this.object.rotateOnWorldAxis(UP_VECTOR, ROTATION_DICE * time_deltaTime);
+	}
+
+	restart() {
+		this.object.rotation.set(35*Math.PI/180, 0, Math.PI/4);
 	}
 
 	getObject3D() {

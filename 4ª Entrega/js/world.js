@@ -109,7 +109,7 @@ function world_cycle(timestamp) {
 		timeScale = (timeScale == 0)? 1 : 0;
 	}
 	if (input_getKeyDown("R")) {
-		restart();
+		dynamicObjects.forEach(obj => obj.restart());
 	}
 
     //Display

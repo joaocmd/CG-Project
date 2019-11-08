@@ -30,6 +30,15 @@ class Ball{
 		this.ball.rotateY(ROTATION_BALL * time_deltaTime);
 	}
 
+	toggleWireframe() {
+		this.meshMaterials.toggleWireFrame();
+	}
+
+	restart() {
+		this.object.position.set(0, 0, 0);
+		this.object.rotation.set(0, 0, 0);
+	}
+
 	updateMeshMaterials(materialIndex){
 		this.meshMaterials.update(materialIndex);
 	}
