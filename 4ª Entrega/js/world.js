@@ -110,7 +110,7 @@ function world_cycle(timestamp) {
 	}
 	if (input_getKeyDown("R")) {
 		restart();
-		}
+	}
 
     //Display
     render();
@@ -119,6 +119,9 @@ function world_cycle(timestamp) {
 }
 
 function restart() {
+	timeScale = 1;
+	sun.visible = true;
+	pointlight.visible = true;
 	dynamicObjects.forEach(obj => obj.restart());
 }
 
@@ -127,14 +130,15 @@ function createLights() {
 	sun.position.set(-500, 1000, 500);
 	sun.castShadow = true;
 	sun.shadow.camera.far = 5000;
-	sun.intensity = 0.5;
+	sun.intensity = 0.75;
 	scene.add(sun);
 	sun.target = materialObjects[0].getObject3D();
 
-	pointlight = new THREE.PointLight(0xffffff);
+	pointlight = new THREE.PointLight(0xff0000);
 	pointlight.position.set(0, 500, 30);
+	pointlight.distance = 4000;
 	pointlight.castShadow = true;
-	pointlight.shadow.camera.dar = 10000;
+	pointlight.shadow.camera.far = 10000;
 	scene.add(pointlight);
 }
 
