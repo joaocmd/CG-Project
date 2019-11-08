@@ -134,7 +134,7 @@ function createLights() {
 	pointlight = new THREE.PointLight(0xffffff);
 	pointlight.position.set(0, 500, 30);
 	pointlight.castShadow = true;
-	pointlight.shadow.camera.dar = 10000;
+	pointlight.shadow.camera.far = 10000;
 	scene.add(pointlight);
 }
 

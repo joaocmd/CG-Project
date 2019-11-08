@@ -13,6 +13,7 @@ class Board {
 							  new THREE.MeshBasicMaterial({map: textureLoader.load(getTexture("chess.jpg"))})];
 		let boardGeometry = new THREE.PlaneGeometry(this.size, this.size, 32, 32);
 		let boardMesh = new THREE.Mesh(boardGeometry);
+		boardMesh.castShadow = true;
 		boardMesh.receiveShadow = true;
 		boardMesh.rotation.x = -Math.PI/2;
 		this.meshMaterials.push(new MeshMaterials(boardMesh, boardMaterials));
