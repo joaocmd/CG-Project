@@ -1,6 +1,8 @@
 const textureLoader = new THREE.TextureLoader();
 
-var renderCamera, scene, renderer, inputManager;
+var renderCamera,  renderer, inputManager;
+var scene;
+var pauseScene;
 
 const MATERIAL_INDEXES = {
 	SHADED: 0,
@@ -16,8 +18,6 @@ var sun;
 var pointlight;
 var paused = false;
 
-var pausePosition = 1000000;
-
 var sceneCamera, msgCamera;
 
 var time_lastFrame = time_deltaTime = 0, timeScale = 1;
@@ -29,13 +29,12 @@ function selectCamera(camera) {
 function render() {
 	renderer.clear();
 	// Render Main Camera
-	renderer.setClearColor(0x000000, 1);
 	renderer.render(scene, sceneCamera);
 
 	// Render Msg Camera
 	if (paused) {
-		renderer.setClearColor(0x000000, 1);
-		renderer.render(scene, msgCamera);
+		//renderer.clearDepth();
+		renderer.render(pauseScene, msgCamera);
 	}
 }
 
@@ -72,18 +71,18 @@ function createCameras() {
 	sceneCamera.lookAt(scene.position);
 
 	msgCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
-	msgCamera.position.set(pausePosition, 0, 1000);
-	msgCamera.lookAt(pause.getObject3D().position);
+	msgCamera.position.set(0, 0, 1000);
 
 	updateProjMatrix();
 }
 
 function createScene() {
 	scene = new THREE.Scene();
+	pauseScene = new THREE.Scene();
 }
 
 function createRenderer() {
-	renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.autoClear = false;
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.shadowMap.enabled = true;
@@ -182,8 +181,8 @@ function world_init() {
 	materialObjects.push(ball);
 	dynamicObjects.push(ball);
 
-	pause = new Pause(pausePosition, 0, 0);
-	scene.add(pause.getObject3D());
+	pause = new Pause(0, 0, 0);
+	pauseScene.add(pause.getObject3D());
 	materialObjects.push(pause);
 
 	createCameras();
