@@ -1,9 +1,8 @@
-var controls;
-
 const textureLoader = new THREE.TextureLoader();
 
-var renderCamera, scene, renderer, inputManager;
-var timeScale = 1;
+var renderCamera,  renderer, inputManager;
+var scene;
+var pauseScene;
 
 const MATERIAL_INDEXES = {
 	SHADED: 0,
@@ -14,15 +13,29 @@ var useMaterial = MATERIAL_INDEXES.SHADED;
 
 var dynamicObjects = [];
 var materialObjects = [];
+var pause;
 var sun;
 var pointlight;
+var paused = false;
 
 var sceneCamera, msgCamera;
 
-var time_lastFrame = time_deltaTime = 0;
+var time_lastFrame = time_deltaTime = 0, timeScale = 1;
+
+function selectCamera(camera) {
+	renderCamera = camera;
+}
 
 function render() {
-	renderer.render(scene, renderCamera);
+	renderer.clear();
+	// Render Main Camera
+	renderer.render(scene, sceneCamera);
+
+	// Render Msg Camera
+	if (paused) {
+		//renderer.clearDepth();
+		renderer.render(pauseScene, msgCamera);
+	}
 }
 
 function updateProjMatrix() {
@@ -30,25 +43,23 @@ function updateProjMatrix() {
 
 	let aspect = window.innerWidth/window.innerHeight;
 	if (window.innerHeight > 0 && window.innerWidth > 0) {
-		if (renderCamera instanceof THREE.OrthographicCamera) {
-			//Look for correct resizing
-			let length = 750;
-			let dy = length*2/aspect;
-			renderCamera.left = -length;
-			renderCamera.right = length;
-			renderCamera.top = 0.5 * dy;
-			renderCamera.bottom = -0.5 * dy;
-			renderCamera.updateProjectionMatrix();
-		} else {
-			renderCamera.aspect = aspect;
-		}
-		renderCamera.updateProjectionMatrix();
+			// Msg Camera
+			if (aspect >= 1) {
+				let length = 5000;
+				let dy = length*2/aspect;
+				msgCamera.left = -length;
+				msgCamera.right = length;
+				msgCamera.top = 0.5 * dy;
+				msgCamera.bottom = -0.5 * dy;
+				msgCamera.updateProjectionMatrix();
+			} else {
+				//TODO
+			}
+		
+			// Scene Camera
+			sceneCamera.aspect = aspect;
+			sceneCamera.updateProjectionMatrix();
 	}
-}
-
-function selectCamera(newCamera) {
-    renderCamera = newCamera;
-    updateProjMatrix();
 }
 
 function createCameras() {
@@ -56,24 +67,23 @@ function createCameras() {
 	let far = 5000;
 
 	sceneCamera = new THREE.PerspectiveCamera(70, 0, near, far);
-	sceneCamera.position.y = 2000;
-	sceneCamera.position.z = 2500;
+	sceneCamera.position.set(0, 2000, 2500);
 	sceneCamera.lookAt(scene.position);
 
-	artCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
-	artCamera.position.x = -300;
-	artCamera.position.y = 500;
-	artCamera.position.z = -700;
+	msgCamera = new THREE.OrthographicCamera(0, 0 , 0, 0, near, far);
+	msgCamera.position.set(0, 0, 1000);
 
-	selectCamera(sceneCamera);
+	updateProjMatrix();
 }
 
 function createScene() {
 	scene = new THREE.Scene();
+	pauseScene = new THREE.Scene();
 }
 
 function createRenderer() {
 	renderer = new THREE.WebGLRenderer({antialias: true});
+	renderer.autoClear = false;
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -101,27 +111,38 @@ function world_cycle(timestamp) {
 	if (input_getKeyDown("W")) {
 		materialObjects.forEach(obj => obj.toggleWireframe());
 	}
+	if (input_getKeyDown("L")) {
+		useMaterial = (useMaterial + 1)%2;
+		materialObjects.forEach(obj => obj.updateMeshMaterials(useMaterial));
+	}
 
 	// Ponto 3
-
-	// Ponto 4
-	if (input_getKeyDown("S")) {
-		timeScale = (timeScale == 0)? 1 : 0;
-	}
-	if (input_getKeyDown("R")) {
-		restart();
-	}
 	if (input_getKeyDown("B")){
 		dynamicObjects[1].toggleMove();
 	}
 
+	// Ponto 4
+	if (input_getKeyDown("S")) {
+		setPause(!paused)
+	}
+	if (input_getKeyDown("R")) {
+		restart();
+	}
+
     //Display
     render();
-	controls.update();
     window.requestAnimationFrame(world_cycle);
 }
 
+function setPause(val) {
+	paused = val;
+	timeScale = paused? 0 : 1;
+}
+
 function restart() {
+	setPause(false);
+	sun.visible = true;
+	pointlight.visible = true;
 	dynamicObjects.forEach(obj => obj.restart());
 }
 
@@ -130,12 +151,12 @@ function createLights() {
 	sun.position.set(-500, 1000, 500);
 	sun.castShadow = true;
 	sun.shadow.camera.far = 5000;
-	sun.intensity = 0.5;
+	sun.intensity = 0.75;
 	scene.add(sun);
-	sun.target = materialObjects[0].getObject3D();
 
-	pointlight = new THREE.PointLight(0xffffff);
+	pointlight = new THREE.PointLight(0xff0000);
 	pointlight.position.set(0, 500, 30);
+	pointlight.distance = 4000;
 	pointlight.castShadow = true;
 	pointlight.shadow.camera.far = 10000;
 	scene.add(pointlight);
@@ -144,10 +165,7 @@ function createLights() {
 function world_init() {
 	createRenderer();
 	createScene();
-	createCameras();
 	input_init();
-
-	controls = new THREE.OrbitControls(renderCamera, renderer.domElement);
 
 	let board = new Board(0, 0, 0);
 	scene.add(board.getObject3D());
@@ -163,6 +181,11 @@ function world_init() {
 	materialObjects.push(ball);
 	dynamicObjects.push(ball);
 
+	pause = new Pause(0, 0, 0);
+	pauseScene.add(pause.getObject3D());
+	materialObjects.push(pause);
+
+	createCameras();
 	createLights();
 	window.addEventListener("resize", updateProjMatrix);
     window.requestAnimationFrame(world_cycle);
