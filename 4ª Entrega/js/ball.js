@@ -1,7 +1,7 @@
-const MAX_ROTATION_BALL = Math.PI / 2;
 const MAX_TRANSLATE_BALL = Math.PI / 2
-const STEP_ROTATION_BALL = Math.PI / 8;
+const MAX_ROTATION_BALL = MAX_TRANSLATE_BALL * 1.5;
 const STEP_TRANSLATE_BALL = Math.PI / 10;
+const STEP_ROTATION_BALL = STEP_TRANSLATE_BALL * 1.5;
 
 class Ball{
 	constructor(x, y, z){
