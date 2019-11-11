@@ -1,6 +1,6 @@
 const textureLoader = new THREE.TextureLoader();
 
-var renderCamera,  renderer, inputManager;
+var renderer, inputManager;
 var scene;
 var pauseScene;
 
@@ -21,10 +21,6 @@ var paused = false;
 var sceneCamera, msgCamera;
 
 var time_lastFrame = time_deltaTime = 0, timeScale = 1;
-
-function selectCamera(camera) {
-	renderCamera = camera;
-}
 
 function render() {
 	renderer.clear();
@@ -151,6 +147,14 @@ function createLights() {
 	sun.position.set(-500, 1000, 500);
 	sun.castShadow = true;
 	sun.shadow.camera.far = 5000;
+	sun.shadow.camera.left = -10000
+	sun.shadow.camera.right = 10000
+	sun.shadow.camera.bottom = -10000
+	sun.shadow.camera.top = 10000
+	sun.shadow.mapSize.height = 10000
+	sun.shadow.mapSize.width = 10000
+	sun.distance = 0
+
 	sun.intensity = 0.75;
 	scene.add(sun);
 
