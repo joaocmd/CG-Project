@@ -11,17 +11,17 @@ class Dice {
 		[
 			[
 				new THREE.MeshPhongMaterial({map: textureLoader.load(getTexture("face1.jpg")),
-											bumpMap: textureLoader.load(getTexture("face1.jpg"))}),
+											bumpMap: textureLoader.load(getTexture("face1.jpg")), bumpScale: 5}),
 				new THREE.MeshPhongMaterial({map: textureLoader.load(getTexture("face6.jpg")),
-											bumpMap: textureLoader.load(getTexture("face6.jpg"))}),
+											bumpMap: textureLoader.load(getTexture("face6.jpg")), bumpScale: 5}),
 				new THREE.MeshPhongMaterial({map: textureLoader.load(getTexture("face3.jpg")),
-											bumpMap: textureLoader.load(getTexture("face3.jpg"))}),
+											bumpMap: textureLoader.load(getTexture("face3.jpg")), bumpScale: 5}),
 				new THREE.MeshPhongMaterial({map: textureLoader.load(getTexture("face4.jpg")),
-											bumpMap: textureLoader.load(getTexture("face4.jpg"))}),
+											bumpMap: textureLoader.load(getTexture("face4.jpg")), bumpScale: 5}),
 				new THREE.MeshPhongMaterial({map: textureLoader.load(getTexture("face5.jpg")),
-											bumpMap: textureLoader.load(getTexture("face5.jpg"))}),
+											bumpMap: textureLoader.load(getTexture("face5.jpg")), bumpScale: 5}),
 				new THREE.MeshPhongMaterial({map: textureLoader.load(getTexture("face2.jpg")),
-											bumpMap: textureLoader.load(getTexture("face2.jpg"))}),
+											bumpMap: textureLoader.load(getTexture("face2.jpg")), bumpScale: 5}),
 			],
 			[
 				new THREE.MeshBasicMaterial({map: textureLoader.load(getTexture("face1.jpg"))}),

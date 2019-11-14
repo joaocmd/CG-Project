@@ -50,7 +50,7 @@ class Ball{
 		this.ball.position.set(0, 250, 800);
 		this.rotation = 0;
 		this.ball.rotation.set(0, 0, 0);
-		this.ball.rotateX(-Math.PI / 4);
+		//this.ball.rotateX(-Math.PI / 4);
 		this.translate = 0;
 		this.accelerate = -1;
 	}

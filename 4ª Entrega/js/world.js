@@ -1,5 +1,9 @@
 const textureLoader = new THREE.TextureLoader();
 
+const wideScreenVerticalFov = 70;
+// Calculate horizontal fov for 16:9 ratio
+const wideScreenHorizontalFov = 2 * rad2deg(Math.atan((16/9) * Math.tan(deg2rad(wideScreenVerticalFov/2))));
+
 var renderer, inputManager;
 var scene;
 var pauseScene;
@@ -34,27 +38,50 @@ function render() {
 	}
 }
 
+function rad2deg(rad) {
+	return rad * 180/Math.PI;
+}
+
+function deg2rad(deg) {
+	return deg * Math.PI/180;
+}
+
 function updateProjMatrix() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
 	let aspect = window.innerWidth/window.innerHeight;
 	if (window.innerHeight > 0 && window.innerWidth > 0) {
-			// Msg Camera
-			if (aspect >= 1) {
-				let length = 5000;
-				let dy = length*2/aspect;
-				msgCamera.left = -length;
-				msgCamera.right = length;
-				msgCamera.top = 0.5 * dy;
-				msgCamera.bottom = -0.5 * dy;
-				msgCamera.updateProjectionMatrix();
-			} else {
-				//TODO
-			}
-		
-			// Scene Camera
-			sceneCamera.aspect = aspect;
-			sceneCamera.updateProjectionMatrix();
+		// Msg Camera
+		let halfSize = 2000;
+		if (aspect >= 1) {
+			let dy = aspect * halfSize;
+			// Fix vertical limits
+			msgCamera.top = halfSize;
+			msgCamera.bottom = -halfSize;
+
+			msgCamera.left = -dy;
+			msgCamera.right = dy;
+
+			// O FOV da camara de perspetiva mantém-se
+			sceneCamera.fov = wideScreenVerticalFov;
+		} else {
+			let dx = halfSize/aspect;
+			// Fix horizontal limits
+			msgCamera.left = -halfSize;
+			msgCamera.right = halfSize;
+
+			msgCamera.top = dx;
+			msgCamera.bottom = -dx;
+
+			// O FOV da camara de perspetiva tem de ser alterado
+			sceneCamera.fov = rad2deg((1/aspect) * Math.tan(deg2rad(wideScreenHorizontalFov/2)));
+			console.log(sceneCamera.fov);
+		}
+		msgCamera.updateProjectionMatrix();
+	
+		// Scene Camera
+		sceneCamera.aspect = aspect;
+		sceneCamera.updateProjectionMatrix();
 	}
 }
 
@@ -96,25 +123,26 @@ function world_cycle(timestamp) {
 
 	dynamicObjects.forEach(obj => obj.update());
 
-	// Ponto 2
-	// Isto está a demorar muito a fazer toggle
-	if (input_getKeyDown("D")) {
-		sun.visible = !sun.visible;
-	}
-	if (input_getKeyDown("P")) {
-		pointlight.visible = !pointlight.visible;
-	}
-	if (input_getKeyDown("W")) {
-		materialObjects.forEach(obj => obj.toggleWireframe());
-	}
-	if (input_getKeyDown("L")) {
-		useMaterial = (useMaterial + 1)%2;
-		materialObjects.forEach(obj => obj.updateMeshMaterials(useMaterial));
-	}
+	if (!paused) {
+		// Ponto 2
+		if (input_getKeyDown("D")) {
+			sun.visible = !sun.visible;
+		}
+		if (input_getKeyDown("P")) {
+			pointlight.visible = !pointlight.visible;
+		}
+		if (input_getKeyDown("W")) {
+			materialObjects.forEach(obj => obj.toggleWireframe());
+		}
+		if (input_getKeyDown("L")) {
+			useMaterial = (useMaterial + 1)%2;
+			materialObjects.forEach(obj => obj.updateMeshMaterials(useMaterial));
+		}
 
-	// Ponto 3
-	if (input_getKeyDown("B")){
-		dynamicObjects[1].toggleMove();
+		// Ponto 3
+		if (input_getKeyDown("B")){
+			dynamicObjects[1].toggleMove();
+		}
 	}
 
 	// Ponto 4
