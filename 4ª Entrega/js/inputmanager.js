@@ -1,6 +1,10 @@
 var _input_key;
 var _input_keyDown;
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function _input_onKeyDown(e) {
     let keyCode = e.keyCode;
     _input_key[keyCode] = true;
