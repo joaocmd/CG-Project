@@ -82,7 +82,6 @@ function updateProjMatrix() {
 		// Scene Camera
 		sceneCamera.aspect = aspect;
 		sceneCamera.updateProjectionMatrix();
-		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 }
 
