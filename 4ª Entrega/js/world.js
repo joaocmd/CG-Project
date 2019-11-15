@@ -33,7 +33,7 @@ function render() {
 
 	// Render Msg Camera
 	if (paused) {
-		//renderer.clearDepth();
+		renderer.clearDepth();
 		renderer.render(pauseScene, msgCamera);
 	}
 }
@@ -82,6 +82,7 @@ function updateProjMatrix() {
 		// Scene Camera
 		sceneCamera.aspect = aspect;
 		sceneCamera.updateProjectionMatrix();
+		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 }
 
