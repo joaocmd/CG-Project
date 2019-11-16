@@ -8,7 +8,8 @@ class Ball{
 		this.object = new THREE.Object3D();
 		this.geometry = new THREE.SphereGeometry(250, 16, 16);
 		this.materials = [new THREE.MeshPhongMaterial({map: textureLoader.load(getTexture("lenna.png")),
-												  bumpMap: textureLoader.load(getTexture("wood_bump.png"))}),
+												  bumpMap: textureLoader.load(getTexture("wood_bump.png")),
+												  shininess: 100}),
 					 new THREE.MeshBasicMaterial({map: textureLoader.load(getTexture("lenna.png"))})]
 
 		this.ball = new THREE.Mesh(this.geometry);
