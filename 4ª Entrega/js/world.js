@@ -2,7 +2,6 @@ const textureLoader = new THREE.TextureLoader();
 
 const wideScreenVerticalFov = 70;
 // Calculate horizontal fov for 16:9 ratio
-const wideScreenHorizontalFov = 2 * rad2deg(Math.atan((16/9) * Math.tan(deg2rad(wideScreenVerticalFov/2))));
 
 var renderer, inputManager;
 var scene;
@@ -74,7 +73,10 @@ function updateProjMatrix() {
 			msgCamera.bottom = -dx;
 
 			// O FOV da camara de perspetiva tem de ser alterado
-			sceneCamera.fov = THREE.Math.clamp(rad2deg((1/aspect) * Math.tan(deg2rad(wideScreenHorizontalFov/2))), wideScreenVerticalFov, 140);
+			let boardLength = 1500;
+			let height = boardLength * 1/aspect;
+			sceneCamera.fov = 2 * rad2deg(Math.atan(height/2150));
+
 		}
 		msgCamera.updateProjectionMatrix();
 	
@@ -88,7 +90,8 @@ function createCameras() {
 	let near = 1;
 	let far = 5000;
 
-	sceneCamera = new THREE.PerspectiveCamera(70, 0, near, far);
+	sceneCamera = new THREE.PerspectiveCamera(wideScreenVerticalFov, 0, near, far);
+
 	sceneCamera.position.set(0, 2000, 2500);
 	sceneCamera.lookAt(scene.position);
 
