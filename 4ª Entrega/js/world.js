@@ -74,7 +74,7 @@ function updateProjMatrix() {
 			msgCamera.bottom = -dx;
 
 			// O FOV da camara de perspetiva tem de ser alterado
-			sceneCamera.fov = rad2deg((1/aspect) * Math.tan(deg2rad(wideScreenHorizontalFov/2)));
+			sceneCamera.fov = THREE.Math.clamp(rad2deg((1/aspect) * Math.tan(deg2rad(wideScreenHorizontalFov/2))), wideScreenVerticalFov, 140);
 		}
 		msgCamera.updateProjectionMatrix();
 	
