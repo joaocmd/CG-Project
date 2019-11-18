@@ -1,7 +1,6 @@
 const textureLoader = new THREE.TextureLoader();
 
 const wideScreenVerticalFov = 70;
-// Calculate horizontal fov for 16:9 ratio
 
 var renderer, inputManager;
 var scene;
@@ -115,10 +114,6 @@ function createRenderer() {
 	document.body.appendChild(renderer.domElement);
 }
 
-function restart() {
-	timeScale = 1;
-}
-
 function world_cycle(timestamp) {
 	time_deltaTime = (timestamp - time_lastFrame) * timeScale/ 1000;
 	time_lastFrame = timestamp;
@@ -170,6 +165,8 @@ function restart() {
 	sun.visible = true;
 	pointlight.visible = true;
 	dynamicObjects.forEach(obj => obj.restart());
+	useMaterial = MATERIAL_INDEXES.SHADED;
+	materialObjects.forEach(obj => obj.updateMeshMaterials(useMaterial));
 }
 
 function createLights() {
