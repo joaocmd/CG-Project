@@ -1,13 +1,17 @@
 var _input_key;
 var _input_keyDown;
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function _input_onKeyDown(e) {
     let keyCode = e.keyCode;
     _input_key[keyCode] = true;
     _input_keyDown[keyCode] = true;
     //Key is considered pressed down for the next 100ms
-    //await sleep(100);
-    //_input_keyDown[keyCode] = false;
+    await sleep(100);
+    _input_keyDown[keyCode] = false;
 
 }
 
